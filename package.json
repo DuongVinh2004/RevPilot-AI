@@ -1,0 +1,14 @@
+{
+  "name": "revpilot-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "RevPilot AI — Enterprise Revenue Intelligence & Action Platform",
+  "scripts": {
+    "test": "python -m pytest tests/",
+    "lint:editor": "editorconfig-checker"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

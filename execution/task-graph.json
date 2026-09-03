@@ -1,0 +1,1874 @@
+{
+  "schemaVersion": 2,
+  "initiative": "REVPILOT",
+  "generatedFrom": "execution/MICRO-TASK-RAIL-SYSTEM.md",
+  "railStatus": {
+    "0": "RED",
+    "1-18": "LOCKED"
+  },
+  "nodes": [
+    {
+      "id": "RP-P00-T001",
+      "type": "LEGACY_EPIC",
+      "status": "SUPERSEDED",
+      "replacedBy": [
+        "SPEC-P00-E01"
+      ]
+    },
+    {
+      "id": "RP-P00-T002",
+      "type": "LEGACY_EPIC",
+      "status": "SUPERSEDED",
+      "replacedBy": [
+        "SPEC-P00-E02"
+      ]
+    },
+    {
+      "id": "RP-P00-T003",
+      "type": "LEGACY_EPIC",
+      "status": "SUPERSEDED",
+      "replacedBy": [
+        "SPEC-P00-E03"
+      ]
+    },
+    {
+      "id": "RP-P00-T004",
+      "type": "LEGACY_EPIC",
+      "status": "SUPERSEDED",
+      "replacedBy": [
+        "SPEC-P00-E04"
+      ]
+    },
+    {
+      "id": "RP-P00-T005",
+      "type": "LEGACY_EPIC",
+      "status": "SUPERSEDED",
+      "replacedBy": [
+        "SPEC-P00-E05"
+      ]
+    },
+    {
+      "id": "SPEC-P00-E01",
+      "type": "EPIC",
+      "status": "PASS",
+      "rail": 0,
+      "children": [
+        "SPEC-FND-001",
+        "SPEC-FND-002",
+        "SPEC-FND-003",
+        "SPEC-FND-004",
+        "SPEC-FND-005",
+        "SPEC-FND-006",
+        "SPEC-FND-007",
+        "SPEC-FND-008",
+        "SPEC-FND-009",
+        "SPEC-FND-010",
+        "SPEC-FND-011",
+        "SPEC-FND-012",
+        "SPEC-FND-013",
+        "SPEC-FND-014",
+        "SPEC-FND-015",
+        "SPEC-FND-016",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-P00-E02",
+      "type": "EPIC",
+      "status": "PASS",
+      "rail": 0,
+      "children": [
+        "SPEC-AI-001",
+        "SPEC-AGT-001",
+        "SPEC-ML-001",
+        "SPEC-RAG-001",
+        "SPEC-CAU-001",
+        "SPEC-DEC-001",
+        "SPEC-AIG-001",
+        "SPEC-EVL-001",
+        "SPEC-REL-001"
+      ]
+    },
+    {
+      "id": "SPEC-P00-E03",
+      "type": "EPIC",
+      "status": "PASS",
+      "rail": 0,
+      "children": [
+        "SPEC-WF-001",
+        "SPEC-TEN-001",
+        "SPEC-IAM-001",
+        "SPEC-SEC-001",
+        "SPEC-ACT-001",
+        "SPEC-DG-001",
+        "SPEC-FIN-001",
+        "SPEC-BIL-001",
+        "SPEC-AUD-001",
+        "SPEC-OBS-001",
+        "SPEC-SRE-001",
+        "SPEC-DR-001",
+        "SPEC-CMP-001"
+      ]
+    },
+    {
+      "id": "SPEC-P00-E04",
+      "type": "EPIC",
+      "status": "PASS",
+      "rail": 0,
+      "children": [
+        "SPEC-DAT-001",
+        "SPEC-CON-001",
+        "SPEC-API-001",
+        "SPEC-EVT-001",
+        "SPEC-DB-001",
+        "SPEC-UX-001",
+        "SPEC-QA-001",
+        "SPEC-DEP-001",
+        "SPEC-SYN-001"
+      ]
+    },
+    {
+      "id": "SPEC-P00-E05",
+      "type": "EPIC",
+      "status": "PASS",
+      "rail": 0,
+      "closureEvidence": "TRACEABILITY-MATRIX.md v0.3 \u2014 all TBD/wildcard/legacy broad references resolved with exact spec-anchored IDs"
+    },
+    {
+      "id": "SPEC-FND-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-001.md",
+      "output": "docs/00-executive/GLOSSARY.md",
+      "dependsOn": []
+    },
+    {
+      "id": "SPEC-FND-002",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-002.md",
+      "output": "docs/04-system-architecture/SYSTEM-BOUNDARIES.md",
+      "dependsOn": [
+        "SPEC-FND-001"
+      ]
+    },
+    {
+      "id": "SPEC-FND-003",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-003.md",
+      "output": "docs/03-requirements/WORKLOAD-ASSUMPTIONS.md",
+      "dependsOn": [
+        "SPEC-FND-001"
+      ]
+    },
+    {
+      "id": "SPEC-FND-004",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-004.md",
+      "output": "docs/04-system-architecture/REPOSITORY-TOPOLOGY.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-ADR-001"
+      ]
+    },
+    {
+      "id": "SPEC-FND-005",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-005.md",
+      "output": "docs/04-system-architecture/MODULE-BOUNDARIES.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-FND-004",
+        "SPEC-ADR-003"
+      ]
+    },
+    {
+      "id": "SPEC-FND-006",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-006.md",
+      "output": "docs/04-system-architecture/DEPENDENCY-RULES.md",
+      "dependsOn": [
+        "SPEC-FND-005"
+      ]
+    },
+    {
+      "id": "SPEC-FND-007",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-007.md",
+      "output": "docs/00-executive/SPECIFICATION-PRECEDENCE.md",
+      "dependsOn": []
+    },
+    {
+      "id": "SPEC-FND-008",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-008.md",
+      "output": "docs/03-requirements/INVARIANT-REGISTRY.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-002",
+        "SPEC-ADR-002",
+        "SPEC-ADR-005",
+        "SPEC-ADR-009"
+      ]
+    },
+    {
+      "id": "SPEC-FND-009",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-009.md",
+      "output": "docs/03-requirements/NFR-BASELINE.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-FND-008",
+        "SPEC-ADR-010"
+      ]
+    },
+    {
+      "id": "SPEC-FND-010",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-010.md",
+      "output": "docs/03-requirements/SRS.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-FND-008",
+        "SPEC-FND-009"
+      ]
+    },
+    {
+      "id": "SPEC-FND-011",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-011.md",
+      "output": "docs/04-system-architecture/SYSTEM-ARCHITECTURE.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-FND-004",
+        "SPEC-FND-005",
+        "SPEC-FND-006",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-FND-012",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-012.md",
+      "output": "docs/README.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-002",
+        "SPEC-FND-003",
+        "SPEC-FND-004",
+        "SPEC-FND-005",
+        "SPEC-FND-006",
+        "SPEC-FND-007",
+        "SPEC-FND-008",
+        "SPEC-FND-009",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-FND-013",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-013.md",
+      "output": "execution/TRACEABILITY-MATRIX.md",
+      "dependsOn": [
+        "SPEC-FND-008",
+        "SPEC-FND-009",
+        "SPEC-FND-010",
+        "SPEC-FND-011",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-FND-014",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-014.md",
+      "output": "execution/RISK-REGISTER.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-FND-008",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-FND-015",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-015.md",
+      "output": "execution/SPECIFICATION-QUEUE.md;execution/task-graph.json",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-002",
+        "SPEC-FND-003",
+        "SPEC-FND-004",
+        "SPEC-FND-005",
+        "SPEC-FND-006",
+        "SPEC-FND-007",
+        "SPEC-FND-008",
+        "SPEC-FND-009",
+        "SPEC-FND-010",
+        "SPEC-FND-011",
+        "SPEC-FND-012",
+        "SPEC-FND-013",
+        "SPEC-FND-014",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-FND-016",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FND-016.md",
+      "output": "execution/RAIL-0-E01-CONSISTENCY-REPORT.md;execution/RAIL-STATUS.md",
+      "dependsOn": [
+        "SPEC-FND-006",
+        "SPEC-FND-007",
+        "SPEC-FND-008",
+        "SPEC-FND-009",
+        "SPEC-FND-010",
+        "SPEC-FND-011",
+        "SPEC-FND-012",
+        "SPEC-FND-013",
+        "SPEC-FND-014",
+        "SPEC-FND-015",
+        "SPEC-ADR-001",
+        "SPEC-ADR-002",
+        "SPEC-ADR-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005",
+        "SPEC-ADR-006",
+        "SPEC-ADR-007",
+        "SPEC-ADR-008",
+        "SPEC-ADR-009",
+        "SPEC-ADR-010",
+        "SPEC-ADR-011"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-001.md",
+      "output": "docs/31-adr/ADR-0001-application-architecture.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-003"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-002",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-002.md",
+      "output": "docs/31-adr/ADR-0002-durable-execution.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-003"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-003",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-003.md",
+      "output": "docs/31-adr/ADR-0003-agent-orchestration-boundary.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-ADR-002"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-004",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-004.md",
+      "output": "docs/31-adr/ADR-0004-primary-relational-persistence.md",
+      "dependsOn": [
+        "SPEC-FND-001",
+        "SPEC-FND-003"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-005",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-005.md",
+      "output": "docs/31-adr/ADR-0005-tenant-isolation.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-FND-003",
+        "SPEC-ADR-004"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-006",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-006.md",
+      "output": "docs/31-adr/ADR-0006-retrieval-baseline.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-ADR-004",
+        "SPEC-ADR-005"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-007",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-007.md",
+      "output": "docs/31-adr/ADR-0007-messaging-event-baseline.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-ADR-004"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-008",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-008.md",
+      "output": "docs/31-adr/ADR-0008-deployment-baseline.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-ADR-001"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-009",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-009.md",
+      "output": "docs/31-adr/ADR-0009-secrets-and-keys.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-FND-003"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-010",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-010.md",
+      "output": "docs/31-adr/ADR-0010-observability-baseline.md",
+      "dependsOn": [
+        "SPEC-FND-002",
+        "SPEC-FND-003"
+      ]
+    },
+    {
+      "id": "SPEC-ADR-011",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ADR-011.md",
+      "output": "docs/31-adr/ADR-0011-ai-provider-abstraction.md",
+      "dependsOn": [
+        "SPEC-FND-003",
+        "SPEC-ADR-003"
+      ]
+    },
+    {
+      "id": "SPEC-AI-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-AI-001.md",
+      "output": "docs/05-ai-architecture/AI-ARCHITECTURE.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-AGT-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-AGT-001.md",
+      "output": "docs/06-agent-platform/MULTI-AGENT-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-ML-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ML-001.md",
+      "output": "docs/08-ml-platform/ML-SYSTEM-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-RAG-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-RAG-001.md",
+      "output": "docs/09-rag/RAG-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-CAU-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-CAU-001.md",
+      "output": "docs/10-causal-ai/CAUSAL-INFERENCE-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-DEC-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DEC-001.md",
+      "output": "docs/11-decision-intelligence/DECISION-ENGINE-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-ML-001",
+        "SPEC-CAU-001"
+      ]
+    },
+    {
+      "id": "SPEC-AIG-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-AIG-001.md",
+      "output": "docs/19-ai-governance/AI-GOVERNANCE.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-AI-001"
+      ]
+    },
+    {
+      "id": "SPEC-EVL-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-EVL-001.md",
+      "output": "docs/20-evaluation/EVALUATION-FRAMEWORK.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-ML-001",
+        "SPEC-RAG-001",
+        "SPEC-CAU-001"
+      ]
+    },
+    {
+      "id": "SPEC-REL-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-REL-001.md",
+      "output": "docs/20-evaluation/MODEL-RELEASE-PROCESS.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-AIG-001",
+        "SPEC-EVL-001"
+      ]
+    },
+    {
+      "id": "SPEC-WF-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-WF-001.md",
+      "output": "docs/12-workflow-engine/TEMPORAL-WORKFLOW-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-TEN-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-TEN-001.md",
+      "output": "docs/13-multi-tenancy/MULTI-TENANCY-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-IAM-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-IAM-001.md",
+      "output": "docs/14-iam/IAM-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-TEN-001"
+      ]
+    },
+    {
+      "id": "SPEC-SEC-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-SEC-001.md",
+      "output": "docs/15-security/SECURITY-ARCHITECTURE.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-TEN-001",
+        "SPEC-IAM-001"
+      ]
+    },
+    {
+      "id": "SPEC-ACT-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-ACT-001.md",
+      "output": "docs/16-tool-gateway/TOOL-GATEWAY-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-IAM-001",
+        "SPEC-SEC-001"
+      ]
+    },
+    {
+      "id": "SPEC-DG-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DG-001.md",
+      "output": "docs/18-data-governance/DATA-GOVERNANCE.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-TEN-001"
+      ]
+    },
+    {
+      "id": "SPEC-FIN-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-FIN-001.md",
+      "output": "docs/21-finops/FINOPS-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-BIL-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-BIL-001.md",
+      "output": "docs/22-billing/BILLING-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-FIN-001"
+      ]
+    },
+    {
+      "id": "SPEC-AUD-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-AUD-001.md",
+      "output": "docs/22-billing/AUDIT-LOG-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-TEN-001"
+      ]
+    },
+    {
+      "id": "SPEC-OBS-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-OBS-001.md",
+      "output": "docs/23-observability/OBSERVABILITY-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-SRE-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-SRE-001.md",
+      "output": "docs/24-sre/SRE-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-WF-001",
+        "SPEC-OBS-001"
+      ]
+    },
+    {
+      "id": "SPEC-DR-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DR-001.md",
+      "output": "docs/24-sre/DR-PLAN.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-WF-001",
+        "SPEC-AUD-001"
+      ]
+    },
+    {
+      "id": "SPEC-CMP-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-CMP-001.md",
+      "output": "docs/25-compliance/COMPLIANCE-READINESS.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-DG-001",
+        "SPEC-SEC-001"
+      ]
+    },
+    {
+      "id": "SPEC-DAT-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DAT-001.md",
+      "output": "docs/07-data-platform/DATA-ARCHITECTURE.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-CON-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-CON-001.md",
+      "output": "docs/17-connectors/CONNECTOR-PLATFORM-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-DAT-001"
+      ]
+    },
+    {
+      "id": "SPEC-API-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-API-001.md",
+      "output": "docs/26-api/API-STANDARDS.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-EVT-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-EVT-001.md",
+      "output": "docs/26-api/EVENT-CONTRACTS.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-DB-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DB-001.md",
+      "output": "docs/27-database/DATABASE-SCHEMA.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-DAT-001"
+      ]
+    },
+    {
+      "id": "SPEC-UX-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-UX-001.md",
+      "output": "docs/28-frontend/FRONTEND-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-API-001"
+      ]
+    },
+    {
+      "id": "SPEC-QA-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-QA-001.md",
+      "output": "docs/29-testing/TEST-STRATEGY.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-DEP-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-DEP-001.md",
+      "output": "docs/30-deployment/DEPLOYMENT-ARCHITECTURE.md",
+      "dependsOn": [
+        "SPEC-FND-016"
+      ]
+    },
+    {
+      "id": "SPEC-SYN-001",
+      "type": "SPECIFICATION",
+      "status": "PASS",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/SPEC-SYN-001.md",
+      "output": "docs/03-requirements/SYNTHETIC-DATASET-SPEC.md",
+      "dependsOn": [
+        "SPEC-FND-016",
+        "SPEC-DAT-001"
+      ]
+    },
+    {
+      "id": "TASK-BOOTSTRAP-001",
+      "type": "MICRO-TASK",
+      "status": "READY",
+      "rail": 0,
+      "taskFile": "tasks/PHASE-00/TASK-BOOTSTRAP-001.md",
+      "dependsOn": [
+        "SPEC-P00-E05"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "SPEC-P00-E01",
+      "to": "SPEC-P00-E02"
+    },
+    {
+      "from": "SPEC-P00-E01",
+      "to": "SPEC-P00-E03"
+    },
+    {
+      "from": "SPEC-P00-E01",
+      "to": "SPEC-P00-E04"
+    },
+    {
+      "from": "SPEC-P00-E02",
+      "to": "SPEC-P00-E05"
+    },
+    {
+      "from": "SPEC-P00-E03",
+      "to": "SPEC-P00-E05"
+    },
+    {
+      "from": "SPEC-P00-E04",
+      "to": "SPEC-P00-E05"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-002"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-003"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-004"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-004"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-FND-005"
+    },
+    {
+      "from": "SPEC-FND-004",
+      "to": "SPEC-FND-005"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-005"
+    },
+    {
+      "from": "SPEC-FND-005",
+      "to": "SPEC-FND-006"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-008"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-FND-008"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-008"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-008"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-008"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-FND-009"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-009"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-009"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-FND-010"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-010"
+    },
+    {
+      "from": "SPEC-FND-009",
+      "to": "SPEC-FND-010"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-FND-004",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-FND-005",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-FND-006",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-011"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-004",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-005",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-006",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-007",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-009",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-012"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-FND-009",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-FND-010",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-FND-011",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-013"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-014"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-004",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-005",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-006",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-007",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-009",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-010",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-011",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-012",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-013",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-014",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-015"
+    },
+    {
+      "from": "SPEC-FND-006",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-007",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-008",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-009",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-010",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-011",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-012",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-013",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-014",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-015",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-006",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-007",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-008",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-009",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-010",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-ADR-011",
+      "to": "SPEC-FND-016"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-ADR-001"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-001"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-ADR-002"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-002"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-ADR-003"
+    },
+    {
+      "from": "SPEC-ADR-002",
+      "to": "SPEC-ADR-003"
+    },
+    {
+      "from": "SPEC-FND-001",
+      "to": "SPEC-ADR-004"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-004"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-ADR-005"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-005"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-ADR-005"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-006"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-ADR-006"
+    },
+    {
+      "from": "SPEC-ADR-005",
+      "to": "SPEC-ADR-006"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-007"
+    },
+    {
+      "from": "SPEC-ADR-004",
+      "to": "SPEC-ADR-007"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-008"
+    },
+    {
+      "from": "SPEC-ADR-001",
+      "to": "SPEC-ADR-008"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-ADR-009"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-009"
+    },
+    {
+      "from": "SPEC-FND-002",
+      "to": "SPEC-ADR-010"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-010"
+    },
+    {
+      "from": "SPEC-FND-003",
+      "to": "SPEC-ADR-011"
+    },
+    {
+      "from": "SPEC-ADR-003",
+      "to": "SPEC-ADR-011"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-AI-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-AGT-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-ML-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-RAG-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-CAU-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DEC-001"
+    },
+    {
+      "from": "SPEC-ML-001",
+      "to": "SPEC-DEC-001"
+    },
+    {
+      "from": "SPEC-CAU-001",
+      "to": "SPEC-DEC-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-AIG-001"
+    },
+    {
+      "from": "SPEC-AI-001",
+      "to": "SPEC-AIG-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-EVL-001"
+    },
+    {
+      "from": "SPEC-ML-001",
+      "to": "SPEC-EVL-001"
+    },
+    {
+      "from": "SPEC-RAG-001",
+      "to": "SPEC-EVL-001"
+    },
+    {
+      "from": "SPEC-CAU-001",
+      "to": "SPEC-EVL-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-REL-001"
+    },
+    {
+      "from": "SPEC-AIG-001",
+      "to": "SPEC-REL-001"
+    },
+    {
+      "from": "SPEC-EVL-001",
+      "to": "SPEC-REL-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-WF-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-TEN-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-IAM-001"
+    },
+    {
+      "from": "SPEC-TEN-001",
+      "to": "SPEC-IAM-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-SEC-001"
+    },
+    {
+      "from": "SPEC-TEN-001",
+      "to": "SPEC-SEC-001"
+    },
+    {
+      "from": "SPEC-IAM-001",
+      "to": "SPEC-SEC-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-ACT-001"
+    },
+    {
+      "from": "SPEC-IAM-001",
+      "to": "SPEC-ACT-001"
+    },
+    {
+      "from": "SPEC-SEC-001",
+      "to": "SPEC-ACT-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DG-001"
+    },
+    {
+      "from": "SPEC-TEN-001",
+      "to": "SPEC-DG-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-FIN-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-BIL-001"
+    },
+    {
+      "from": "SPEC-FIN-001",
+      "to": "SPEC-BIL-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-AUD-001"
+    },
+    {
+      "from": "SPEC-TEN-001",
+      "to": "SPEC-AUD-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-OBS-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-SRE-001"
+    },
+    {
+      "from": "SPEC-WF-001",
+      "to": "SPEC-SRE-001"
+    },
+    {
+      "from": "SPEC-OBS-001",
+      "to": "SPEC-SRE-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DR-001"
+    },
+    {
+      "from": "SPEC-WF-001",
+      "to": "SPEC-DR-001"
+    },
+    {
+      "from": "SPEC-AUD-001",
+      "to": "SPEC-DR-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-CMP-001"
+    },
+    {
+      "from": "SPEC-DG-001",
+      "to": "SPEC-CMP-001"
+    },
+    {
+      "from": "SPEC-SEC-001",
+      "to": "SPEC-CMP-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DAT-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-CON-001"
+    },
+    {
+      "from": "SPEC-DAT-001",
+      "to": "SPEC-CON-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-API-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-EVT-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DB-001"
+    },
+    {
+      "from": "SPEC-DAT-001",
+      "to": "SPEC-DB-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-UX-001"
+    },
+    {
+      "from": "SPEC-API-001",
+      "to": "SPEC-UX-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-QA-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-DEP-001"
+    },
+    {
+      "from": "SPEC-FND-016",
+      "to": "SPEC-SYN-001"
+    },
+    {
+      "from": "SPEC-DAT-001",
+      "to": "SPEC-SYN-001"
+    },
+    {
+      "from": "SPEC-P00-E05",
+      "to": "TASK-BOOTSTRAP-001"
+    }
+  ],
+  "specificationQueue": [
+    "SPEC-FND-001",
+    "SPEC-FND-002",
+    "SPEC-FND-003",
+    "SPEC-FND-004",
+    "SPEC-FND-005",
+    "SPEC-FND-006",
+    "SPEC-FND-007",
+    "SPEC-FND-008",
+    "SPEC-FND-009",
+    "SPEC-FND-010",
+    "SPEC-FND-011",
+    "SPEC-FND-012",
+    "SPEC-FND-013",
+    "SPEC-FND-014",
+    "SPEC-FND-015",
+    "SPEC-FND-016",
+    "SPEC-ADR-001",
+    "SPEC-ADR-002",
+    "SPEC-ADR-003",
+    "SPEC-ADR-004",
+    "SPEC-ADR-005",
+    "SPEC-ADR-006",
+    "SPEC-ADR-007",
+    "SPEC-ADR-008",
+    "SPEC-ADR-009",
+    "SPEC-ADR-010",
+    "SPEC-ADR-011",
+    "SPEC-AI-001",
+    "SPEC-AGT-001",
+    "SPEC-ML-001",
+    "SPEC-RAG-001",
+    "SPEC-CAU-001",
+    "SPEC-DEC-001",
+    "SPEC-AIG-001",
+    "SPEC-EVL-001",
+    "SPEC-REL-001",
+    "SPEC-WF-001",
+    "SPEC-TEN-001",
+    "SPEC-IAM-001",
+    "SPEC-SEC-001",
+    "SPEC-ACT-001",
+    "SPEC-DG-001",
+    "SPEC-FIN-001",
+    "SPEC-BIL-001",
+    "SPEC-AUD-001",
+    "SPEC-OBS-001",
+    "SPEC-SRE-001",
+    "SPEC-DR-001",
+    "SPEC-CMP-001",
+    "SPEC-DAT-001",
+    "SPEC-CON-001",
+    "SPEC-API-001",
+    "SPEC-EVT-001",
+    "SPEC-DB-001",
+    "SPEC-UX-001",
+    "SPEC-QA-001",
+    "SPEC-DEP-001",
+    "SPEC-SYN-001"
+  ],
+  "executorQueue": [
+    "TASK-BOOTSTRAP-001"
+  ]
+}
