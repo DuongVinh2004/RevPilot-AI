@@ -1,0 +1,160 @@
+# RevPilot AI — Local Multi-Container Composition
+# Conforms to docs/30-deployment/DEPLOYMENT-ARCHITECTURE.md
+# Implements 3-zone defense-in-depth network topology: DMZ, Compute, Persistence
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: revpilot-web
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - dmz_net
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: revpilot-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql://revpilot_app:placeholder_dev_pw@postgres:5432/revpilot_db
+      - REDIS_URL=redis://redis:6379/0
+      - TEMPORAL_HOST=temporal:7233
+      - ACTION_EXECUTION_MODE=dry_run
+    networks:
+      - dmz_net
+      - compute_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  workflow-worker:
+    build:
+      context: .
+      dockerfile: apps/workflow-worker/Dockerfile
+    container_name: revpilot-workflow-worker
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=INFO
+      - TEMPORAL_HOST=temporal:7233
+      - TEMPORAL_NAMESPACE=default
+      - DATABASE_URL=postgresql://revpilot_app:placeholder_dev_pw@postgres:5432/revpilot_db
+      - ACTION_EXECUTION_MODE=dry_run
+    networks:
+      - compute_net
+      - persistence_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ml-worker:
+    build:
+      context: .
+      dockerfile: apps/ml-worker/Dockerfile
+    container_name: revpilot-ml-worker
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=INFO
+      - ML_BATCH_SIZE=500
+      - ZERO_DATA_RETENTION=true
+      - DATABASE_URL=postgresql://revpilot_app:placeholder_dev_pw@postgres:5432/revpilot_db
+    networks:
+      - compute_net
+      - persistence_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ingestion-worker:
+    build:
+      context: .
+      dockerfile: apps/ingestion-worker/Dockerfile
+    container_name: revpilot-ingestion-worker
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=INFO
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://revpilot_app:placeholder_dev_pw@postgres:5432/revpilot_db
+      - INGESTION_POLL_INTERVAL_SEC=30
+    networks:
+      - compute_net
+      - persistence_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: revpilot-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=revpilot_admin
+      - POSTGRES_PASSWORD=placeholder_dev_pw
+      - POSTGRES_DB=revpilot_db
+      - APP_USER=revpilot_app
+      - APP_PASSWORD=placeholder_dev_pw
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./infra/local/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U revpilot_admin -d revpilot_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - persistence_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: revpilot-redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - persistence_net
+
+  temporal:
+    image: temporalio/auto-setup:1.24.2
+    container_name: revpilot-temporal
+    restart: unless-stopped
+    environment:
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=revpilot_admin
+      - POSTGRES_PWD=placeholder_dev_pw
+      - POSTGRES_SEEDS=postgres
+      - DYNAMIC_CONFIG_FILE_PATH=/etc/temporal/config/dynamicconfig/development-sql.yaml
+    networks:
+      - compute_net
+      - persistence_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  dmz_net:
+    driver: bridge
+  compute_net:
+    driver: bridge
+  persistence_net:
+    driver: bridge
+
+volumes:
+  pg_data:

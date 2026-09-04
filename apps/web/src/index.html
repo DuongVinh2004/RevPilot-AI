@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>RevPilot AI — Human Approval Portal & Revenue Intelligence</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- WCAG 2.2 AA: Skip to main content landmark -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header role="banner" class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <span class="logo-icon" aria-hidden="true">⚡</span>
+        <h1>RevPilot AI <span class="badge badge-rc">v1.0.0-rc1</span></h1>
+      </div>
+      <nav role="navigation" aria-label="Main Application Navigation" class="main-nav">
+        <ul role="menubar">
+          <li role="none"><button role="menuitem" class="nav-btn active" id="nav-approvals" aria-current="page">Approval Center</button></li>
+          <li role="none"><button role="menuitem" class="nav-btn" id="nav-anomalies">Anomalies & Evidence</button></li>
+          <li role="none"><button role="menuitem" class="nav-btn" id="nav-killswitch">Safety Controls</button></li>
+        </ul>
+      </nav>
+      <div class="user-profile" id="user-profile" aria-label="Current Principal Context">
+        <span class="badge badge-human" id="principal-role">Human Operator (Tier 3)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Announcer for screen readers (WCAG 2.2 AA) -->
+  <div id="status-announcer" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="alert-announcer" class="sr-only" role="alert" aria-live="assertive"></div>
+
+  <div class="app-layout">
+    <main id="main-content" role="main" class="main-content" tabindex="-1">
+      <!-- Section 1: Human Approval Center -->
+      <section id="section-approvals" class="view-section" aria-labelledby="heading-approvals">
+        <div class="section-header">
+          <h2 id="heading-approvals">Human Approval Center</h2>
+          <p class="section-desc">Governed Human-in-the-Loop decision execution. AI agent self-approval is strictly forbidden (INV-ACT-003).</p>
+        </div>
+        <div id="approval-queue-container" class="queue-container">
+          <!-- Populated dynamically by ApprovalCenter.ts -->
+        </div>
+      </section>
+
+      <!-- Section 2: Anomaly & Evidence Explorer -->
+      <section id="section-anomalies" class="view-section hidden" aria-labelledby="heading-anomalies">
+        <div class="section-header">
+          <h2 id="heading-anomalies">Revenue Anomalies & Evidence Explorer</h2>
+          <p class="section-desc">Audited anomalies and verified evidence citations. Provenance is sealed; chain-of-thought is excluded.</p>
+        </div>
+        <div id="anomaly-list-container" class="anomaly-container">
+          <!-- Populated dynamically by AnomalyDashboard.ts -->
+        </div>
+      </section>
+
+      <!-- Section 3: Safety Kill Switch -->
+      <section id="section-killswitch" class="view-section hidden" aria-labelledby="heading-killswitch">
+        <div class="section-header">
+          <h2 id="heading-killswitch">Emergency Action Kill Switch</h2>
+          <p class="section-desc">Immediate halt of physical dispatch across tenants and capabilities. SLA propagation &lt; 500ms.</p>
+        </div>
+        <div id="killswitch-container" class="killswitch-card">
+          <!-- Populated dynamically by KillSwitch.ts -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Complementary Landmark: System Status -->
+    <aside role="complementary" aria-label="System Health & Invariants" class="system-status-panel">
+      <h3>System Invariant Status</h3>
+      <ul class="invariant-list">
+        <li><span class="status-indicator status-green" aria-hidden="true"></span> <strong>INV-ACT-003:</strong> Zero Agent Self-Approval (ACTIVE)</li>
+        <li><span class="status-indicator status-green" aria-hidden="true"></span> <strong>DEC-009:</strong> SHA-256 Digest Binding (VERIFIED)</li>
+        <li><span class="status-indicator status-green" aria-hidden="true"></span> <strong>INV-TEN-001:</strong> Multi-Tenant Isolation (ENFORCED)</li>
+        <li><span class="status-indicator status-green" aria-hidden="true"></span> <strong>INV-REL-001:</strong> Continuous WAL Durability (PASS)</li>
+      </ul>
+    </aside>
+  </div>
+
+  <footer role="contentinfo" class="app-footer">
+    <p>RevPilot AI &mdash; Enterprise Autonomous Revenue Governance Platform &bull; Conforms to WCAG 2.2 AA &bull; Build <code>v1.0.0-rc1</code></p>
+  </footer>
+
+  <script type="module" src="main.ts"></script>
+</body>
+</html>

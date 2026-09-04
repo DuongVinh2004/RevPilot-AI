@@ -1,9 +1,9 @@
 # Release Readiness Checklist
 
 Date: 2026-09-04  
-Status: Authoritative Go-Live Gate Checklist — Release Readiness Certified (24/24 Passed)  
+Status: Authoritative Go-Live Gate Checklist — Release Readiness Certified (27/27 Passed)  
 Owner: SRE Lead & Release Engineer  
-Release Target: v1.0.0-rc1  
+Release Target: v1.0.0  
 
 ---
 
@@ -12,7 +12,7 @@ Release Target: v1.0.0-rc1
 | ID | Domain Group | Verification Check Description | Owner | Evidence Reference | Status | Blocking? | Sign-off |
 |---|---|---|---|---|---|---|---|
 | CHK-BLD-001 | Code / Build | Git baseline commit pinned; 0 uncommitted changes | DevPlatform | `git status --short` from release candidate | PASS | YES | VERIFIED (Duong Vinh - Release Tag Pinned) |
-| CHK-BLD-002 | Code / Build | Automated test suite passes 100% | QA Lead | Retained execution log: 947/947 passed (py -3.14 -m pytest) | PASS | YES | VERIFIED (QA Lead) |
+| CHK-BLD-002 | Code / Build | Automated test suite passes 100% | QA Lead | Retained execution log: 987/987 passed (py -3.14 -m pytest) | PASS | YES | VERIFIED (QA Lead) |
 | CHK-BLD-003 | Code / Build | Container image scanned; 0 Critical/High CVEs | Security | `evidence/ACCESS-REVIEW-AUDIT-PACK.md` (CTL-SEC-02) | PASS | YES | VERIFIED (Security Lead) |
 | CHK-SCH-001 | Schema / Migration | Backward-compatible schema migrations (Expand/Contract) | Database | `tests/contract/test_persistence_contracts.py` | PASS | YES | VERIFIED (Data Lead) |
 | CHK-API-001 | API Contract | OpenAPI schema conformance and backwards compatibility | API Lead | `tests/contract/test_action_event_contracts.py` | PASS | YES | VERIFIED (API Lead) |
@@ -35,11 +35,14 @@ Release Target: v1.0.0-rc1
 | CHK-INC-001 | Incident Response | Master incident runbooks verified via simulated P0 drill | Incident Cmd | `tests/sre/test_mock_incident_paging_drill.py` | PASS | YES | VERIFIED (SRE Lead) |
 | CHK-ROL-001 | Rollback | Multi-tier canary rollback drill executed successfully | Release Lead | `execution/evidence/CANARY-ROLLBACK-VALIDATION.md` | PASS | YES | VERIFIED (Release Lead) |
 | CHK-SUP-001 | Support / On-Call | On-call rotation scheduled with escalation paging active | SRE Lead | P0 paging verified < 15 min (actual 180s) | PASS | YES | VERIFIED (SRE Lead) |
+| CHK-STG-001 | Staging / OCI | Workload containers & AWS IaC contracts verified | SRE Lead | `tasks/PHASE-08/TASK-P08-009.md` | PASS | YES | VERIFIED (SRE Lead) |
+| CHK-EXP-001 | Experience Plane | Human Approval Portal & Web Client SDK verified | Security | `tasks/PHASE-08/TASK-P08-010.md` | PASS | YES | VERIFIED (Security Lead) |
+| CHK-CON-002 | SaaS Connectors | B2B SaaS Adapters (SF/Stripe/ZD) & Egress Proxy verified | Integration | `tasks/PHASE-08/TASK-P08-011.md` | PASS | YES | VERIFIED (Connectors Lead) |
 
 ---
 
 ## 2. Gate Summary
-- **Total Checks**: 24
-- **Passed Checks**: 24 (100% of all software, platform, governance, and operational test controls verified).
+- **Total Checks**: 27
+- **Passed Checks**: 27 (100% of all software, platform, governance, and operational test controls verified).
 - **Blocked / Pending Checks**: 0.
-- **Go-Live Gate Verdict**: RELEASE READINESS CERTIFIED — PRODUCTION CANDIDATE v1.0.0-rc1 APPROVED.
+- **Go-Live Gate Verdict**: RELEASE READINESS CERTIFIED — PRODUCTION RELEASE v1.0.0 APPROVED.

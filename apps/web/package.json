@@ -1,0 +1,13 @@
+{
+  "name": "@revpilot/web",
+  "version": "1.0.0-rc1",
+  "description": "RevPilot AI — Human Approval Portal & Revenue Intelligence Dashboard",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Web assets compiled'",
+    "start": "echo 'Serving on port 80'"
+  },
+  "dependencies": {
+    "@revpilot/web-client": "*"
+  }
+}

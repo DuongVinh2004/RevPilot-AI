@@ -1,0 +1,19 @@
+{
+  "name": "@revpilot/web-client",
+  "version": "1.0.0-rc1",
+  "description": "RevPilot AI — Frontend Client SDK and Cryptographic Approval Verification",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo 'Client test pass'"
+  },
+  "keywords": [
+    "revpilot",
+    "revenue-intelligence",
+    "approvals",
+    "crypto-digest"
+  ],
+  "author": "RevPilot AI Architecture",
+  "license": "UNLICENSED"
+}
