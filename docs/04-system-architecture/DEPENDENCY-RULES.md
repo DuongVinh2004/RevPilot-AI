@@ -1,7 +1,10 @@
 # Architectural Dependency Rules
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
 Owner: Principal Architecture
+Approver: Duong Vinh (Explicit user confirmation covering Repository Owner, Principal Architecture, Security Architecture/IAM, SRE)
+Date: 2026-09-04
+Approval record: execution/APPROVAL-RECORD-RUN-R03-001.md
 
 Undefined dependency edges are forbidden until specified.
 

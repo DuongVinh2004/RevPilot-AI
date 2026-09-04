@@ -1,6 +1,10 @@
 # AI Architecture Contract
 
-Status: Proposed v0.1 — E02 specification output
+Status: Accepted Canonical Specification  
+Owner: AI Platform Lead  
+Approver: Dương Vinh  
+Version: v1.0  
+Date: 2026-09-04  
 
 ## Authority and boundary
 

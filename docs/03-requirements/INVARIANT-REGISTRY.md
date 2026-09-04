@@ -1,7 +1,10 @@
 # Foundational Invariant Registry
 
-Status: Proposed v0.1  
-Owner: Principal Architecture  
+Status: Accepted v1.0
+Owner: Principal Architecture
+Approver: Duong Vinh (Explicit user confirmation covering Repository Owner, Principal Architecture, Security Architecture/IAM, SRE)
+Date: 2026-09-04
+Approval record: execution/APPROVAL-RECORD-RUN-R03-001.md
 Evidence rule: Entries are design obligations. “Future test/evidence” does not claim implementation exists.
 
 | ID | Owner | Invariant and rationale | Violation impact | Enforcement point | Future test/evidence |

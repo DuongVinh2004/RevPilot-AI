@@ -1,9 +1,11 @@
 # Stage B Preflight & Control-Plane Audit Report
 
-Status: Authoritative Control-Plane Inspection  
-Date: 2026-09-03  
-Executor: Gemini 3.8 Flash (Controlled Executor Protocol)  
-Result: **BLOCKED**
+> **HISTORICAL NOTICE**: This report is a historical preflight snapshot recorded prior to repository bootstrap (Rail 0), Rail 1, and Rail 2 completion. It does not reflect current repository state. Refer to canonical current status in [RAIL-STATUS.md](RAIL-STATUS.md), [SPECIFICATION-QUEUE.md](SPECIFICATION-QUEUE.md), [DEPENDENCY-GRAPH.md](DEPENDENCY-GRAPH.md), and [CURRENT-STATE-RECONCILIATION.md](CURRENT-STATE-RECONCILIATION.md).
+
+Status: Historical Control-Plane Inspection Snapshot
+Date: 2026-09-03
+Executor: Gemini 3.8 Flash (Controlled Executor Protocol)
+Original Result: **BLOCKED**
 
 ---
 

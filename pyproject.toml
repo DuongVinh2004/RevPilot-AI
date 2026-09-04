@@ -30,6 +30,8 @@ testpaths = ["tests", "packages/backend/tests"]
 python_files = ["test_*.py", "*_test.py"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
+pythonpath = ["packages/backend/src"]
+
 
 [tool.ruff]
 line-length = 100

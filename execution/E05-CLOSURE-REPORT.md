@@ -1,5 +1,7 @@
 # SPEC-P00-E05 Traceability Closure — Final Report
 
+> **HISTORICAL NOTICE**: This report is a historical closure report recording the completion of Stage A EPIC SPEC-P00-E05. Repository bootstrap (Rail 0), Rail 1, and Rail 2 have since been executed and verified GREEN. Refer to canonical current status in [RAIL-STATUS.md](RAIL-STATUS.md), [SPECIFICATION-QUEUE.md](SPECIFICATION-QUEUE.md), [DEPENDENCY-GRAPH.md](DEPENDENCY-GRAPH.md), and [CURRENT-STATE-RECONCILIATION.md](CURRENT-STATE-RECONCILIATION.md).
+
 Date: 2026-09-03
 Authority: E05 reconciliation pass
 Result: **E05 = PASS**

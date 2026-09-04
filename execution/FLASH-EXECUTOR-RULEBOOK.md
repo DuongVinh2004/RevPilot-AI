@@ -1,7 +1,9 @@
 # Gemini Flash Controlled Executor Rulebook
 
 Status: Active  
-Authority: Executor operating procedure. Subordinate to `docs/00-executive/SPECIFICATION-PRECEDENCE.md`, Accepted ADRs (ADR-0001..0011), Security Invariants (`INV-SEC-*`, `INV-TEN-*`, `INV-ACT-*`, etc.), Canonical Architecture Documents, and Canonical Task Graph (`execution/task-graph.json`).
+Authority: Executor operating procedure. Subordinate to `docs/00-executive/SPECIFICATION-PRECEDENCE.md`, Accepted ADRs (ADR-0001..0012), Security Invariants (`INV-SEC-*`, `INV-TEN-*`, `INV-ACT-*`, etc.), Canonical Architecture Documents, and Canonical Task Graph (`execution/task-graph.json`).
+
+Companion guide: [Antigravity Flash Fail-Closed Rail Guide](ANTIGRAVITY-FLASH-FAIL-CLOSED-RAIL-GUIDE.md). It is mandatory prompt material for each Flash run and adds ADR-0012, closure-decision, admission, evidence, and stop-protocol requirements.
 
 ## 1. Task Selection Rules
 
@@ -19,6 +21,12 @@ Authority: Executor operating procedure. Subordinate to `docs/00-executive/SPECI
 - Confirm the prohibited write set (`PROHIBITED_WRITE_SET`).
 - Do not modify files outside the write set.
 - Do not expand scope during execution.
+
+## 2.1. Action Boundary & Autonomy Rules (`ADR-0012`, `INV-ACT-001..004`)
+
+- **Strict No-Self-Approval (`INV-ACT-003`)**: Under no circumstances may an executor, agent, planner, or automated pipeline approve its own actions or bypass human authorization.
+- **No Unauthorized External Writes (`INV-ACT-001`, `AC-008`)**: External mutating actions outside the authorized read-only capability catalog or lacking cryptographically verified human approval tokens are strictly prohibited.
+- **Queue Immutability**: The executor cannot authorize, promote, or mutate tasks in `execution/EXECUTOR-QUEUE.md` without explicit governance approval.
 
 ## 3. Architecture Rules
 

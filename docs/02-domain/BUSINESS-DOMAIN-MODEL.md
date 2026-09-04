@@ -1,6 +1,17 @@
 # Business Domain Model
 
-Status: Proposed v0.1
+Status: Accepted Canonical Specification  
+Owner: Domain Architecture Lead  
+Approver: Dương Vinh  
+Version: v1.0  
+Date: 2026-09-04  
+
+## Revision History
+
+| Version | Date | Author | Reviewer | Approval | Summary of Changes |
+|---|---|---|---|---|---|
+| v0.1 | 2026-09-04 | Domain Architecture | Principal Architect | Dương Vinh | Initial business domain bounded contexts |
+
 
 ## Bounded contexts
 
@@ -18,6 +29,14 @@ Status: Proposed v0.1
 | Usage & Billing | metered consumption, invoice inputs, COGS | payment-card storage |
 
 ## Core aggregates and invariants
+
+### Anomaly
+
+Root: `Anomaly`. Represents a validated statistical departure of a canonical business metric from its historical baseline. Contains immutable observation and baseline windows, actual vs expected values, prediction intervals, anomaly score, severity, affected dimensional scope, and data quality state. Governed by `docs/02-domain/ANOMALY-DOMAIN-SPEC.md`.
+
+States: `DETECTED -> VALIDATED -> LOCALIZED -> ACKNOWLEDGED -> RESOLVED`, with `SUPPRESSED` and `REOPENED` paths.
+
+Invariant: An anomaly record provides statistical evidence of divergence; it DOES NOT assert a root cause or causal claim (`INV-AI-001`).
 
 ### Investigation
 
@@ -53,6 +72,8 @@ Customer 1---* Contract 1---* ContractClause
 Order 1---* Payment
 Warehouse 1---* Shipment
 Warehouse 1---* OperationalEvent
+Anomaly 1---* AnomalyLocalization
+Anomaly 1---0..1 Investigation
 Investigation *---* EvidenceRef
 Investigation 1---* Hypothesis
 Investigation 1---* Recommendation 1---* Approval
@@ -83,4 +104,3 @@ Metrics are versioned data contracts. For example, cancellation rate defines num
 - Estimand: ATE, ATT, CATE, or policy value.
 
 Every causal claim includes estimand, cohort, time window, assumptions, overlap checks, uncertainty interval, sensitivity analysis, and limitations.
-

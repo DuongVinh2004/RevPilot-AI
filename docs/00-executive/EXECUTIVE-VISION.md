@@ -1,14 +1,24 @@
 # Executive Vision
 
-Status: Proposed v0.1  
+Status: Accepted Canonical Specification  
 Owner: Product + Principal Architecture  
+Approver: Dương Vinh  
+Version: v1.0  
+Date: 2026-09-04  
 Scope: Product intent and executive architecture
+
+## Revision History
+
+| Version | Date | Author | Reviewer | Approval | Summary of Changes |
+|---|---|---|---|---|---|
+| v0.1 | 2026-09-04 | Product & Architecture | Principal Architect | Dương Vinh | Initial executive vision and product thesis |
+
 
 ## Product thesis
 
 RevPilot AI helps a revenue organization detect revenue risk early, investigate it across fragmented operational systems, recommend economically justified interventions, and execute approved actions with measurable outcomes. It is a decision-and-action system, not a conversational answer engine.
 
-The flagship scenario is a sudden increase in order cancellations in Southern Vietnam. The platform establishes whether the increase is statistically abnormal, identifies which warehouse/carrier/segment contributes to it, correlates complaints and fulfillment signals, retrieves applicable SLA evidence, tests alternative causal hypotheses, estimates revenue at risk, recommends an intervention, obtains the required approval, executes via controlled tools, and measures outcomes at 7/30/90 days.
+The flagship scenario is a sudden increase in order cancellations caused by regional carrier capacity constraints (canonical benchmark scenario `INC-SYNTH-TRUCK-001` centered at warehouse `WH-MIDWEST-01` in Chicago, IL). The platform establishes whether the increase is statistically abnormal, identifies which warehouse/carrier/segment contributes to it, correlates complaints and fulfillment signals, retrieves applicable SLA evidence, tests alternative causal hypotheses, estimates revenue at risk, recommends an intervention, obtains the required approval, executes via controlled tools, and measures outcomes at 7/30/90 days.
 
 ## Intended customers and users
 

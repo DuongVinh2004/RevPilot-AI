@@ -1,6 +1,17 @@
 # Canonical System Architecture
 
-Status: Proposed v0.2
+Status: Accepted Canonical Specification  
+Owner: Principal Platform Architect  
+Approver: Dương Vinh  
+Version: v1.0  
+Date: 2026-09-04  
+
+## Revision History
+
+| Version | Date | Author | Reviewer | Approval | Summary of Changes |
+|---|---|---|---|---|---|
+| v0.2 | 2026-09-04 | Platform Architecture | Principal Architect | Dương Vinh | Refined modular monolith style and plane boundaries |
+
 
 Canonical foundation references: [system/trust boundaries](SYSTEM-BOUNDARIES.md), [future repository topology](REPOSITORY-TOPOLOGY.md), [module ownership](MODULE-BOUNDARIES.md), [dependency rules](DEPENDENCY-RULES.md), [workload assumptions](../03-requirements/WORKLOAD-ASSUMPTIONS.md), and [ADR set](../31-adr/ADR-0001-application-architecture.md). All ADRs remain Proposed until explicitly approved.
 

@@ -1,8 +1,9 @@
 # ADR Authority Review — 2026-09-03
 
-Status: Recorded individual authority review; E05 remains BLOCKED.
+> **HISTORICAL NOTICE**: This report is a historical snapshot recording the acceptance of ADR-0001 through ADR-0011 prior to E05 closure, bootstrap (Rail 0), Rail 1, and Rail 2 completion. E05 has since passed, and Rails 0–2 are GREEN. Refer to canonical current status in [RAIL-STATUS.md](RAIL-STATUS.md), [SPECIFICATION-QUEUE.md](SPECIFICATION-QUEUE.md), [DEPENDENCY-GRAPH.md](DEPENDENCY-GRAPH.md), and [CURRENT-STATE-RECONCILIATION.md](CURRENT-STATE-RECONCILIATION.md).
 
-Authority: Dương Vinh  
+Status: Historical ADR Acceptance Record
+Authority: Dương Vinh
 Review basis: specification precedence, invariant registry, workload assumptions, NFR baseline, system/module/dependency boundaries, E02–E04 outputs, and cross-ADR consistency.
 
 ## Decisions

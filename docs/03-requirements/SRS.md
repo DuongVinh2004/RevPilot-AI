@@ -1,12 +1,26 @@
 # Software Requirements Specification
 
-Status: Proposed v0.1
+Status: Accepted Canonical Specification  
+Owner: Principal System Architect  
+Approver: Dương Vinh  
+Version: v1.0  
+Date: 2026-09-04  
+
+## Revision History
+
+| Version | Date | Author | Reviewer | Approval | Summary of Changes |
+|---|---|---|---|---|---|
+| v0.1 | 2026-09-04 | Systems Architecture | Principal Architect | Dương Vinh | Baseline software requirements specification |
+
 
 ## Requirement taxonomy
 
 Requirements use RFC 2119 meanings for MUST, SHOULD, and MAY. Priorities are P0 foundation, P1 production-critical, P2 AI differentiation, and P3 scale optimization.
 
 ### Business and functional requirements
+
+> [!IMPORTANT]
+> The base requirements below are supplemented by [`FR-CLOSURE-CATALOG.md`](FR-CLOSURE-CATALOG.md), which supplies the 66 PRD-planned IDs that were previously absent from this SRS. All verification references are planned until implemented and executed; this SRS makes no test-pass claim.
 
 | ID | Priority | Requirement | Verification |
 |---|---|---|---|
@@ -36,6 +50,20 @@ Requirements use RFC 2119 meanings for MUST, SHOULD, and MAY. Priorities are P0 
 | `FR-CTL-001` | P0 | Propagate trusted tenant context through every data and tool boundary. | Cross-tenant suite |
 | `FR-CTL-002` | P0 | Attribute cost by tenant/user/investigation/agent/model/tool. | Meter reconciliation |
 | `FR-CTL-003` | P1 | Support tenant lifecycle without orphaned data or credentials. | Provision/export/delete tests |
+
+### Requirement ownership and lifecycle
+
+The owner and lifecycle status for the existing base rows are inherited from the table below; individual expanded rows are owned directly in `FR-CLOSURE-CATALOG.md`.
+
+| Requirement family | Owner | Lifecycle status | Design traceability | Evidence state |
+|---|---|---|---|---|
+| `FR-DET-*` | Analytics/Data Lead | Proposed / implementation pending | ANOMALY-DOMAIN-SPEC, METRIC-REGISTRY | Planned tests only |
+| `FR-INV-*`, `FR-RCA-*` | Workflow/Agent Platform Lead | Proposed / implementation pending | MULTI-AGENT-SPEC, TEMPORAL-WORKFLOW-SPEC | Planned tests only |
+| `FR-EVD-*` | Evidence/RAG/Security Lead | Proposed / implementation pending | EVIDENCE-PROVENANCE-SPEC, RAG-SPEC | Planned tests only |
+| `FR-ML-*` | ML/Causal/AI Governance Lead | Proposed / implementation pending | ML-SYSTEM-SPEC, CAUSAL-INFERENCE-SPEC | Planned benchmarks only |
+| `FR-DEC-*`, `FR-ACT-*` | Decision/Actions/IAM Lead | Proposed / implementation pending | DECISION-ENGINE-SPEC, APPROVAL-ACTION-LOOP-SPEC | Planned tests only |
+| `FR-LRN-*` | ML/Product/Data Lead | Proposed / implementation pending | AI-GOVERNANCE, DATA-GOVERNANCE | Planned tests only |
+| `FR-CTL-*` | IAM/Tenancy/Security/Compliance Lead | Proposed / implementation pending | IAM-SPEC, MULTI-TENANCY-SPEC, DATABASE-SCHEMA | Planned tests only |
 
 ### Security and quality requirements
 

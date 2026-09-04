@@ -3,8 +3,13 @@
   "initiative": "REVPILOT",
   "generatedFrom": "execution/MICRO-TASK-RAIL-SYSTEM.md",
   "railStatus": {
-    "0": "RED",
-    "1-18": "LOCKED"
+    "0": "GREEN",
+    "1": "GREEN",
+    "2": "GREEN",
+    "3": "GREEN",
+    "4": "GREEN",
+    "5": "GREEN",
+    "6-18": "LOCKED"
   },
   "nodes": [
     {
@@ -142,7 +147,7 @@
       "type": "EPIC",
       "status": "PASS",
       "rail": 0,
-      "closureEvidence": "TRACEABILITY-MATRIX.md v0.3 \u2014 all TBD/wildcard/legacy broad references resolved with exact spec-anchored IDs"
+      "closureEvidence": "TRACEABILITY-MATRIX.md v0.3 — all TBD/wildcard/legacy broad references resolved with exact spec-anchored IDs"
     },
     {
       "id": "SPEC-FND-001",
@@ -934,11 +939,909 @@
     {
       "id": "TASK-BOOTSTRAP-001",
       "type": "MICRO-TASK",
-      "status": "READY",
+      "status": "PASS",
       "rail": 0,
       "taskFile": "tasks/PHASE-00/TASK-BOOTSTRAP-001.md",
       "dependsOn": [
         "SPEC-P00-E05"
+      ]
+    },
+    {
+      "id": "TASK-R01-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 1,
+      "taskFile": "tasks/RAIL-01/TASK-R01-001.md",
+      "dependsOn": [
+        "TASK-BOOTSTRAP-001"
+      ]
+    },
+    {
+      "id": "TASK-R01-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 1,
+      "taskFile": "tasks/RAIL-01/TASK-R01-002.md",
+      "dependsOn": [
+        "TASK-R01-001"
+      ]
+    },
+    {
+      "id": "TASK-R01-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 1,
+      "taskFile": "tasks/RAIL-01/TASK-R01-003.md",
+      "dependsOn": [
+        "TASK-R01-002"
+      ]
+    },
+    {
+      "id": "TASK-R01-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 1,
+      "taskFile": "tasks/RAIL-01/TASK-R01-004.md",
+      "dependsOn": [
+        "TASK-R01-003"
+      ]
+    },
+    {
+      "id": "TASK-R02-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 2,
+      "taskFile": "tasks/RAIL-02/TASK-R02-001.md",
+      "dependsOn": [
+        "TASK-R01-004"
+      ]
+    },
+    {
+      "id": "TASK-R02-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 2,
+      "taskFile": "tasks/RAIL-02/TASK-R02-002.md",
+      "dependsOn": [
+        "TASK-R02-001"
+      ]
+    },
+    {
+      "id": "TASK-R02-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 2,
+      "taskFile": "tasks/RAIL-02/TASK-R02-003.md",
+      "dependsOn": [
+        "TASK-R02-002"
+      ]
+    },
+    {
+      "id": "TASK-R02-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 2,
+      "taskFile": "tasks/RAIL-02/TASK-R02-004.md",
+      "dependsOn": [
+        "TASK-R02-003"
+      ]
+    },
+    {
+      "id": "TASK-R03-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 3,
+      "taskFile": "tasks/RAIL-03/TASK-R03-001.md",
+      "dependsOn": [
+        "TASK-R02-004"
+      ]
+    },
+    {
+      "id": "TASK-R03-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 3,
+      "taskFile": "tasks/RAIL-03/TASK-R03-002.md",
+      "dependsOn": [
+        "TASK-R03-001"
+      ]
+    },
+    {
+      "id": "TASK-R03-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 3,
+      "taskFile": "tasks/RAIL-03/TASK-R03-003.md",
+      "dependsOn": [
+        "TASK-R03-002"
+      ]
+    },
+    {
+      "id": "TASK-R03-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 3,
+      "taskFile": "tasks/RAIL-03/TASK-R03-004.md",
+      "dependsOn": [
+        "TASK-R03-003"
+      ]
+    },
+    {
+      "id": "TASK-R04-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 4,
+      "taskFile": "tasks/RAIL-04/TASK-R04-001.md",
+      "dependsOn": [
+        "TASK-R03-004"
+      ]
+    },
+    {
+      "id": "TASK-R04-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 4,
+      "taskFile": "tasks/RAIL-04/TASK-R04-002.md",
+      "dependsOn": [
+        "TASK-R04-001"
+      ]
+    },
+    {
+      "id": "TASK-R04-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 4,
+      "taskFile": "tasks/RAIL-04/TASK-R04-003.md",
+      "dependsOn": [
+        "TASK-R04-002"
+      ]
+    },
+    {
+      "id": "TASK-R04-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 4,
+      "taskFile": "tasks/RAIL-04/TASK-R04-004.md",
+      "dependsOn": [
+        "TASK-R04-003"
+      ]
+    },
+    {
+      "id": "TASK-R05-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 5,
+      "taskFile": "tasks/RAIL-05/TASK-R05-001.md",
+      "dependsOn": [
+        "TASK-R04-004"
+      ]
+    },
+    {
+      "id": "TASK-R05-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 5,
+      "taskFile": "tasks/RAIL-05/TASK-R05-002.md",
+      "dependsOn": [
+        "TASK-R05-001"
+      ]
+    },
+    {
+      "id": "TASK-R05-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 5,
+      "taskFile": "tasks/RAIL-05/TASK-R05-003.md",
+      "dependsOn": [
+        "TASK-R05-002"
+      ]
+    },
+    {
+      "id": "TASK-R05-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 5,
+      "taskFile": "tasks/RAIL-05/TASK-R05-004.md",
+      "dependsOn": [
+        "TASK-R05-003"
+      ]
+    },
+    {
+      "id": "TASK-P01-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-001.md",
+      "dependsOn": [
+        "TASK-R02-004"
+      ]
+    },
+    {
+      "id": "TASK-P01-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-002.md",
+      "dependsOn": [
+        "TASK-P01-001"
+      ]
+    },
+    {
+      "id": "TASK-P01-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-003.md",
+      "dependsOn": [
+        "TASK-P01-001",
+        "TASK-P01-002"
+      ]
+    },
+    {
+      "id": "TASK-P01-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-004.md",
+      "dependsOn": [
+        "TASK-P01-003"
+      ]
+    },
+    {
+      "id": "TASK-P01-005",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-005.md",
+      "dependsOn": [
+        "TASK-P01-001",
+        "TASK-P01-003"
+      ]
+    },
+    {
+      "id": "TASK-P01-006",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "phase": "PHASE-01",
+      "taskFile": "tasks/PHASE-01/TASK-P01-006.md",
+      "dependsOn": [
+        "TASK-P01-001",
+        "TASK-P01-002",
+        "TASK-P01-003",
+        "TASK-P01-004",
+        "TASK-P01-005"
+      ]
+    },
+    {
+      "id": "TASK-P02-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-001.md",
+      "dependsOn": [
+        "TASK-P01-006"
+      ]
+    },
+    {
+      "id": "TASK-P02-002",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-002.md",
+      "dependsOn": [
+        "TASK-P02-001"
+      ]
+    },
+    {
+      "id": "TASK-P02-003",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-003.md",
+      "dependsOn": [
+        "TASK-P02-001",
+        "TASK-P02-002"
+      ]
+    },
+    {
+      "id": "TASK-P02-004",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-004.md",
+      "dependsOn": [
+        "TASK-P02-001",
+        "TASK-P02-003"
+      ]
+    },
+    {
+      "id": "TASK-P02-005",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-005.md",
+      "dependsOn": [
+        "TASK-P02-001",
+        "TASK-P02-004"
+      ]
+    },
+    {
+      "id": "TASK-P02-006",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 10,
+      "phase": "PHASE-02",
+      "taskFile": "tasks/PHASE-02/TASK-P02-006.md",
+      "dependsOn": [
+        "TASK-P02-001",
+        "TASK-P02-002",
+        "TASK-P02-003",
+        "TASK-P02-004",
+        "TASK-P02-005"
+      ]
+    },
+    {
+      "id": "TASK-P03-001",
+      "type": "MICRO-TASK",
+      "status": "PASS",
+      "rail": 6,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-001.md",
+      "dependsOn": [
+        "TASK-P02-006",
+        "TASK-R05-004"
+      ]
+    },
+    {
+      "id": "TASK-P03-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 7,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-002.md",
+      "dependsOn": [
+        "TASK-P03-001"
+      ]
+    },
+    {
+      "id": "TASK-P03-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 6,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-003.md",
+      "dependsOn": [
+        "TASK-P03-001"
+      ]
+    },
+    {
+      "id": "TASK-P03-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 8,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-004.md",
+      "dependsOn": [
+        "TASK-P03-001",
+        "TASK-P03-002"
+      ]
+    },
+    {
+      "id": "TASK-P03-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 9,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-005.md",
+      "dependsOn": [
+        "TASK-P03-004"
+      ]
+    },
+    {
+      "id": "TASK-P03-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 11,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-006.md",
+      "dependsOn": [
+        "TASK-P03-002",
+        "TASK-P03-003",
+        "TASK-P03-004"
+      ]
+    },
+    {
+      "id": "TASK-P03-007",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 8,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-007.md",
+      "dependsOn": [
+        "TASK-P03-004"
+      ]
+    },
+    {
+      "id": "TASK-P03-008",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 11,
+      "phase": "PHASE-03",
+      "taskFile": "tasks/PHASE-03/TASK-P03-008.md",
+      "dependsOn": [
+        "TASK-P03-001",
+        "TASK-P03-002",
+        "TASK-P03-003",
+        "TASK-P03-004",
+        "TASK-P03-005",
+        "TASK-P03-006",
+        "TASK-P03-007"
+      ]
+    },
+    {
+      "id": "TASK-P04-001",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 6,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-001.md",
+      "dependsOn": [
+        "TASK-P03-006",
+        "TASK-P03-008"
+      ]
+    },
+    {
+      "id": "TASK-P04-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 11,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-002.md",
+      "dependsOn": [
+        "TASK-P04-001"
+      ]
+    },
+    {
+      "id": "TASK-P04-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-003.md",
+      "dependsOn": [
+        "TASK-P04-001",
+        "TASK-P03-003"
+      ]
+    },
+    {
+      "id": "TASK-P04-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-004.md",
+      "dependsOn": [
+        "TASK-P04-003"
+      ]
+    },
+    {
+      "id": "TASK-P04-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-005.md",
+      "dependsOn": [
+        "TASK-P04-001",
+        "TASK-P04-002",
+        "TASK-P04-004",
+        "TASK-P01-004"
+      ]
+    },
+    {
+      "id": "TASK-P04-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-04",
+      "taskFile": "tasks/PHASE-04/TASK-P04-006.md",
+      "dependsOn": [
+        "TASK-P04-001",
+        "TASK-P04-002",
+        "TASK-P04-003",
+        "TASK-P04-004",
+        "TASK-P04-005"
+      ]
+    },
+    {
+      "id": "TASK-P05-001",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 10,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-001.md",
+      "dependsOn": [
+        "TASK-P01-003",
+        "TASK-P01-004"
+      ]
+    },
+    {
+      "id": "TASK-P05-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 10,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-002.md",
+      "dependsOn": [
+        "TASK-P05-001"
+      ]
+    },
+    {
+      "id": "TASK-P05-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-003.md",
+      "dependsOn": [
+        "TASK-P04-004",
+        "TASK-P01-004"
+      ]
+    },
+    {
+      "id": "TASK-P05-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 13,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-004.md",
+      "dependsOn": [
+        "TASK-P03-003",
+        "TASK-R05-004"
+      ]
+    },
+    {
+      "id": "TASK-P05-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 13,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-005.md",
+      "dependsOn": [
+        "TASK-P05-001",
+        "TASK-P05-003",
+        "TASK-P05-004"
+      ]
+    },
+    {
+      "id": "TASK-P05-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 10,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-006.md",
+      "dependsOn": [
+        "TASK-P05-001",
+        "TASK-P05-002",
+        "TASK-P05-005"
+      ]
+    },
+    {
+      "id": "TASK-P05-007",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 13,
+      "phase": "PHASE-05",
+      "taskFile": "tasks/PHASE-05/TASK-P05-007.md",
+      "dependsOn": [
+        "TASK-P05-001",
+        "TASK-P05-002",
+        "TASK-P05-003",
+        "TASK-P05-004",
+        "TASK-P05-005",
+        "TASK-P05-006"
+      ]
+    },
+    {
+      "id": "TASK-P06-001",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 14,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-001.md",
+      "dependsOn": [
+        "TASK-P05-005",
+        "TASK-R03-001"
+      ]
+    },
+    {
+      "id": "TASK-P06-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 14,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-002.md",
+      "dependsOn": [
+        "TASK-P06-001",
+        "TASK-R04-004"
+      ]
+    },
+    {
+      "id": "TASK-P06-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-003.md",
+      "dependsOn": [
+        "TASK-P06-001",
+        "TASK-P06-002"
+      ]
+    },
+    {
+      "id": "TASK-P06-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-004.md",
+      "dependsOn": [
+        "TASK-P06-002",
+        "TASK-P06-003"
+      ]
+    },
+    {
+      "id": "TASK-P06-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-005.md",
+      "dependsOn": [
+        "TASK-P06-003",
+        "TASK-P06-004",
+        "TASK-P05-004"
+      ]
+    },
+    {
+      "id": "TASK-P06-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-006.md",
+      "dependsOn": [
+        "TASK-P06-003",
+        "TASK-P06-004",
+        "TASK-P03-001"
+      ]
+    },
+    {
+      "id": "TASK-P06-007",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-007.md",
+      "dependsOn": [
+        "TASK-P06-003",
+        "TASK-P06-006"
+      ]
+    },
+    {
+      "id": "TASK-P06-008",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-06",
+      "taskFile": "tasks/PHASE-06/TASK-P06-008.md",
+      "dependsOn": [
+        "TASK-P06-001",
+        "TASK-P06-002",
+        "TASK-P06-003",
+        "TASK-P06-004",
+        "TASK-P06-005",
+        "TASK-P06-006",
+        "TASK-P06-007"
+      ]
+    },
+    {
+      "id": "TASK-P07-001",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 2,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-001.md",
+      "dependsOn": [
+        "TASK-P06-008",
+        "TASK-R02-004"
+      ]
+    },
+    {
+      "id": "TASK-P07-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 3,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-002.md",
+      "dependsOn": [
+        "TASK-P07-001",
+        "TASK-R03-001"
+      ]
+    },
+    {
+      "id": "TASK-P07-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 3,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-003.md",
+      "dependsOn": [
+        "TASK-P07-002"
+      ]
+    },
+    {
+      "id": "TASK-P07-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-004.md",
+      "dependsOn": [
+        "TASK-P06-004",
+        "TASK-P07-001"
+      ]
+    },
+    {
+      "id": "TASK-P07-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 16,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-005.md",
+      "dependsOn": [
+        "TASK-P07-004",
+        "TASK-P07-001"
+      ]
+    },
+    {
+      "id": "TASK-P07-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 16,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-006.md",
+      "dependsOn": [
+        "TASK-P07-005"
+      ]
+    },
+    {
+      "id": "TASK-P07-007",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-007.md",
+      "dependsOn": [
+        "TASK-P07-006",
+        "TASK-P07-001"
+      ]
+    },
+    {
+      "id": "TASK-P07-008",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-07",
+      "taskFile": "tasks/PHASE-07/TASK-P07-008.md",
+      "dependsOn": [
+        "TASK-P07-001",
+        "TASK-P07-002",
+        "TASK-P07-003",
+        "TASK-P07-004",
+        "TASK-P07-005",
+        "TASK-P07-006",
+        "TASK-P07-007"
+      ]
+    },
+    {
+      "id": "TASK-P08-001",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-001.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-002",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-002.md",
+      "dependsOn": [
+        "TASK-P07-007",
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-003",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 15,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-003.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-004",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 12,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-004.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-005",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 5,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-005.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-006",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-006.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-007",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-007.md",
+      "dependsOn": [
+        "TASK-P07-008"
+      ]
+    },
+    {
+      "id": "TASK-P08-008",
+      "type": "MICRO-TASK",
+      "status": "DRAFT",
+      "rail": 17,
+      "phase": "PHASE-08",
+      "taskFile": "tasks/PHASE-08/TASK-P08-008.md",
+      "dependsOn": [
+        "TASK-P08-001",
+        "TASK-P08-002",
+        "TASK-P08-003",
+        "TASK-P08-004",
+        "TASK-P08-005",
+        "TASK-P08-006",
+        "TASK-P08-007"
       ]
     }
   ],
@@ -1806,6 +2709,622 @@
     {
       "from": "SPEC-P00-E05",
       "to": "TASK-BOOTSTRAP-001"
+    },
+    {
+      "from": "TASK-BOOTSTRAP-001",
+      "to": "TASK-R01-001"
+    },
+    {
+      "from": "TASK-R01-001",
+      "to": "TASK-R01-002"
+    },
+    {
+      "from": "TASK-R01-002",
+      "to": "TASK-R01-003"
+    },
+    {
+      "from": "TASK-R01-003",
+      "to": "TASK-R01-004"
+    },
+    {
+      "from": "TASK-R01-004",
+      "to": "TASK-R02-001"
+    },
+    {
+      "from": "TASK-R02-001",
+      "to": "TASK-R02-002"
+    },
+    {
+      "from": "TASK-R02-002",
+      "to": "TASK-R02-003"
+    },
+    {
+      "from": "TASK-R02-003",
+      "to": "TASK-R02-004"
+    },
+    {
+      "from": "TASK-R02-004",
+      "to": "TASK-R03-001"
+    },
+    {
+      "from": "TASK-R03-001",
+      "to": "TASK-R03-002"
+    },
+    {
+      "from": "TASK-R03-002",
+      "to": "TASK-R03-003"
+    },
+    {
+      "from": "TASK-R03-003",
+      "to": "TASK-R03-004"
+    },
+    {
+      "from": "TASK-R03-004",
+      "to": "TASK-R04-001"
+    },
+    {
+      "from": "TASK-R04-001",
+      "to": "TASK-R04-002"
+    },
+    {
+      "from": "TASK-R04-002",
+      "to": "TASK-R04-003"
+    },
+    {
+      "from": "TASK-R04-003",
+      "to": "TASK-R04-004"
+    },
+    {
+      "from": "TASK-R04-004",
+      "to": "TASK-R05-001"
+    },
+    {
+      "from": "TASK-R05-001",
+      "to": "TASK-R05-002"
+    },
+    {
+      "from": "TASK-R05-002",
+      "to": "TASK-R05-003"
+    },
+    {
+      "from": "TASK-R05-003",
+      "to": "TASK-R05-004"
+    },
+    {
+      "from": "TASK-R02-004",
+      "to": "TASK-P01-001"
+    },
+    {
+      "from": "TASK-P01-001",
+      "to": "TASK-P01-002"
+    },
+    {
+      "from": "TASK-P01-001",
+      "to": "TASK-P01-003"
+    },
+    {
+      "from": "TASK-P01-002",
+      "to": "TASK-P01-003"
+    },
+    {
+      "from": "TASK-P01-003",
+      "to": "TASK-P01-004"
+    },
+    {
+      "from": "TASK-P01-001",
+      "to": "TASK-P01-005"
+    },
+    {
+      "from": "TASK-P01-003",
+      "to": "TASK-P01-005"
+    },
+    {
+      "from": "TASK-P01-001",
+      "to": "TASK-P01-006"
+    },
+    {
+      "from": "TASK-P01-002",
+      "to": "TASK-P01-006"
+    },
+    {
+      "from": "TASK-P01-003",
+      "to": "TASK-P01-006"
+    },
+    {
+      "from": "TASK-P01-004",
+      "to": "TASK-P01-006"
+    },
+    {
+      "from": "TASK-P01-005",
+      "to": "TASK-P01-006"
+    },
+    {
+      "from": "TASK-P01-006",
+      "to": "TASK-P02-001"
+    },
+    {
+      "from": "TASK-P02-001",
+      "to": "TASK-P02-002"
+    },
+    {
+      "from": "TASK-P02-001",
+      "to": "TASK-P02-003"
+    },
+    {
+      "from": "TASK-P02-002",
+      "to": "TASK-P02-003"
+    },
+    {
+      "from": "TASK-P02-001",
+      "to": "TASK-P02-004"
+    },
+    {
+      "from": "TASK-P02-003",
+      "to": "TASK-P02-004"
+    },
+    {
+      "from": "TASK-P02-001",
+      "to": "TASK-P02-005"
+    },
+    {
+      "from": "TASK-P02-004",
+      "to": "TASK-P02-005"
+    },
+    {
+      "from": "TASK-P02-001",
+      "to": "TASK-P02-006"
+    },
+    {
+      "from": "TASK-P02-002",
+      "to": "TASK-P02-006"
+    },
+    {
+      "from": "TASK-P02-003",
+      "to": "TASK-P02-006"
+    },
+    {
+      "from": "TASK-P02-004",
+      "to": "TASK-P02-006"
+    },
+    {
+      "from": "TASK-P02-005",
+      "to": "TASK-P02-006"
+    },
+    {
+      "from": "TASK-P02-006",
+      "to": "TASK-P03-001"
+    },
+    {
+      "from": "TASK-R05-004",
+      "to": "TASK-P03-001"
+    },
+    {
+      "from": "TASK-P03-001",
+      "to": "TASK-P03-002"
+    },
+    {
+      "from": "TASK-P03-001",
+      "to": "TASK-P03-003"
+    },
+    {
+      "from": "TASK-P03-001",
+      "to": "TASK-P03-004"
+    },
+    {
+      "from": "TASK-P03-002",
+      "to": "TASK-P03-004"
+    },
+    {
+      "from": "TASK-P03-004",
+      "to": "TASK-P03-005"
+    },
+    {
+      "from": "TASK-P03-002",
+      "to": "TASK-P03-006"
+    },
+    {
+      "from": "TASK-P03-003",
+      "to": "TASK-P03-006"
+    },
+    {
+      "from": "TASK-P03-004",
+      "to": "TASK-P03-006"
+    },
+    {
+      "from": "TASK-P03-004",
+      "to": "TASK-P03-007"
+    },
+    {
+      "from": "TASK-P03-001",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-002",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-003",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-004",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-005",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-006",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-007",
+      "to": "TASK-P03-008"
+    },
+    {
+      "from": "TASK-P03-006",
+      "to": "TASK-P04-001"
+    },
+    {
+      "from": "TASK-P03-008",
+      "to": "TASK-P04-001"
+    },
+    {
+      "from": "TASK-P04-001",
+      "to": "TASK-P04-002"
+    },
+    {
+      "from": "TASK-P04-001",
+      "to": "TASK-P04-003"
+    },
+    {
+      "from": "TASK-P03-003",
+      "to": "TASK-P04-003"
+    },
+    {
+      "from": "TASK-P04-003",
+      "to": "TASK-P04-004"
+    },
+    {
+      "from": "TASK-P04-001",
+      "to": "TASK-P04-005"
+    },
+    {
+      "from": "TASK-P04-002",
+      "to": "TASK-P04-005"
+    },
+    {
+      "from": "TASK-P04-004",
+      "to": "TASK-P04-005"
+    },
+    {
+      "from": "TASK-P01-004",
+      "to": "TASK-P04-005"
+    },
+    {
+      "from": "TASK-P04-001",
+      "to": "TASK-P04-006"
+    },
+    {
+      "from": "TASK-P04-002",
+      "to": "TASK-P04-006"
+    },
+    {
+      "from": "TASK-P04-003",
+      "to": "TASK-P04-006"
+    },
+    {
+      "from": "TASK-P04-004",
+      "to": "TASK-P04-006"
+    },
+    {
+      "from": "TASK-P04-005",
+      "to": "TASK-P04-006"
+    },
+    {
+      "from": "TASK-P01-003",
+      "to": "TASK-P05-001"
+    },
+    {
+      "from": "TASK-P01-004",
+      "to": "TASK-P05-001"
+    },
+    {
+      "from": "TASK-P05-001",
+      "to": "TASK-P05-002"
+    },
+    {
+      "from": "TASK-P04-004",
+      "to": "TASK-P05-003"
+    },
+    {
+      "from": "TASK-P01-004",
+      "to": "TASK-P05-003"
+    },
+    {
+      "from": "TASK-P03-003",
+      "to": "TASK-P05-004"
+    },
+    {
+      "from": "TASK-R05-004",
+      "to": "TASK-P05-004"
+    },
+    {
+      "from": "TASK-P05-001",
+      "to": "TASK-P05-005"
+    },
+    {
+      "from": "TASK-P05-003",
+      "to": "TASK-P05-005"
+    },
+    {
+      "from": "TASK-P05-004",
+      "to": "TASK-P05-005"
+    },
+    {
+      "from": "TASK-P05-001",
+      "to": "TASK-P05-006"
+    },
+    {
+      "from": "TASK-P05-002",
+      "to": "TASK-P05-006"
+    },
+    {
+      "from": "TASK-P05-005",
+      "to": "TASK-P05-006"
+    },
+    {
+      "from": "TASK-P05-001",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-002",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-003",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-004",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-005",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-006",
+      "to": "TASK-P05-007"
+    },
+    {
+      "from": "TASK-P05-005",
+      "to": "TASK-P06-001"
+    },
+    {
+      "from": "TASK-R03-001",
+      "to": "TASK-P06-001"
+    },
+    {
+      "from": "TASK-P06-001",
+      "to": "TASK-P06-002"
+    },
+    {
+      "from": "TASK-R04-004",
+      "to": "TASK-P06-002"
+    },
+    {
+      "from": "TASK-P06-001",
+      "to": "TASK-P06-003"
+    },
+    {
+      "from": "TASK-P06-002",
+      "to": "TASK-P06-003"
+    },
+    {
+      "from": "TASK-P06-002",
+      "to": "TASK-P06-004"
+    },
+    {
+      "from": "TASK-P06-003",
+      "to": "TASK-P06-004"
+    },
+    {
+      "from": "TASK-P06-003",
+      "to": "TASK-P06-005"
+    },
+    {
+      "from": "TASK-P06-004",
+      "to": "TASK-P06-005"
+    },
+    {
+      "from": "TASK-P05-004",
+      "to": "TASK-P06-005"
+    },
+    {
+      "from": "TASK-P06-003",
+      "to": "TASK-P06-006"
+    },
+    {
+      "from": "TASK-P06-004",
+      "to": "TASK-P06-006"
+    },
+    {
+      "from": "TASK-P03-001",
+      "to": "TASK-P06-006"
+    },
+    {
+      "from": "TASK-P06-003",
+      "to": "TASK-P06-007"
+    },
+    {
+      "from": "TASK-P06-006",
+      "to": "TASK-P06-007"
+    },
+    {
+      "from": "TASK-P06-001",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-002",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-003",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-004",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-005",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-006",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-007",
+      "to": "TASK-P06-008"
+    },
+    {
+      "from": "TASK-P06-008",
+      "to": "TASK-P07-001"
+    },
+    {
+      "from": "TASK-R02-004",
+      "to": "TASK-P07-001"
+    },
+    {
+      "from": "TASK-P07-001",
+      "to": "TASK-P07-002"
+    },
+    {
+      "from": "TASK-R03-001",
+      "to": "TASK-P07-002"
+    },
+    {
+      "from": "TASK-P07-002",
+      "to": "TASK-P07-003"
+    },
+    {
+      "from": "TASK-P06-004",
+      "to": "TASK-P07-004"
+    },
+    {
+      "from": "TASK-P07-001",
+      "to": "TASK-P07-004"
+    },
+    {
+      "from": "TASK-P07-004",
+      "to": "TASK-P07-005"
+    },
+    {
+      "from": "TASK-P07-001",
+      "to": "TASK-P07-005"
+    },
+    {
+      "from": "TASK-P07-005",
+      "to": "TASK-P07-006"
+    },
+    {
+      "from": "TASK-P07-006",
+      "to": "TASK-P07-007"
+    },
+    {
+      "from": "TASK-P07-001",
+      "to": "TASK-P07-007"
+    },
+    {
+      "from": "TASK-P07-001",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-002",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-003",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-004",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-005",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-006",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-007",
+      "to": "TASK-P07-008"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-001"
+    },
+    {
+      "from": "TASK-P07-007",
+      "to": "TASK-P08-002"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-002"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-003"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-004"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-005"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-006"
+    },
+    {
+      "from": "TASK-P07-008",
+      "to": "TASK-P08-007"
+    },
+    {
+      "from": "TASK-P08-001",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-002",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-003",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-004",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-005",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-006",
+      "to": "TASK-P08-008"
+    },
+    {
+      "from": "TASK-P08-007",
+      "to": "TASK-P08-008"
     }
   ],
   "specificationQueue": [
@@ -1868,7 +3387,5 @@
     "SPEC-DEP-001",
     "SPEC-SYN-001"
   ],
-  "executorQueue": [
-    "TASK-BOOTSTRAP-001"
-  ]
+  "executorQueue": []
 }

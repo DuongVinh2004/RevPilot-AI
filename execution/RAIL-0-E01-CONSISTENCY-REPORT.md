@@ -1,8 +1,9 @@
 # Rail 0 / E01 Consistency Report
 
-Status: `PASS` for `SPEC-P00-E01`; Rail 0 remains `RED`.
+> **HISTORICAL NOTICE**: This report is a historical consistency audit snapshot from the completion of Stage A EPIC SPEC-P00-E01. Stage A has since completed through E05, and Rails 0, 1, and 2 are GREEN. Refer to canonical current status in [RAIL-STATUS.md](RAIL-STATUS.md), [SPECIFICATION-QUEUE.md](SPECIFICATION-QUEUE.md), [DEPENDENCY-GRAPH.md](DEPENDENCY-GRAPH.md), and [CURRENT-STATE-RECONCILIATION.md](CURRENT-STATE-RECONCILIATION.md).
 
-Date: 2026-09-03  
+Status: Historical Consistency Report (`SPEC-P00-E01 = PASS`)
+Date: 2026-09-03
 Scope: Stage A foundation decomposition and specification artifacts only. No product source, repository scaffold, Git initialization, dependency installation, build, test, deployment, or Antigravity executor run was authorized or performed.
 
 ## Audit result

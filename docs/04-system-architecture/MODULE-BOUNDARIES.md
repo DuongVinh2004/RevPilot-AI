@@ -1,7 +1,10 @@
 # Modular-Monolith Module Boundary Map
 
-Status: Proposed v0.1  
-Owner: Principal Architecture  
+Status: Accepted v1.0
+Owner: Principal Architecture
+Approver: Duong Vinh (Explicit user confirmation covering Repository Owner, Principal Architecture, Security Architecture/IAM, SRE)
+Date: 2026-09-04
+Approval record: execution/APPROVAL-RECORD-RUN-R03-001.md
 Decision basis: ADR-0001 and ADR-0003
 
 Logical modules are not automatically runtime services. Each module owns its model and exposes ports; infrastructure adapters remain replaceable.

@@ -1,0 +1,16 @@
+{
+  "configVersion": 1,
+  "worker": {
+    "provider": "google-antigravity-cli",
+    "executable": "agy",
+    "expectedAccount": "",
+    "model": "gemini-3.7-flash-high",
+    "effort": "high"
+  },
+  "defaultProfile": "standard",
+  "extraProtectedPaths": [],
+  "verificationEnvironments": [
+    "none",
+    "npm-ci"
+  ]
+}
