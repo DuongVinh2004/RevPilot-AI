@@ -41,13 +41,13 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  subgraph Phase01 [Phase 01: Canonical Data and Synthetic Benchmark - DRAFT PLANNING]
-    P01_01[TASK-P01-001 DRAFT\nCanonical Data Model Contracts]
-    P01_02[TASK-P01-002 DRAFT\nMetric Registry & Semantics]
-    P01_03[TASK-P01-003 DRAFT\nSynthetic Generator Contract]
-    P01_04[TASK-P01-004 DRAFT\nHidden Ground Truth & Midwest Incident]
-    P01_05[TASK-P01-005 DRAFT\nData Quality, Lineage & Quarantine]
-    P01_06[TASK-P01-006 DRAFT\nPhase 01 Exit Gate]
+  subgraph Phase01 [Phase 01: Canonical Data and Synthetic Benchmark - GREEN / PASS]
+    P01_01[TASK-P01-001 PASS\nCanonical Data Model Contracts]
+    P01_02[TASK-P01-002 PASS\nMetric Registry & Semantics]
+    P01_03[TASK-P01-003 PASS\nSynthetic Generator Contract]
+    P01_04[TASK-P01-004 PASS\nHidden Ground Truth & Midwest Incident]
+    P01_05[TASK-P01-005 PASS\nData Quality, Lineage & Quarantine]
+    P01_06[TASK-P01-006 PASS\nPhase 01 Exit Gate]
 
     P01_01 --> P01_02
     P01_01 --> P01_03
@@ -69,13 +69,13 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  subgraph Phase02 [Phase 02: Detection and Analytics - DRAFT PLANNING]
-    P02_01[TASK-P02-001 DRAFT\nMetric Service Contract & Queries]
-    P02_02[TASK-P02-002 DRAFT\nDeterministic Detection Baselines]
-    P02_03[TASK-P02-003 DRAFT\nDetector Benchmark & Rolling Split]
-    P02_04[TASK-P02-004 DRAFT\nAnomaly Localization & Drill-Down]
-    P02_05[TASK-P02-005 DRAFT\nLifecycle, Replay & Reconciliation]
-    P02_06[TASK-P02-006 DRAFT\nPhase 02 Exit Gate]
+  subgraph Phase02 [Phase 02: Detection and Analytics - GREEN / PASS]
+    P02_01[TASK-P02-001 PASS\nMetric Service Contract & Queries]
+    P02_02[TASK-P02-002 PASS\nDeterministic Detection Baselines]
+    P02_03[TASK-P02-003 PASS\nDetector Benchmark & Rolling Split]
+    P02_04[TASK-P02-004 PASS\nAnomaly Localization & Drill-Down]
+    P02_05[TASK-P02-005 PASS\nLifecycle, Replay & Reconciliation]
+    P02_06[TASK-P02-006 PASS\nPhase 02 Exit Gate]
 
     P02_01 --> P02_02
     P02_01 --> P02_03
@@ -91,7 +91,7 @@ flowchart TD
     P02_05 --> P02_06
   end
 
-  P01_06[TASK-P01-006 DRAFT\nPhase 01 Exit Gate] --> P02_01
+  P01_06[TASK-P01-006 PASS\nPhase 01 Exit Gate] --> P02_01
 ```
 
 ## Phase 03 Governed Evidence and Investigation Micro-Task Chain
@@ -99,7 +99,7 @@ flowchart TD
 ```mermaid
 flowchart TD
   subgraph Phase03 [Phase 03: Governed Evidence and Investigation - DRAFT PLANNING]
-    P03_01[TASK-P03-001 DRAFT\nInvestigation Domain, Manifest & Budget]
+    P03_01[TASK-P03-001 PASS\nInvestigation Domain, Manifest & Budget]
     P03_02[TASK-P03-002 DRAFT\nTemporal Investigation Workflow Contract]
     P03_03[TASK-P03-003 DRAFT\nRegistered Read-Only SQL Catalog]
     P03_04[TASK-P03-004 DRAFT\nEvidence Provenance, ACL & Dates]
@@ -126,7 +126,7 @@ flowchart TD
     P03_07 --> P03_08
   end
 
-  P02_06[TASK-P02-006 DRAFT\nPhase 02 Exit Gate] --> P03_01
+  P02_06[TASK-P02-006 PASS\nPhase 02 Exit Gate] --> P03_01
   R05_04[TASK-R05-004 PASS\nRail 5 Exit Gate] --> P03_01
 ```
 

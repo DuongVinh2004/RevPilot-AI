@@ -6,6 +6,9 @@ Scope: Phase 05 — Churn, Uplift, and Decision Optimization (Rails 10, 13)
 Owner: AI Ethics and Governance / Evaluation Engineering
 Measurement State: Slicing thresholds herein are `BENCHMARK GATES` and `DESIGN TARGETS`. There are zero compliance certifications or fabricated passes reported herein (`AC-014`).
 Traceability: `BR-002`, `FR-ML-002..003`, `INV-AI-001`, `INV-PRV-001`, `NFR-AI-005..006`, `AC-014`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

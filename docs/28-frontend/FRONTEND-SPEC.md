@@ -1,10 +1,10 @@
 # Experience Plane Contract
 
-Status: Proposed v0.1 — E04 specification output  
+Status: Accepted v1.0
 Owner: Frontend Architect  
-Approver: Dương Vinh  
-Version: 0.1.0  
-Date: 2026-09-04  
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 
 The web client renders investigation, evidence, recommendation, approval, action outcome, freshness/degraded state and audit-safe explanations from versioned API contracts. It has no database/provider credentials and cannot create tenant/role authority. Server responses control permitted actions; UI hiding is never authorization.
 

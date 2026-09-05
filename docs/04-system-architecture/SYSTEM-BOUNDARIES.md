@@ -1,7 +1,10 @@
 # System and Trust Boundaries
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
 Owner: Principal Architecture + Security Architecture
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 
 ## Ownership boundary
 

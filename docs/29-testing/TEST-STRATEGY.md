@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Verification Strategy, Gate Exit Criteria, and Negative Test Suites (Rails 3–5 Integration)
 Owner: Quality Engineering + Security Architecture
 Traceability: All `INV-*`, `NFR-*`, `ADR-0001`, `ADR-0004`, `ADR-0005`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

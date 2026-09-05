@@ -1,7 +1,10 @@
 # Workload and Capacity Assumptions
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
 Owner: Principal Architecture + SRE  
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Evidence state: No production measurements exist. Every number below is a `DESIGN ASSUMPTION`, `DESIGN TARGET`, or `UNKNOWN`.
 
 ## Capacity tiers

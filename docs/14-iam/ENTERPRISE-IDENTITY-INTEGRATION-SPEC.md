@@ -6,6 +6,9 @@ Phase: Phase 07 — Multi-Tenant Pilot, Connectors, and Tenant Operations
 Rail Alignment: Rail 3 (Authentication), Rail 4 (Authorization & Delegation), Rail 17 (Observability/FinOps/Audit)
 Owners: Security Architecture, IAM Module
 Traceability: `BR-004`, `FR-CTL-001`, `INV-IAM-001`, `INV-IAM-002`, `INV-TEN-001`, `INV-TEN-002`, `INV-TEN-003`, `INV-SEC-001`, `INV-SEC-002`, `INV-AUD-001`, `INV-AUD-002`, `INV-REL-001`, `NFR-SEC-001`, `NFR-SEC-002`, `NFR-TEN-001`, `NFR-AUD-001`, `NFR-PRV-001`, `AC-010`, `ADR-0005`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

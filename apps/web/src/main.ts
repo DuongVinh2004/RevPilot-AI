@@ -5,18 +5,18 @@
  * - WCAG 2.2 AA Accessibility Navigation
  */
 
-import { ApprovalCenterComponent } from "./components/ApprovalCenter.js";
-import { AnomalyDashboardComponent } from "./components/AnomalyDashboard.js";
-import { KillSwitchComponent } from "./components/KillSwitch.js";
+import { ApprovalCenterComponent } from "./components/ApprovalCenter";
+import { AnomalyDashboardComponent } from "./components/AnomalyDashboard";
+import { KillSwitchComponent } from "./components/KillSwitch";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Initialize components
   const approvalCenter = new ApprovalCenterComponent("approval-queue-container");
   const anomalyDashboard = new AnomalyDashboardComponent("anomaly-list-container");
   const killSwitch = new KillSwitchComponent("killswitch-container");
 
-  approvalCenter.render();
-  anomalyDashboard.render();
+  await approvalCenter.render();
+  await anomalyDashboard.render();
   killSwitch.render();
 
   // Tab Navigation Handling

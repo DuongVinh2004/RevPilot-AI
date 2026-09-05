@@ -3,11 +3,14 @@
   "version": "1.0.0-rc1",
   "description": "RevPilot AI — Human Approval Portal & Revenue Intelligence Dashboard",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "echo 'Web assets compiled'",
-    "start": "echo 'Serving on port 80'"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "dependencies": {
-    "@revpilot/web-client": "*"
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0"
   }
 }

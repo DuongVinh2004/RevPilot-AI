@@ -4,6 +4,7 @@ Status: Accepted v1.0
 Owner: Principal Architecture
 Approver: Duong Vinh (Explicit user confirmation covering Repository Owner, Principal Architecture, Security Architecture/IAM, SRE)
 Date: 2026-09-04
+Version: v1.0
 Approval record: execution/APPROVAL-RECORD-RUN-R03-001.md
 Decision basis: ADR-0001 and ADR-0003
 

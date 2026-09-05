@@ -6,6 +6,9 @@ Phase: Phase 07 — Multi-Tenant Pilot, Connectors, and Tenant Operations
 Rail Alignment: Rail 17 (Observability/FinOps/Audit), Rail 2 (Tenant Context & Lifecycle), Rail 14 (Policy and Approval)
 Owners: FinOps Architecture, Billing Engineering, Infrastructure Operations
 Traceability: `BR-004`, `FR-CTL-002`, `INV-COST-001`, `INV-TEN-001`, `INV-TEN-002`, `INV-AUD-001`, `INV-REL-001`, `NFR-COST-001`, `NFR-COST-002`, `NFR-TEN-001`, `NFR-OBS-002`, `ADR-0001`, `ADR-0005`, `ADR-0009`, `ADR-0011`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

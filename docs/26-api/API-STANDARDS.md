@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: HTTP/REST Endpoints, Error Contracts, and Tenancy Binding (Rails 3–5 Integration)
 Owner: API Platform Architecture
 Traceability: `INV-TEN-002`, `INV-IAM-001`, `INV-AUD-001`, `INV-REL-001`, `NFR-SEC-001`, `NFR-TEN-001`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

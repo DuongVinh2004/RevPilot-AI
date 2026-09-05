@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Control Plane Security Architecture (Rails 3–5 Alignment)
 Owner: Security Architecture
 Traceability: `SEC-001..010`, `INV-SEC-001..003`, `INV-IAM-001..002`, `INV-TEN-001..003`, `INV-ACT-001..004`, `INV-REL-001`, `INV-AUD-001..002`, `NFR-SEC-001..002`, `NFR-TEN-001..002`, `ADR-0005`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ## Revision History
 

@@ -6,6 +6,9 @@ Scope: Phase 04 — Hypothesis, Causal Analysis, and Verification (Rails 10, 12)
 Owner: AI Evaluation Architecture / Econometrics Engineering
 Measurement State: All performance numbers herein are strictly `BENCHMARK GATES` or `DESIGN TARGETS`. There are zero measured results reported herein (`AC-014`).
 Traceability: `BR-001`, `BR-002`, `FR-RCA-001..002`, `FR-ML-003..004`, `INV-AI-001..002`, `INV-DATA-001`, `INV-TEN-001..003`, `NFR-AI-001..002`, `NFR-AI-007`, `AC-004`, `AC-006`, `AC-014`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

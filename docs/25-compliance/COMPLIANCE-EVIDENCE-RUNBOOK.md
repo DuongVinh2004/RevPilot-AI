@@ -7,6 +7,7 @@ Owner Role: Compliance Lead & Security Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `ADR-0009`, `ADR-0010`, `NFR-SEC-001..002`, `NFR-AUD-001`, `NFR-PRV-001..002`, `INV-SEC-001..003`, `INV-AUD-001..002`, `INV-PRV-001`
+Version: v1.0
 
 ---
 

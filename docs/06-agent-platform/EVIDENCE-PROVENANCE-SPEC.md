@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 03 — Governed Evidence and Investigation (Rails 6, 8)
 Owner: Evidence Architecture / Data Governance
 Traceability: `INV-EVD-001`, `INV-EVD-002`, `INV-TEN-001..003`, `INV-SEC-002`, `INV-DATA-002`, `INV-PRV-001`, `FR-EVD-001`, `FR-EVD-003`, `AC-004`, `AC-005`, `AC-013`, `ADR-0004`, `ADR-0005`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

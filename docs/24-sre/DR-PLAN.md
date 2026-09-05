@@ -7,6 +7,7 @@ Owner Role: SRE Lead & Storage Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `BR-004`, `INV-DATA-001..002`, `INV-TEN-001..003`, `INV-REL-001..002`, `NFR-REC-001`, `NFR-DUR-001`, `NFR-AVL-001`, `ADR-0004`, `ADR-0005`, `ADR-0008`
+Version: v1.0
 
 ---
 

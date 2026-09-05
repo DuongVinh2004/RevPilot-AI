@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 06 — Approval and Safe Action Loop (Rails 14, 15, 16)
 Owner: Security & Action Governance Architecture
 Traceability: `INV-ACT-001..004`, `INV-IAM-001..002`, `INV-TEN-001..003`, `INV-WF-001..002`, `INV-SEC-001..003`, `INV-AUD-001..002`, `INV-COST-001`, `INV-PRV-001`, `INV-REL-001..002`, `NFR-SEC-001..002`, `NFR-DUR-001`, `NFR-REL-001..002`, `NFR-AUD-001`, `NFR-COST-001..002`, `NFR-OBS-001..002`, `AC-008`, `AC-009`, `AC-010`, `AC-011`, `AC-012`, `AC-013`, `ADR-0002`, `ADR-0003`, `ADR-0009`, `ADR-0012`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

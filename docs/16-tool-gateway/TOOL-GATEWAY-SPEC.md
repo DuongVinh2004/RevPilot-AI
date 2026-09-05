@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 03 — Governed Evidence and Investigation (Rails 6, 15)
 Owner: Security Architecture / Platform Architecture
 Traceability: `INV-ACT-001..004`, `INV-SEC-001..003`, `INV-IAM-001..002`, `INV-REL-001`, `SEC-001..004`, `NFR-SEC-001`, `NFR-DUR-001`, `AC-008`, `AC-009`, `ADR-0003`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

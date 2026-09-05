@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Phase: Phase 02 — Detection and Analytics
 Owner: Analytics Architecture + Domain Architecture
 Traceability: `BR-001`, `FR-DET-004`, `FR-INV-004`, `INV-TEN-001`, `INV-AI-001`, `NFR-AI-004`, `AC-002`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

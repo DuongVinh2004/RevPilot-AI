@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 03 — Governed Evidence and Investigation (Rails 6–7)
 Owner: Workflow Engine Architecture / Platform Engineering
 Traceability: `INV-WF-001`, `INV-WF-002`, `INV-TEN-001..003`, `INV-IAM-001..002`, `INV-REL-001..002`, `INV-COST-001`, `INV-AUD-001`, `INV-PRV-001`, `NFR-DUR-001`, `NFR-REL-001..002`, `NFR-OBS-001`, `FR-INV-001..003`, `AC-003`, `ADR-0002`, `ADR-0003`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

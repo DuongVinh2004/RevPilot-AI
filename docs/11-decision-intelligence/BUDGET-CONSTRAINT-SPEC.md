@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 05 — Churn, Uplift, and Decision Optimization (Rails 13, 14, 15)
 Owner: Decision Intelligence Architecture / FinOps Engineering
 Traceability: `BR-005`, `FR-DEC-001`, `INV-COST-001`, `INV-ACT-001`, `INV-TEN-001..003`, `NFR-COST-001`, `AC-007`, `ADR-0001`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

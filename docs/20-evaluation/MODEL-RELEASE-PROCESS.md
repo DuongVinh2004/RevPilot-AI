@@ -7,6 +7,7 @@ Owner Role: AI Governance Lead & ML Platform Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `INV-AI-001..002`, `INV-EVD-001..002`, `INV-COST-001`, `NFR-AI-001..007`, `NFR-COST-001`, `AC-005`, `AC-011`, `ADR-0011`
+Version: v1.0
 
 ---
 

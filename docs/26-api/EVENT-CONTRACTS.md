@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Domain Events, Outbox Architecture, and Tenancy Binding (Rails 3–5 Integration)
 Owner: Platform Architecture + Data Platform
 Traceability: `INV-DATA-002`, `INV-TEN-001`, `INV-SEC-001`, `INV-ACT-002`, `ADR-0004`, `ADR-0007`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

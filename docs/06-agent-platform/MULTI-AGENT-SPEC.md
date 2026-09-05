@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 03 — Governed Evidence and Investigation (Rails 6, 11)
 Owner: AI Platform Architecture / Multi-Agent Systems
 Traceability: `INV-AI-001`, `INV-AI-002`, `INV-SEC-001`, `INV-SEC-002`, `INV-IAM-002`, `INV-COST-001`, `INV-PRV-001`, `NFR-AI-001`, `NFR-COST-001`, `NFR-OBS-001`, `FR-INV-001..004`, `FR-RCA-001..002`, `AC-003`, `AC-004`, `AC-013`, `ADR-0003`, `ADR-0011`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

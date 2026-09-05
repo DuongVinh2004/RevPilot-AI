@@ -7,6 +7,7 @@ Owner Role: Release Lead & Principal Platform Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `ADR-0008`, `ADR-0009`, `ADR-0011`, `INV-REL-001`, `INV-REL-002`, `INV-DATA-001`, `NFR-AVL-001`, `NFR-AI-001`
+Version: v1.0
 
 ---
 

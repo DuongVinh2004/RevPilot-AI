@@ -1,7 +1,10 @@
 # Foundational Non-Functional Requirement Baseline
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
 Owner: Principal Architecture + SRE + Security + AI/ML  
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Measurement state: All numeric values are `DESIGN TARGET` or `DESIGN ASSUMPTION`; there are zero measured product results.
 
 ## Requirement schema

@@ -7,6 +7,7 @@ Owner Role: SRE Lead & Observability Engineer
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `NFR-OBS-001..002`, `NFR-AVL-001`, `NFR-PRV-001`, `INV-SEC-001`, `INV-REL-001`, `INV-TEN-001..003`, `ADR-0010`
+Version: v1.0
 
 ---
 

@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Operational Metrics, Tracing, and Logging (Rails 3–5 Integration)
 Owner: SRE + Platform Architecture
 Traceability: `NFR-OBS-001`, `NFR-OBS-002`, `NFR-PRV-001`, `INV-SEC-001`, `INV-REL-001`, `ADR-0010`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

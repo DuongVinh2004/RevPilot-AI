@@ -7,6 +7,7 @@ Owner Role: SRE Lead & Incident Commander
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `INV-REL-001..002`, `INV-TEN-001..003`, `INV-SEC-001`, `INV-ACT-001`, `NFR-AVL-001`, `NFR-REC-001`, `ADR-0008`
+Version: v1.0
 
 ---
 

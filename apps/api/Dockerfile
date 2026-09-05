@@ -32,6 +32,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY packages/ ./packages/
 COPY apps/api/ ./apps/api/
+COPY scripts/ ./scripts/
 
 ENV PYTHONPATH="/app/packages/backend/src:/app" \
     PYTHONUNBUFFERED="1" \

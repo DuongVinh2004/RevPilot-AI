@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Cross-Cutting Audit Logging and Integrity (Rails 3–5 Integration)
 Owner: Security Architecture + Audit Module
 Traceability: `INV-AUD-001`, `INV-AUD-002`, `INV-TEN-001..003`, `INV-IAM-001..002`, `INV-REL-001`, `NFR-AUD-001`, `NFR-OBS-002`, `NFR-PRV-001`, `ADR-0010`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

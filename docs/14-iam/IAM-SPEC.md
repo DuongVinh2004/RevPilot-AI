@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Rails: Rail 3 (Authentication) & Rail 4 (Authorization and Delegation)
 Owner: Security Architecture / Identity Module
 Traceability: `INV-IAM-001`, `INV-IAM-002`, `INV-TEN-002`, `INV-TEN-003`, `INV-SEC-001`, `INV-SEC-002`, `INV-REL-001`, `NFR-SEC-001`, `NFR-SEC-002`, `ADR-0001`, `ADR-0005`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ## Revision History
 

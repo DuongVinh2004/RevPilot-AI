@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Phase: Phase 02 — Detection and Analytics
 Owner: AI/ML Architecture
 Traceability: `BR-001`, `BR-002`, `FR-ML-001..004`, `INV-DATA-001`, `INV-AI-001..002`, `NFR-AI-001..007`, `NFR-COST-001`, `ADR-0011`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

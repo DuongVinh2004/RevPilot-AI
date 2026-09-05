@@ -102,9 +102,9 @@ Owner: Principal Platform Architect & SRE Lead
 
 | Blocker ID | Description | Owner | Status | Blocking Scope |
 |---|---|---|---|---|
-| BLK-001 | Statutory data retention & residency | Legal / Compliance | BLOCKED | Commercial pilots in regulated markets |
-| BLK-002 | Production cloud provider & runtime | SRE Lead | OPEN | Cloud staging deployment & live telemetry |
-| BLK-003 | Hosted AI model terms & zero retention | AI Platform Lead | OPEN | Live AI model routing & investigation |
+| BLK-001 | Statutory data retention & residency | Legal / Compliance | RESOLVED (DEC-003 accepted in RUN-R06-001) | Configurable tenant-level retention; fail-closed on unconfigured jurisdictions |
+| BLK-002 | Production cloud provider & runtime | SRE Lead | RESOLVED (DEC-004 accepted in RUN-R06-001) | AWS ECS Fargate + RDS Aurora selected; staging deployment pending |
+| BLK-003 | Hosted AI model terms & zero retention | AI Platform Lead | RESOLVED (DEC-005 accepted in RUN-R06-001) | Dual-provider (Claude 3.5 Sonnet / Azure OpenAI); Zero Data Retention SLA required |
 | BLK-004 | Rails 3–5 implementation pending | Platform Engineering | CLOSED (Rails 3–5 GREEN) | None (Foundations implemented and verified) |
 | BLK-005 | Missing empirical test & DR evidence | SRE Lead | PENDING | Certified Production Readiness declaration |
 | BLK-006 | Documentation authority acceptance | Architecture / Domain Approvers | CLOSED (Accepted in RUN-R03-001) | None (Resolved for implementation admission) |

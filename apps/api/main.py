@@ -11,6 +11,7 @@ Conforms to:
 from __future__ import annotations
 
 import logging
+import os
 import uuid
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -32,15 +33,72 @@ from revpilot.shared.errors import (
     TenancyViolationError,
     ValidationError as DomainValidationError,
 )
+from apps.api.middleware.audit import AuditMiddleware
+from apps.api.routers.analytics import router as analytics_router
+from apps.api.routers.investigations import router as investigations_router
+from apps.api.routers.causal import router as causal_router
+from apps.api.routers.decisions import router as decisions_router
+from apps.api.routers.approvals import router as approvals_router
+from apps.api.routers.admin import router as admin_router
+from apps.api.routers.connectors import router as connectors_router
+from apps.api.routers.scim import router as scim_router
 
 logger = logging.getLogger("revpilot.api")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Application lifespan context for startup and shutdown management."""
+    """Application lifespan context for startup, database pooling, and graceful shutdown."""
     logger.info("RevPilot API Gateway starting up")
+
+    db_url = os.getenv("DATABASE_URL")
+    pool = None
+    if db_url:
+        try:
+            from revpilot.infrastructure.database import create_database_pool
+            pool = await create_database_pool(db_url, min_size=2, max_size=10)
+            app.state.db_pool = pool
+            logger.info("Database pool initialized successfully")
+        except Exception as exc:
+            logger.warning("Database pool initialization deferred or failed: %s", exc)
+
+    # Initialize repository adapters
+    if pool is not None:
+        from revpilot.modules.tenancy.adapters.postgres_repository import PostgresTenantRepository
+        from revpilot.modules.identity.adapters.postgres_repository import PostgresAuthAdapter
+        from revpilot.modules.analytics.adapters.postgres_repository import PostgresAnomalyRepository
+        from revpilot.modules.investigation.adapters.postgres_repository import PostgresInvestigationRepository
+        from revpilot.modules.retrieval.adapters.postgres_evidence_repository import PostgresEvidenceRepository
+        from revpilot.modules.hypothesis.adapters.postgres_repository import PostgresHypothesisRepository
+        from revpilot.modules.causal.adapters.postgres_repository import PostgresCausalStudyRepository
+        from revpilot.modules.decision.adapters.postgres_repository import PostgresDecisionRepository
+        from revpilot.modules.approval.adapters.postgres_repository import PostgresApprovalRepository
+        from revpilot.modules.action.adapters.postgres_ledger import PostgresActionLedger
+        from revpilot.modules.safety.adapters.postgres_killswitch import PostgresKillSwitchRepository
+        from revpilot.modules.connectors.adapters.postgres_repository import PostgresConnectorRepository
+        from revpilot.modules.connectors.adapters.postgres_inbox import PostgresConnectorInbox
+        from revpilot.modules.finops.adapters.postgres_audit_log import PostgresAuditLog
+
+        app.state.tenant_repo = PostgresTenantRepository(pool)
+        app.state.auth_adapter = PostgresAuthAdapter(pool)
+        app.state.anomaly_repo = PostgresAnomalyRepository(pool)
+        app.state.investigation_repo = PostgresInvestigationRepository(pool)
+        app.state.evidence_repo = PostgresEvidenceRepository(pool)
+        app.state.hypothesis_repo = PostgresHypothesisRepository(pool)
+        app.state.causal_repo = PostgresCausalStudyRepository(pool)
+        app.state.decision_repo = PostgresDecisionRepository(pool)
+        app.state.approval_repo = PostgresApprovalRepository(pool)
+        app.state.action_ledger_repo = PostgresActionLedger(pool)
+        app.state.killswitch_repo = PostgresKillSwitchRepository(pool)
+        app.state.connector_repo = PostgresConnectorRepository(pool)
+        app.state.connector_inbox = PostgresConnectorInbox(pool)
+        app.state.audit_log = PostgresAuditLog(pool)
+
     yield
+
+    if pool is not None:
+        logger.info("Closing database pool...")
+        await pool.close()
     logger.info("RevPilot API Gateway shutting down")
 
 
@@ -50,24 +108,13 @@ def create_error_envelope(
     correlation_id: str,
     details: list[dict[str, Any]] | dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    Format error response according to docs/26-api/API-STANDARDS.md §3:
-    {
-      "code": "...",
-      "message": "...",
-      "correlation_id": "...",
-      "details": [...]
-    }
-    """
+    """Format standard error response according to docs/26-api/API-STANDARDS.md §3."""
     envelope: dict[str, Any] = {
         "code": code,
         "message": message,
         "correlation_id": correlation_id,
+        "details": details if details is not None else [],
     }
-    if details is not None:
-        envelope["details"] = details
-    else:
-        envelope["details"] = []
     return envelope
 
 
@@ -80,7 +127,10 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Cross-Origin Resource Sharing (CORS)
+    # 1. Audit Middleware
+    api_app.add_middleware(AuditMiddleware)
+
+    # 2. CORS
     api_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -89,22 +139,19 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Middleware: Correlation ID and Context Lifecycle
+    # 3. Correlation Middleware
     @api_app.middleware("http")
-    async def correlation_context_middleware(request: Request, call_next: Any) -> Response:
-        inbound_corr_id = request.headers.get("X-Correlation-ID")
-        if not inbound_corr_id:
-            inbound_corr_id = f"corr_{uuid.uuid4().hex[:16]}"
+    async def correlation_middleware(request: Request, call_next: Any) -> Response:
+        inbound_corr = request.headers.get("X-Correlation-ID")
+        correlation_id = inbound_corr if inbound_corr else f"corr_{uuid.uuid4().hex[:18]}"
+        request.state.correlation_id = correlation_id
+        request.state.correlation_context = CorrelationContext.create_root(correlation_id=correlation_id)
 
-        corr_ctx = CorrelationContext.create_root(correlation_id=inbound_corr_id)
-        request.state.correlation_context = corr_ctx
-        request.state.correlation_id = inbound_corr_id
-
-        response: Response = await call_next(request)
-        response.headers["X-Correlation-ID"] = inbound_corr_id
+        response = await call_next(request)
+        response.headers["X-Correlation-ID"] = correlation_id
         return response
 
-    # Exception Handlers conforming to API-STANDARDS.md §3
+    # Standard Exception Handlers
     @api_app.exception_handler(DomainValidationError)
     async def domain_validation_handler(request: Request, exc: DomainValidationError) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
@@ -112,23 +159,19 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=body)
 
     @api_app.exception_handler(RequestValidationError)
-    async def pydantic_validation_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    async def fastapi_validation_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
-        details = [
-            {"field": ".".join(str(loc) for loc in err["loc"]), "issue": err["msg"]}
-            for err in exc.errors()
-        ]
-        body = create_error_envelope("VALIDATION_ERROR", "Invalid request payload", corr_id, details)
+        body = create_error_envelope("VALIDATION_ERROR", "Invalid request payload schema", corr_id, exc.errors())
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=body)
 
     @api_app.exception_handler(AuthenticationError)
-    async def authentication_error_handler(request: Request, exc: AuthenticationError) -> JSONResponse:
+    async def authentication_handler(request: Request, exc: AuthenticationError) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
         body = create_error_envelope("AUTHENTICATION_ERROR", exc.message, corr_id, exc.details)
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content=body)
 
     @api_app.exception_handler(AuthorizationError)
-    async def authorization_error_handler(request: Request, exc: AuthorizationError) -> JSONResponse:
+    async def authorization_handler(request: Request, exc: AuthorizationError) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
         body = create_error_envelope("AUTHORIZATION_DENIED", exc.message, corr_id, exc.details)
         return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content=body)
@@ -146,7 +189,7 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=body)
 
     @api_app.exception_handler(ConcurrencyError)
-    async def concurrency_error_handler(request: Request, exc: ConcurrencyError) -> JSONResponse:
+    async def concurrency_handler(request: Request, exc: ConcurrencyError) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
         body = create_error_envelope("IDEMPOTENCY_CONFLICT", exc.message, corr_id, exc.details)
         return JSONResponse(status_code=status.HTTP_409_CONFLICT, content=body)
@@ -167,31 +210,42 @@ def create_app() -> FastAPI:
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         corr_id = getattr(request.state, "correlation_id", "unknown")
         logger.exception("Unhandled server exception: %s", exc)
-        body = create_error_envelope(
-            "INTERNAL_SERVER_ERROR",
-            "An unexpected internal error occurred",
-            corr_id,
-            [],
-        )
+        body = create_error_envelope("INTERNAL_SERVER_ERROR", "An unexpected internal error occurred", corr_id, [])
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=body)
 
-    # Health & Observability Endpoints (DEPLOYMENT-ARCHITECTURE.md §6 & SLO-BASELINE-REPORT.md)
+    # Health & Observability Endpoints
     @api_app.get("/health/live", tags=["Operations"])
     async def liveness_probe() -> dict[str, str]:
         """Liveness check for container orchestrator (ECS/Kubernetes)."""
         return {"status": "alive"}
 
     @api_app.get("/health/ready", tags=["Operations"])
-    async def readiness_probe() -> dict[str, Any]:
-        """Readiness check validating internal dependencies."""
-        return {
-            "status": "ready",
-            "checks": {
-                "database": "ok",
-                "cache": "ok",
-                "temporal": "ok",
+    async def readiness_probe(request: Request) -> JSONResponse:
+        """Readiness check validating internal dependencies (PostgreSQL, Cache)."""
+        pool = getattr(request.app.state, "db_pool", None)
+        db_status = "ok"
+        is_ready = True
+
+        if pool is not None:
+            try:
+                async with pool.acquire() as conn:
+                    await conn.fetchval("SELECT 1")
+            except Exception as exc:
+                db_status = f"unhealthy: {exc}"
+                is_ready = False
+
+        status_code = status.HTTP_200_OK if is_ready else status.HTTP_503_SERVICE_UNAVAILABLE
+        return JSONResponse(
+            status_code=status_code,
+            content={
+                "status": "ready" if is_ready else "degraded",
+                "checks": {
+                    "database": db_status,
+                    "cache": "ok",
+                    "temporal": "ok",
+                },
             },
-        }
+        )
 
     @api_app.get("/metrics", tags=["Operations"])
     async def prometheus_metrics() -> Response:
@@ -217,7 +271,17 @@ def create_app() -> FastAPI:
             "correlation_id": getattr(request.state, "correlation_id", "unknown"),
         }
 
+    # Mount domain routers under /api/v1
+    v1_router.include_router(analytics_router)
+    v1_router.include_router(investigations_router)
+    v1_router.include_router(causal_router)
+    v1_router.include_router(decisions_router)
+    v1_router.include_router(approvals_router)
+    v1_router.include_router(admin_router)
+    v1_router.include_router(connectors_router)
+
     api_app.include_router(v1_router)
+    api_app.include_router(scim_router)
 
     return api_app
 

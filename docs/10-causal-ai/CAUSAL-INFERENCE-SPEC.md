@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 04 — Hypothesis, Causal Analysis, and Verification (Rails 10, 12)
 Owner: Causal AI Architecture / Econometrics Engineering
 Traceability: `BR-001`, `BR-002`, `FR-ML-003`, `FR-ML-004`, `INV-AI-001`, `INV-DATA-001`, `INV-TEN-001..003`, `NFR-AI-007`, `AC-006`, `AC-014`, `ADR-0011`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

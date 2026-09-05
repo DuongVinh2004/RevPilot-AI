@@ -1,7 +1,11 @@
 # AI Governance Contract
 
-Status: Proposed v0.1 — E02 specification output
+Status: Accepted v1.0
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 
+Owner: AI Governance Lead
 ## 1. Artifact Governance
 
 All prompts, graphs, tools, model routes, datasets, indexes, evaluators and model artifacts are immutable versioned artifacts with owner, source digest, intended capability, tenant eligibility, data classification, evaluation report and release state. A production-eligible artifact requires an approved release record; Proposed ADRs do not constitute production authorization.

@@ -1,7 +1,10 @@
 # Canonical Future Repository Topology
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
 Owner: Principal Architecture  
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Important: This document defines future paths. It does not authorize creating application source or infrastructure.
 
 ## Topology

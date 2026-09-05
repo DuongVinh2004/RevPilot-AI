@@ -6,6 +6,8 @@
  * - Propagation SLA: < 500ms
  */
 
+import { apiClient } from '../api/client';
+
 export class KillSwitchComponent {
   private container: HTMLElement;
 
@@ -50,28 +52,44 @@ export class KillSwitchComponent {
   }
 
   private attachEvents(): void {
-    const btn = document.getElementById("btn-killswitch-trigger");
+    const btn = document.getElementById("btn-killswitch-trigger") as HTMLButtonElement;
     const reasonInput = document.getElementById("killswitch-reason") as HTMLInputElement;
     const statusDiv = document.getElementById("killswitch-status");
 
     if (btn && reasonInput && statusDiv) {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const reason = reasonInput.value.trim();
         if (!reason) {
-          statusDiv.innerHTML = `<span style="color: #f87171; font-weight: bold;">Error: Mandatory reason required for audit ledger.</span>`;
+          statusDiv.innerHTML = `
+            <div class="alert alert-error">
+              ❌ Activation rejected: Mandatory audit reason required.
+            </div>
+          `;
           return;
         }
 
-        const confirmed = confirm("Are you sure you want to engage the GLOBAL KILL SWITCH? All action dispatch will immediately freeze.");
-        if (confirmed) {
+        btn.disabled = true;
+        btn.innerText = "Engaging Circuit Breaker...";
+
+        try {
+          const res = await apiClient.engageKillSwitch("GLOBAL", reason);
           statusDiv.innerHTML = `
-            <div style="background: #7f1d1d; padding: 1rem; border-radius: 6px; border: 1px solid #f87171; color: #fff;">
-              <strong>KILL SWITCH ENGAGED &bull; Propagation Latency: 142ms (&lt; 500ms SLA)</strong>
-              <p style="font-size: 0.85rem; margin-top: 0.5rem;">All active tool gateway egress sockets terminated. Reason logged: "${reason}".</p>
+            <div class="alert alert-error" style="border: 2px solid #ef4444; background: #450a0a;">
+              <strong>🛑 CIRCUIT BREAKER ENGAGED</strong><br/>
+              Kill Switch ID: <code>${res.kill_switch_id}</code><br/>
+              Propagation Latency: <strong>${res.propagation_latency_ms}ms</strong> (SLA &lt; 500ms Met)<br/>
+              Reason: ${res.reason}
             </div>
           `;
-          btn.setAttribute("disabled", "true");
-          btn.style.opacity = "0.5";
+          btn.innerText = "🛑 GLOBAL KILL SWITCH ENGAGED";
+        } catch (err: any) {
+          statusDiv.innerHTML = `
+            <div class="alert alert-error">
+              ❌ Failed to engage kill switch: ${err.message}
+            </div>
+          `;
+          btn.disabled = false;
+          btn.innerText = "🛑 ENGAGE GLOBAL KILL SWITCH";
         }
       });
     }

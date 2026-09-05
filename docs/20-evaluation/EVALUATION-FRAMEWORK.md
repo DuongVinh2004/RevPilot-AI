@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Phase: Phase 01 — Canonical Data and Synthetic Benchmark
 Owner: AI/ML Architecture + Evaluation Engineering
 Traceability: `BR-001`, `BR-002`, `FR-ML-001..004`, `FR-RCA-001..002`, `INV-DATA-001`, `INV-AI-001..002`, `NFR-AI-001..007`, `AC-001`, `AC-002`, `AC-006`, `AC-014`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

@@ -7,6 +7,7 @@ Owner Role: SRE Lead & Principal Platform Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `INV-TEN-001..003`, `INV-IAM-001..002`, `INV-SEC-001..003`, `INV-ACT-001..004`, `INV-WF-001..002`, `INV-AI-001..002`, `INV-EVD-001..002`, `INV-DATA-001..002`, `INV-AUD-001..002`, `INV-COST-001`, `INV-PRV-001`, `INV-REL-001..002`, `NFR-SEC-001..002`, `NFR-DUR-001`, `NFR-REL-001..002`, `NFR-TEN-001..002`, `NFR-AUD-001`, `NFR-COST-001..002`, `NFR-PRV-001..002`, `NFR-OBS-001..002`, `NFR-AI-001..007`, `AC-001..014`, `ADR-0001..0012`
+Version: v1.0
 
 ---
 

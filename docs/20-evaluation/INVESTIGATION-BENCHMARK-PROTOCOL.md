@@ -6,6 +6,9 @@ Scope: Phase 03 — Governed Evidence and Investigation (Rails 6–11)
 Owner: AI Evaluation Architecture / Principal Quality Engineering
 Measurement State: All numeric performance values are strictly `DESIGN TARGET` or `BENCHMARK GATE`. There are zero measured results reported herein (`AC-014`).
 Traceability: `BR-001`, `FR-INV-001..004`, `FR-EVD-001..003`, `FR-RCA-001..002`, `INV-AI-001..002`, `INV-EVD-001..002`, `INV-TEN-001..003`, `INV-COST-001`, `NFR-AI-001..004`, `NFR-DUR-001`, `NFR-COST-001`, `NFR-REL-001..002`, `AC-003`, `AC-004`, `AC-005`, `AC-013`, `AC-014`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

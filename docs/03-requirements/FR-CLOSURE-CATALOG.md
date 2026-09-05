@@ -1,7 +1,10 @@
 # Functional Requirement Closure Catalog
 
-Status: Proposed v0.2 — content complete, approval pending  
+Status: Accepted v1.0
 Owner: Product Architecture & Domain Leads  
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Approval required: Product Owner and Principal Architecture  
 Scope: Resolves the PRD-to-SRS coverage gap for IDs planned in `PRD.md` but previously absent from `SRS.md`.  
 Traceability: `PRD.md` §Functional epics, `SRS.md` §Business and functional requirements, `NFR-BASELINE.md`, `TEST-STRATEGY.md`

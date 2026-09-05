@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Scope: Phase 04 — Hypothesis, Causal Analysis, and Verification (Rails 11, 12)
 Owner: AI Platform Architecture / Formal Verification
 Traceability: `INV-AI-001`, `INV-AI-002`, `INV-SEC-002`, `INV-DATA-001`, `INV-EVD-001..002`, `INV-TEN-001..003`, `FR-RCA-002`, `AC-004`, `AC-013`, `ADR-0003`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

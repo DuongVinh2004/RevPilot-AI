@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Rail Alignment: Rail 2 (Tenant Context & Lifecycle) & Rail 5 (Persistence Isolation Foundation)
 Owner: Security Architecture + Tenancy Architecture
 Traceability: `INV-TEN-001`, `INV-TEN-002`, `INV-TEN-003`, `NFR-TEN-001`, `NFR-TEN-002`, `INV-REL-001`, `ADR-0001`, `ADR-0005`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ## Revision History
 

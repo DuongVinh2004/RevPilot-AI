@@ -1,7 +1,10 @@
 # Canonical Glossary
 
-Status: Proposed v0.1  
-Owner: Principal Architecture  
+Status: Accepted v1.0
+Owner: Principal Architecture
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Normative rule: Capitalized terms below have these meanings across RevPilot specifications. A local document may specialize but not contradict them.
 
 ## Identity and tenancy

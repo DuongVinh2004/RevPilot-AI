@@ -7,6 +7,7 @@ Date: 2026-09-04
 Approval record: execution/APPROVAL-RECORD-RUN-R03-001.md
 Scope: Canonical reconciliation rules for the documentation-completion phase.  
 Traceability: SPECIFICATION-PRECEDENCE, SRS, NFR-BASELINE, PRODUCTION-READINESS-GATE, DECISION-CLOSURE-REGISTER
+Version: v1.0
 
 > [!IMPORTANT]
 > This document makes documentation ambiguity explicit. It does not approve implementation, change executable policy, or convert any planned verification into an executed result.

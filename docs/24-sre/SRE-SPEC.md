@@ -8,6 +8,7 @@ Owner: SRE Lead & Platform Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `BR-004`, `INV-REL-001..002`, `INV-TEN-001..003`, `NFR-AVL-001`, `NFR-REL-001..002`, `NFR-TEN-001..002`, `NFR-REC-001`, `AC-010`, `ADR-0005`, `ADR-0008`, `ADR-0009`
+Version: v1.0
 
 ## Revision History
 

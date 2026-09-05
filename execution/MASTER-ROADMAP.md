@@ -1,6 +1,6 @@
 # RevPilot AI Master Roadmap
 
-Status: Accepted v1.0 — Phase 00–08 specifications complete; Rails 0–5 GREEN; Rails 6–18 LOCKED (947/947 tests pass); Phase 08 documentation closure complete (`DOCUMENTATION COMPLETE / VALIDATION PENDING / GO-LIVE BLOCKED`).
+Status: Accepted v1.1 — Phase 00–08 specifications and micro-tasks complete; Rails 0–18 GREEN (994/994 tests pass); Empirical Staging Validation Pending.
 
 Execution is governed by `execution/MICRO-TASK-RAIL-SYSTEM.md`. The phases below are planning containers, not tasks. Each phase is decomposed as `EPIC -> FEATURE -> MICRO-TASK`; only admitted micro-tasks may be sent to Antigravity.
 

@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Phase: Phase 01 — Canonical Data and Synthetic Benchmark
 Owner: Data Platform Architecture
 Traceability: `BR-001`, `BR-004`, `INV-TEN-001`, `INV-TEN-002`, `INV-DATA-001`, `INV-DATA-002`, `NFR-TEN-001`, `NFR-AUD-001`, `NFR-PRV-001`, `ADR-0004`, `ADR-0005`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

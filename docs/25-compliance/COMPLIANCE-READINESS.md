@@ -8,6 +8,7 @@ Owners: Legal & Compliance Lead & Security Architect
 Approver: Dương Vinh
 Last Reviewed Date: 2026-09-03
 Traceability: `BR-004`, `INV-TEN-001..003`, `INV-PRV-001`, `INV-AUD-001..002`, `NFR-PRV-001`, `NFR-PRV-002`, `ADR-0005`, `ADR-0010`
+Version: v1.0
 
 ---
 

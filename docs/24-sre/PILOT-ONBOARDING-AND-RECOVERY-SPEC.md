@@ -6,6 +6,9 @@ Phase: Phase 07 — Multi-Tenant Pilot, Connectors, and Tenant Operations
 Rail Alignment: Rail 17 (Observability/FinOps/Audit), Rail 2 (Tenant Context & Lifecycle), Rail 5 (Persistence Isolation)
 Owners: SRE Architecture, Security Operations, Tenancy Operations
 Traceability: `BR-004`, `FR-CTL-001`, `FR-CTL-003`, `INV-TEN-001`, `INV-TEN-002`, `INV-REL-001`, `INV-REL-002`, `NFR-TEN-001`, `NFR-TEN-002`, `NFR-REC-001`, `NFR-AUD-001`, `AC-010`, `ADR-0005`, `ADR-0009`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

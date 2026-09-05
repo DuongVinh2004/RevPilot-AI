@@ -39,6 +39,23 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+
+  migrator:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: revpilot-migrator
+    command: ["sh", "-c", "python scripts/migrate.py upgrade head && python scripts/seed_dev_data.py"]
+    environment:
+      - DATABASE_URL=postgresql://revpilot_migrator:placeholder_migrator_pw@postgres:5432/revpilot_db
+    networks:
+      - persistence_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
 
   workflow-worker:
     build:

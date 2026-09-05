@@ -4,6 +4,7 @@ Status: Accepted
 Date: 2026-09-03  
 Owner: AI Platform Architecture  
 Approver: Dương Vinh
+Version: v1.0
 
 ## Context
 

@@ -6,6 +6,9 @@ Scope: Phase 05 — Churn, Uplift, and Decision Optimization (Rails 12, 13)
 Owner: AI/ML Architecture / Econometrics
 Measurement State: All figures herein are `BENCHMARK GATES` and `DESIGN TARGETS`. There are zero measured results reported herein (`AC-014`).
 Traceability: `BR-002`, `BR-005`, `FR-ML-003`, `FR-ML-004`, `INV-AI-001`, `INV-DATA-001`, `INV-TEN-001..003`, `NFR-AI-006..007`, `NFR-COST-001`, `AC-006`, `AC-007`, `AC-014`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 

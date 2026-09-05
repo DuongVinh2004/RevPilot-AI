@@ -4,6 +4,7 @@ Status: Accepted
 Date: 2026-09-04  
 Owner: Principal Architecture + Security Architecture  
 Approver: Dương Vinh  
+Version: v1.0
 
 ## Context
 

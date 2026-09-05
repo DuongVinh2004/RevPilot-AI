@@ -1,9 +1,13 @@
 # RevPilot AI Threat Model
 
-Status: Proposed v0.1  
+Status: Accepted v1.0
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Date: 2026-09-04
 Basis: User-supplied target architecture and the Foundation Pack; no application source exists yet.  
 Review note: This architecture pass was performed sequentially because independent delegation was not available for this task. Scenarios are design hypotheses, not validated vulnerabilities.
 
+Owner: Security Architecture
 ## 1. Overview
 
 RevPilot is a multi-tenant revenue decision-and-action platform. Users enter through the web/API. A product API creates a durable Temporal investigation. An agent runtime plans bounded read operations against analytics, RAG, ML, and causal services. Recommendations pass through policy and human approval. All side effects go through a Tool Gateway that brokers short-lived credentials to external CRM/ERP/WMS/messaging systems. Connectors ingest external data into governed raw and canonical stores. A Control Plane supplies tenant, identity, secrets, quota, audit, and release controls. This flow is the proposed design recorded in `docs/04-system-architecture/SYSTEM-ARCHITECTURE.md:5`, `:11`, and `:62`; those references are design evidence, not proof of an implemented control.

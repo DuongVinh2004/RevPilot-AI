@@ -29,6 +29,8 @@ from revpilot.modules.investigation.workflows import (
     validate_investigation_scope_activity,
     verify_evidence_and_hypotheses_activity,
 )
+from revpilot.modules.action.saga.workflow import SafeActionSagaWorkflow
+from revpilot.modules.action.saga.activities import compensate_step_activity
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
@@ -59,6 +61,7 @@ class WorkerConfig:
         self.host = os.getenv("TEMPORAL_HOST", "localhost:7233")
         self.namespace = os.getenv("TEMPORAL_NAMESPACE", "default")
         self.task_queue = os.getenv("TEMPORAL_TASK_QUEUE", INVESTIGATION_WORKFLOW_QUEUE)
+        self.database_url = os.getenv("DATABASE_URL")
         self.max_concurrent_activities = int(os.getenv("MAX_CONCURRENT_ACTIVITIES", "100"))
         self.max_concurrent_workflows = int(os.getenv("MAX_CONCURRENT_WORKFLOWS", "50"))
 
@@ -75,6 +78,16 @@ async def run_worker(config: WorkerConfig | None = None, stop_event: asyncio.Eve
         cfg.task_queue,
     )
 
+    # Initialize Database pool if configured
+    pool = None
+    if cfg.database_url:
+        try:
+            from revpilot.infrastructure.database import create_database_pool
+            pool = await create_database_pool(cfg.database_url)
+            logger.info("Worker database connection pool initialized.")
+        except Exception as exc:
+            logger.warning("Worker DB connection deferred: %s", exc)
+
     loop = asyncio.get_running_loop()
 
     def _handle_signal(sig_name: str) -> None:
@@ -85,17 +98,36 @@ async def run_worker(config: WorkerConfig | None = None, stop_event: asyncio.Eve
         try:
             loop.add_signal_handler(sig, lambda s=sig.name: _handle_signal(s))
         except (NotImplementedError, RuntimeError):
-            # Windows or non-main thread might not support signal handlers
             pass
 
     logger.info("Workflows registered: %s", [w.__name__ for w in REGISTERED_WORKFLOWS])
     logger.info("Activities registered: %s", [a.__name__ for a in REGISTERED_ACTIVITIES])
-    logger.info("Worker entering ready state. Waiting for tasks...")
 
-    # Simulates / runs event loop until shutdown requested
+    # Try connecting to Temporal cluster
+    client = None
     try:
+        from temporalio.client import Client
+        from temporalio.worker import Worker
+        client = await Client.connect(cfg.host, namespace=cfg.namespace)
+        worker = Worker(
+            client,
+            task_queue=cfg.task_queue,
+            workflows=REGISTERED_WORKFLOWS,
+            activities=REGISTERED_ACTIVITIES,
+            max_concurrent_activities=cfg.max_concurrent_activities,
+            max_concurrent_workflow_tasks=cfg.max_concurrent_workflows,
+        )
+        logger.info("Connected to Temporal cluster. Polling on task queue '%s'...", cfg.task_queue)
+        await worker.run()
+    except Exception as exc:
+        logger.warning(
+            "Temporal cluster unavailable (%s). Running in standalone / testing standby mode.",
+            exc,
+        )
         await shutdown.wait()
     finally:
+        if pool is not None:
+            await pool.close()
         logger.info("Temporal Workflow Worker drained and stopped successfully.")
 
 

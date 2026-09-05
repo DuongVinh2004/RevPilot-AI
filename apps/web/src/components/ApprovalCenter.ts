@@ -3,46 +3,11 @@
  * Conforms to:
  * - docs/16-tool-gateway/APPROVAL-ACTION-LOOP-SPEC.md §3..§4
  * - docs/28-frontend/FRONTEND-SPEC.md
- * - DEC-008, DEC-009, ADR-0012
  * - Strict Invariant: Zero Agent Self-Approval (INV-ACT-003)
  */
 
-export interface MockApprovalItem {
-  id: string;
-  action_type: string;
-  tier: "TIER_1" | "TIER_2" | "TIER_3";
-  targets: string[];
-  cost_usd: number;
-  policy_version: string;
-  digest: string;
-  expires_in: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-}
-
-export const MOCK_PENDING_APPROVALS: MockApprovalItem[] = [
-  {
-    id: "appr_01h8x9m2k4p8",
-    action_type: "ISSUE_SERVICE_CREDIT_VOUCHER",
-    tier: "TIER_2",
-    targets: ["cust_enterprise_alpha", "sub_arr_450k"],
-    cost_usd: 2500.0,
-    policy_version: "2026.09.v1",
-    digest: "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-    expires_in: "14m 32s",
-    status: "PENDING",
-  },
-  {
-    id: "appr_01h8x9n1a9b2",
-    action_type: "OVERRIDE_CARRIER_SLA_PENALTY",
-    tier: "TIER_3",
-    targets: ["carrier_global_freight", "contract_2025_exp"],
-    cost_usd: 15400.0,
-    policy_version: "2026.09.v1",
-    digest: "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    expires_in: "4m 10s",
-    status: "PENDING",
-  },
-];
+import { apiClient } from '../api/client';
+import { ApprovalRequestRecord } from '../api/types';
 
 export class ApprovalCenterComponent {
   private container: HTMLElement;
@@ -53,115 +18,145 @@ export class ApprovalCenterComponent {
     this.container = el;
   }
 
-  public render(items: MockApprovalItem[] = MOCK_PENDING_APPROVALS): void {
-    if (items.length === 0) {
-      this.container.innerHTML = `
-        <div class="empty-state" role="status">
-          <p>No pending approvals requiring human signature. All queues clean.</p>
-        </div>
-      `;
-      return;
-    }
+  public async render(): Promise<void> {
+    this.container.innerHTML = `
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Pending Human Approvals</h2>
+        <p style="color: var(--text-muted); font-size: 0.875rem;">
+          Mutations exceeding policy authority tiers require cryptographically verified human operator signatures.
+        </p>
+      </div>
+      <div id="approvals-cards-container">
+        <p style="color: var(--text-muted); font-size: 0.875rem;">Loading approvals queue...</p>
+      </div>
+    `;
 
-    this.container.innerHTML = items
-      .map(
-        (item) => `
-        <article class="approval-card" id="card-${item.id}" aria-labelledby="title-${item.id}">
-          <div class="card-header">
+    try {
+      const response = await apiClient.getApprovals();
+      const listContainer = document.getElementById('approvals-cards-container');
+      if (!listContainer) return;
+
+      if (!response.items || response.items.length === 0) {
+        listContainer.innerHTML = '<p style="color: var(--text-muted);">No pending approvals in queue.</p>';
+        return;
+      }
+
+      listContainer.innerHTML = response.items.map((item: ApprovalRequestRecord) => `
+        <div class="card" id="card-${item.id}" style="margin-bottom: 1.5rem; border-left: 4px solid var(--accent-orange);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
             <div>
-              <span class="badge badge-${item.tier.toLowerCase()}">${item.tier}</span>
-              <strong id="title-${item.id}" style="margin-left: 0.5rem;">${item.action_type}</strong>
+              <span class="badge badge-warning">${item.required_approval_tier}</span>
+              <span style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;">${item.id}</span>
+              <h3 style="font-size: 1.125rem; font-weight: 600; margin-top: 0.25rem;">${item.action_type}</h3>
             </div>
-            <span class="badge badge-rc" aria-label="Expires in ${item.expires_in}">⏱️ Expires: ${item.expires_in}</span>
-          </div>
-
-          <div class="card-body">
-            <p><strong>Target Entities:</strong> <code>${item.targets.join(", ")}</code></p>
-            <p><strong>Estimated Impact / Cost:</strong> $${item.cost_usd.toLocaleString("en-US", { minimumFractionDigits: 2 })} USD</p>
-            <p><strong>Governing Policy:</strong> ${item.policy_version}</p>
-            
-            <div class="digest-box" aria-label="Sealed Cryptographic Payload Digest">
-              <div>🔒 <strong>SHA-256 Payload Digest Binding (DEC-009):</strong></div>
-              <code>${item.digest}</code>
+            <div style="text-align: right;">
+              <span style="font-size: 1.125rem; font-weight: 700; color: var(--text-main);">$${(item.cost_usd || item.estimated_cost_usd || 0).toLocaleString()}</span>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Expires: ${item.expires_in || '24h'}</div>
             </div>
           </div>
 
-          <div class="action-buttons" role="group" aria-label="Approval Actions for ${item.id}">
-            <button class="btn btn-approve" data-id="${item.id}" data-digest="${item.digest}" aria-label="Approve ${item.action_type}">
-              ✓ Sign &amp; Approve
-            </button>
-            <button class="btn btn-dryrun" data-id="${item.id}" aria-label="Simulate Dry Run for ${item.action_type}">
-              ⚙️ Pre-Flight Dry Run
-            </button>
-            <button class="btn btn-reject" data-id="${item.id}" aria-label="Reject ${item.action_type}">
-              ✕ Reject
-            </button>
+          <div style="background-color: var(--bg-card); padding: 0.75rem; border-radius: 4px; font-family: monospace; font-size: 0.75rem; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted);">Target Entities: ${(item.target_entity_refs || []).join(', ')}</div>
+            <div style="color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              Payload Digest: ${item.digest || item.payload_digest || 'sha256:verified_digest'}
+            </div>
           </div>
-        </article>
-      `
-      )
-      .join("");
 
-    this.attachEvents();
-  }
-
-  private attachEvents(): void {
-    this.container.querySelectorAll(".btn-approve").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const target = e.currentTarget as HTMLButtonElement;
-        const id = target.getAttribute("data-id");
-        this.handleApprove(id!);
-      });
-    });
-
-    this.container.querySelectorAll(".btn-reject").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const target = e.currentTarget as HTMLButtonElement;
-        const id = target.getAttribute("data-id");
-        this.handleReject(id!);
-      });
-    });
-
-    this.container.querySelectorAll(".btn-dryrun").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const target = e.currentTarget as HTMLButtonElement;
-        const id = target.getAttribute("data-id");
-        this.handleDryRun(id!);
-      });
-    });
-  }
-
-  private handleApprove(id: string): void {
-    const card = document.getElementById(`card-${id}`);
-    if (card) {
-      card.style.borderColor = "var(--status-green)";
-      const actions = card.querySelector(".action-buttons");
-      if (actions) {
-        actions.innerHTML = `
-          <div role="status" style="color: var(--status-green); font-weight: bold;">
-            ✓ Approved & Signed by Human Operator (Digest Verified). Dispatched to Saga Ledger.
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;" id="actions-${item.id}">
+            <button class="btn btn-outline btn-dryrun" data-id="${item.id}">Execute Dry-Run</button>
+            <button class="btn btn-danger btn-reject" data-id="${item.id}">Reject</button>
+            <button class="btn btn-primary btn-approve" data-id="${item.id}" data-digest="${item.digest || item.payload_digest}">Sign & Grant Approval</button>
           </div>
-        `;
+        </div>
+      `).join('');
+
+      this.bindEvents();
+
+    } catch (err: any) {
+      const listContainer = document.getElementById('approvals-cards-container');
+      if (listContainer) {
+        listContainer.innerHTML = `<div class="card alert-error"><p>Failed to load approvals: ${err.message}</p></div>`;
       }
     }
   }
 
-  private handleReject(id: string): void {
-    const card = document.getElementById(`card-${id}`);
-    if (card) {
-      card.style.borderColor = "var(--status-red)";
-      const actions = card.querySelector(".action-buttons");
-      if (actions) {
-        actions.innerHTML = `
-          <div role="status" style="color: var(--status-red); font-weight: bold;">
-            ✕ Rejected by Human Operator. Action Terminated.
-          </div>
-        `;
-      }
-    }
-  }
+  private bindEvents(): void {
+    // Approve
+    this.container.querySelectorAll('.btn-approve').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-id');
+        const digest = target.getAttribute('data-digest') || '';
+        if (!id) return;
 
-  private handleDryRun(id: string): void {
-    alert(`[DRY-RUN SIMULATION] Execution parity verified for ${id}. External mutations: 0. Zero side effects.`);
+        target.disabled = true;
+        target.innerText = 'Signing...';
+
+        try {
+          await apiClient.approveAction(id, digest);
+          const card = document.getElementById(`card-${id}`);
+          if (card) {
+            card.style.borderLeftColor = 'var(--accent-green)';
+            const actionsDiv = document.getElementById(`actions-${id}`);
+            if (actionsDiv) {
+              actionsDiv.innerHTML = '<span style="color: var(--accent-green); font-weight: 600; font-size: 0.875rem;">✓ Approved & Cryptographically Signed</span>';
+            }
+          }
+        } catch (err: any) {
+          alert(`Approval failed: ${err.message}`);
+          target.disabled = false;
+          target.innerText = 'Sign & Grant Approval';
+        }
+      });
+    });
+
+    // Reject
+    this.container.querySelectorAll('.btn-reject').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-id');
+        if (!id) return;
+
+        const reason = prompt('Enter rejection reason:') || 'Rejected by operator';
+        target.disabled = true;
+
+        try {
+          await apiClient.rejectAction(id, reason);
+          const card = document.getElementById(`card-${id}`);
+          if (card) {
+            card.style.borderLeftColor = 'var(--accent-red)';
+            const actionsDiv = document.getElementById(`actions-${id}`);
+            if (actionsDiv) {
+              actionsDiv.innerHTML = `<span style="color: var(--accent-red); font-size: 0.875rem;">✗ Rejected (${reason})</span>`;
+            }
+          }
+        } catch (err: any) {
+          alert(`Rejection failed: ${err.message}`);
+          target.disabled = false;
+        }
+      });
+    });
+
+    // Dry-run
+    this.container.querySelectorAll('.btn-dryrun').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-id');
+        if (!id) return;
+
+        target.disabled = true;
+        target.innerText = 'Simulating...';
+
+        try {
+          const res = await apiClient.dryRunAction(id);
+          alert(`Dry Run Result: ${res.status}\nExternal Side Effects: ${res.external_side_effects}`);
+        } catch (err: any) {
+          alert(`Dry Run failed: ${err.message}`);
+        } finally {
+          target.disabled = false;
+          target.innerText = 'Execute Dry-Run';
+        }
+      });
+    });
   }
 }

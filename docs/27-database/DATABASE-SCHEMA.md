@@ -5,6 +5,9 @@ Initiative: REVPILOT
 Rail Alignment: Rail 5 (Persistence Isolation)
 Owner: Data Architecture + Security Architecture
 Traceability: `INV-TEN-001`, `INV-TEN-002`, `INV-TEN-003`, `INV-DATA-001`, `INV-DATA-002`, `NFR-TEN-001`, `NFR-TEN-002`, `ADR-0001`, `ADR-0004`, `ADR-0005`
+Approver: Duong Vinh (Repository Owner)
+Version: v1.0
+Last Reviewed Date: 2026-09-04
 
 ---
 
