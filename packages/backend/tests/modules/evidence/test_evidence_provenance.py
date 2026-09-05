@@ -6,8 +6,12 @@ Verifies AC-P03-004-01: Deterministic bundle digests, citation spans, and immuta
 
 from __future__ import annotations
 import sys
+from typing import TYPE_CHECKING
 import pytest
 from pydantic import ValidationError
+
+if TYPE_CHECKING:
+    from revpilot.modules.evidence.domain.models import CitationSpan, EvidenceBundle
 
 from revpilot.shared.identifiers import TenantId, UUIDv7, OrganizationId
 from revpilot.shared.context import TenantContext

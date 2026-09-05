@@ -50,6 +50,10 @@ class UtcDateTime:
         """Construct from datetime, converting to UTC if aware."""
         return cls(dt)
 
+    def as_datetime(self) -> datetime:
+        """Return raw timezone-aware datetime object."""
+        return self.value
+
     def isoformat(self) -> str:
         """Return canonical ISO-8601 string representation ending in Z."""
         return self.value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")

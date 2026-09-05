@@ -90,3 +90,80 @@ class PostgresEvidenceRepository:
                 item["citation_span"] = json.loads(item["citation_span"]) if isinstance(item["citation_span"], str) else item["citation_span"]
                 results.append(item)
             return results
+
+    async def save_document_chunk(
+        self, context: TenantContext, chunk_data: dict[str, Any]
+    ) -> str:
+        """Persist a DocumentChunk with vector embedding."""
+        chunk_id = chunk_data["id"]
+        now = UtcDateTime.now().as_datetime()
+        meta = chunk_data.get("metadata", {})
+        emb = chunk_data.get("embedding")
+        emb_str = f"[{','.join(str(x) for x in emb)}]" if emb is not None else None
+
+        query = """
+            INSERT INTO revpilot.document_chunks (
+                tenant_id, id, document_id, chunk_index, content, metadata,
+                classification, effective_from, effective_to, created_at, embedding
+            ) VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+            )
+            ON CONFLICT (tenant_id, id) DO UPDATE SET
+                content = EXCLUDED.content,
+                metadata = EXCLUDED.metadata,
+                effective_to = EXCLUDED.effective_to,
+                embedding = EXCLUDED.embedding
+            RETURNING id;
+        """
+        async with TenantDatabaseSession(self.pool, context) as conn:
+            await conn.execute(
+                query,
+                str(context.tenant_id),
+                chunk_id,
+                chunk_data["document_id"],
+                int(chunk_data.get("chunk_index", 0)),
+                chunk_data["content"],
+                json.dumps(meta),
+                chunk_data.get("classification", "INTERNAL"),
+                chunk_data.get("effective_from", now),
+                chunk_data.get("effective_to"),
+                now,
+                emb_str,
+            )
+        return chunk_id
+
+    async def search_similar_chunks(
+        self,
+        context: TenantContext,
+        query_embedding: list[float],
+        top_k: int = 5,
+        as_of: UtcDateTime | None = None,
+    ) -> list[dict[str, Any]]:
+        """
+        Execute vector similarity search using pgvector cosine distance (<=>).
+        Filtered strictly by tenant context via RLS and effective temporal window.
+        """
+        emb_str = f"[{','.join(str(x) for x in query_embedding)}]"
+        as_of_dt = as_of.as_datetime() if as_of else UtcDateTime.now().as_datetime()
+
+        query = """
+            SELECT
+                id, tenant_id, document_id, chunk_index, content, metadata,
+                classification, effective_from, effective_to,
+                (embedding <=> $1::vector) AS distance
+            FROM revpilot.document_chunks
+            WHERE (effective_from <= $2)
+              AND (effective_to IS NULL OR effective_to > $2)
+            ORDER BY embedding <=> $1::vector ASC
+            LIMIT $3;
+        """
+        async with TenantDatabaseSession(self.pool, context) as conn:
+            rows = await conn.fetch(query, emb_str, as_of_dt, top_k)
+            results = []
+            for r in rows:
+                item = dict(r)
+                item["metadata"] = json.loads(item["metadata"]) if isinstance(item["metadata"], str) else item["metadata"]
+                item["similarity_score"] = 1.0 - float(item["distance"]) if item.get("distance") is not None else 1.0
+                results.append(item)
+            return results
+

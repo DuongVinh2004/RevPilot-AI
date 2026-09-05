@@ -42,6 +42,7 @@ from apps.api.routers.approvals import router as approvals_router
 from apps.api.routers.admin import router as admin_router
 from apps.api.routers.connectors import router as connectors_router
 from apps.api.routers.scim import router as scim_router
+from apps.api.routers.mfa import router as mfa_router
 
 logger = logging.getLogger("revpilot.api")
 
@@ -93,6 +94,23 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         app.state.connector_repo = PostgresConnectorRepository(pool)
         app.state.connector_inbox = PostgresConnectorInbox(pool)
         app.state.audit_log = PostgresAuditLog(pool)
+    else:
+        # Hermetic local/test initialization using InMemoryAuthAdapter (INV-IAM-001)
+        from revpilot.modules.identity.adapters.in_memory_auth_adapter import InMemoryAuthAdapter
+        dev_auth = InMemoryAuthAdapter()
+        dev_auth.issue_test_token(
+            "token_usr_analyst_001_tnt_dev_001",
+            sub="usr_analyst_001",
+            tenant_id="tnt_dev_001",
+            roles=frozenset(["OPERATOR", "ANALYST", "INVESTIGATOR"]),
+        )
+        dev_auth.issue_test_token(
+            "token_usr_admin_001_tnt_dev_001",
+            sub="usr_admin_001",
+            tenant_id="tnt_dev_001",
+            roles=frozenset(["SYSTEM_ADMIN", "ADMIN"]),
+        )
+        app.state.auth_adapter = dev_auth
 
     yield
 
@@ -127,15 +145,35 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Initialize default fail-closed InMemoryAuthAdapter for tests/local initialization
+    from revpilot.modules.identity.adapters.in_memory_auth_adapter import InMemoryAuthAdapter
+    dev_auth = InMemoryAuthAdapter()
+    dev_auth.issue_test_token(
+        "token_usr_analyst_001_tnt_dev_001",
+        sub="usr_analyst_001",
+        tenant_id="tnt_dev_001",
+        roles=frozenset(["OPERATOR", "ANALYST", "INVESTIGATOR"]),
+    )
+    dev_auth.issue_test_token(
+        "token_usr_admin_001_tnt_dev_001",
+        sub="usr_admin_001",
+        tenant_id="tnt_dev_001",
+        roles=frozenset(["SYSTEM_ADMIN", "ADMIN"]),
+    )
+    api_app.state.auth_adapter = dev_auth
+
     # 1. Audit Middleware
     api_app.add_middleware(AuditMiddleware)
 
-    # 2. CORS
+    # 2. CORS (INV-SEC-002: Disallow wildcard with credentials)
+    raw_origins = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+    cors_origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
+    allow_wildcard = "*" in cors_origins
     api_app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
+        allow_origins=["*"] if allow_wildcard else cors_origins,
+        allow_credentials=not allow_wildcard,
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["*"],
     )
 
@@ -279,6 +317,7 @@ def create_app() -> FastAPI:
     v1_router.include_router(approvals_router)
     v1_router.include_router(admin_router)
     v1_router.include_router(connectors_router)
+    v1_router.include_router(mfa_router)
 
     api_app.include_router(v1_router)
     api_app.include_router(scim_router)

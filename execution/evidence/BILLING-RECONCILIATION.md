@@ -2,7 +2,7 @@
 
 Evidence ID: EVD-BIL-001  
 Requirements Covered: INV-COST-001, NFR-COST-001..002, FINOPS-SPEC.md, BILLING-SPEC.md  
-Status: VERIFIED / PASS  
+Status: SIMULATED / PENDING_LEDGER_SYNC (AC-014)  
 Owner: FinOps Lead & Principal Platform Architect  
 Date: 2026-09-04  
 
@@ -24,24 +24,26 @@ Date: 2026-09-04
 
 ---
 
-## 3. Reconciliation Verification Matrix
+## 3. Reconciliation Verification Matrix (Synthetic Fixture Drill)
+> [!NOTE]
+> Per AC-014 (Anti-Fabrication Invariant), these numbers reflect synthetic in-memory fixtures (`tests/finops/test_multidim_attribution_reconcile.py`), NOT live cloud vendor API or real ERP financial reconciliation.
 
-| Audit Check | Target Standard | Measured Drill Result | Status |
+| Audit Check | Target Standard | Simulated Drill Result | Status |
 |---|---|---|---|
-| **Multi-Dimensional Attribution**| Spend attribution matches provider bill | $125k recorded vs $125.3k bill (0.24% gap) | PASS |
-| **Tolerance Enforcement** | Variance <= 0.5% | 0.2394% <= 0.5% verified | PASS |
-| **Breach Detection** | Variance > 0.5% rejected | Raises FINANCIAL_VARIANCE_BREACH (422) | PASS |
-| **Multi-Tenant Attribution Leakage**| 100% allocated across tenants | 0.00% unallocated leakage | PASS |
-| **Atomic Spend Quota Locking** | 0 race-condition quota exceedances under load | 0 breaches under 500 concurrent threads | PASS |
+| **Multi-Dimensional Attribution**| Spend attribution matches provider bill | $125k recorded vs $125.3k bill (0.24% gap) | SIMULATED_PASS |
+| **Tolerance Enforcement** | Variance <= 0.5% | 0.2394% <= 0.5% verified | SIMULATED_PASS |
+| **Breach Detection** | Variance > 0.5% rejected | Raises FINANCIAL_VARIANCE_BREACH (422) | SIMULATED_PASS |
+| **Multi-Tenant Attribution Leakage**| 100% allocated across tenants | 0.00% unallocated leakage | SIMULATED_PASS |
+| **Atomic Spend Quota Locking** | 0 race-condition quota exceedances under load | 0 breaches under 500 concurrent threads | SIMULATED_PASS |
 
 ---
 
 ## 4. Empirical Evidence Reference
-- Test execution command: `py -3.14 -m pytest tests/finops/test_multidim_attribution_reconcile.py tests/finops/test_spend_atomic_race_condition.py -v`
-- Execution outcome: 100% PASS (Usage matches synthetic provider bill with <= 0.5% gap, zero cross-tenant spend attribution leakage).
+- Test execution command: `python -m pytest tests/finops/test_multidim_attribution_reconcile.py tests/finops/test_quota_atomic_reservation_race.py -v`
+- Execution outcome: 100% PASS (Usage matches synthetic provider bill with <= 0.5% gap in unit tests; live vendor invoice reconciliation pending).
 
 ---
 
 ## 5. Certification and Sign-Off
-- **Certification**: VERIFIED / EMPIRICAL EVIDENCE PASS.
-- **Invariants Verified**: `INV-COST-001` (Bounded spend variance), `NFR-COST-001..002`, `TC-P08-021`.
+- **Certification**: SIMULATED / PENDING_LEDGER_SYNC (AC-014).
+- **Invariants Verified**: `INV-COST-001` (Bounded spend variance logic verified), `NFR-COST-001..002`, `TC-P08-021`.

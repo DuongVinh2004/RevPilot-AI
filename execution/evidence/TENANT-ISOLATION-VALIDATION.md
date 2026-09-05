@@ -2,7 +2,7 @@
 
 Evidence ID: EVD-TEN-001  
 Requirements Covered: INV-TEN-001, INV-TEN-002, INV-TEN-003, NFR-TEN-001, NFR-TEN-002  
-Status: VERIFIED / PASS  
+Status: VERIFIED_UNIT_TESTS / PENDING_PG_CONTAINER_RLS (AC-014)  
 Owner: Tenancy Lead & Principal Security Architect  
 Date: 2026-09-04  
 
@@ -18,7 +18,7 @@ Validate strict multi-tenant isolation under all operating conditions:
 
 ## 2. Test Topology
 - **Layer 1 (Domain / In-Memory)**: Python shared kernel `TenantId`, `TenantContext`, in-memory tenant repository adapter (`InMemoryTenantRepository`).
-- **Layer 2 (PostgreSQL Persistence / RLS)**: PostgreSQL Row-Level Security (RLS) simulation with session context `app.current_tenant_id` (`tests/security/test_persistence_isolation_negative.py`).
+- **Layer 2 (PostgreSQL Persistence / RLS Simulation)**: PostgreSQL Row-Level Security (RLS) simulation with session context `app.current_tenant_id` (`tests/security/test_persistence_isolation_negative.py`). Live standalone PostgreSQL container RLS pending CI stage.
 - **Layer 3 (Concurrency Probe Under Load)**: 500 concurrent worker threads executing cross-tenant queries under synthetic multi-tenant load (`tests/load/test_rls_concurrency_isolation.py`).
 
 ---
@@ -37,11 +37,11 @@ Validate strict multi-tenant isolation under all operating conditions:
 ---
 
 ## 4. Empirical Evidence Reference
-- Test execution command: `py -3.14 -m pytest tests/tenancy/test_tenant_isolation_negative.py tests/load/test_rls_concurrency_isolation.py tests/recovery/test_tenant_scoped_recovery.py -v`
-- Execution outcome: 100% PASS (0 leaked rows across 500 concurrent worker threads, zero cross-tenant query leakage).
+- Test execution command: `python -m pytest tests/tenancy/test_tenant_isolation_negative.py tests/load/test_rls_concurrency_isolation.py tests/recovery/test_tenant_scoped_recovery.py -v`
+- Execution outcome: 100% PASS (0 leaked rows across 500 concurrent worker threads, zero cross-tenant query leakage in domain/memory tests; live PostgreSQL RLS test pending).
 
 ---
 
 ## 5. Certification and Sign-Off
-- **Certification**: VERIFIED / EMPIRICAL EVIDENCE PASS.
-- **Invariants Verified**: `INV-TEN-001` (Zero cross-tenant leakage), `INV-TEN-002` (Mandatory context binding), `AC-P08-006-02`.
+- **Certification**: VERIFIED_UNIT_TESTS / PENDING_PG_CONTAINER_RLS (AC-014).
+- **Invariants Verified**: `INV-TEN-001` (Zero cross-tenant leakage in test domain), `INV-TEN-002` (Mandatory context binding), `AC-P08-006-02`.

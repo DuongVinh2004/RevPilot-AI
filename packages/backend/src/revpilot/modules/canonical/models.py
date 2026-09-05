@@ -48,8 +48,6 @@ _EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
 _COUNTRY_CODE_REGEX = re.compile(r"^[A-Z]{2}$")
 _HEX64_REGEX = re.compile(r"^[a-fA-F0-9]{64}$")
 
-T = TypeVar("T", bound="CanonicalRecord")
-
 
 class CanonicalValidationError(ValidationError):
     """Domain validation error for canonical data contracts."""
