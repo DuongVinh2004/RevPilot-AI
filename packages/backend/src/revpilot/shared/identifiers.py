@@ -23,7 +23,6 @@ class EntityId:
     _prefix: ClassVar[str] = ""
 
     def __init_subclass__(cls, prefix: str = "", **kwargs: object) -> None:
-        super().__init_subclass__(**kwargs)
         cls._prefix = prefix
 
     def __post_init__(self) -> None:
