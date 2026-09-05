@@ -12,6 +12,10 @@ dependencies = [
     "fastapi>=0.110.0",
     "pydantic>=2.6.0",
     "pydantic-settings>=2.2.0",
+    "sqlalchemy>=2.0.0",
+    "asyncpg>=0.29.0",
+    "alembic>=1.13.0",
+    "redis>=5.0.0",
 ]
 
 [project.optional-dependencies]

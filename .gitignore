@@ -58,7 +58,7 @@ Thumbs.db
 *.key
 *.cert
 *.pfx
-secrets/
+/secrets/
 *.local.env
 .env.local
 .env.production
