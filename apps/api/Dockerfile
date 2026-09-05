@@ -2,7 +2,7 @@
 # Conforms to docs/30-deployment/DEPLOYMENT-ARCHITECTURE.md §6 and AC-DEP-01
 
 # Stage 1: Build & Dependency Resolution
-FROM python:3.12-slim AS builder
+FROM python:3.14-slim AS builder
 
 WORKDIR /build
 
@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir .
 
 # Stage 2: Minimal Distroless/Slim Production Runtime
-FROM python:3.12-slim AS runner
+FROM python:3.14-slim AS runner
 
 WORKDIR /app
 
