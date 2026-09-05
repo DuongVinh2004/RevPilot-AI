@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerabilities
+    url: https://github.com/DuongVinh2004/RevPilot-AI/security/advisories/new
+    about: Please report security issues privately through our security advisory form.
+  - name: Platform Documentation
+    url: https://github.com/DuongVinh2004/RevPilot-AI/tree/main/docs
+    about: Read architectural specifications and domain models.

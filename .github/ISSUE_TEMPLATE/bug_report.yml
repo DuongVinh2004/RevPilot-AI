@@ -1,0 +1,41 @@
+name: Bug Report
+description: File a bug report to help us improve RevPilot AI
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: RevPilot AI Version
+      description: What version or commit SHA are you running?
+      placeholder: "e.g., 1.0.0-rc1 or commit 8dd4977"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Exact steps or command to reproduce the issue.
+      placeholder: |
+        1. Run `docker compose up`
+        2. Send POST to `/api/v1/decisions`
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code.
+      render: shell
