@@ -39,11 +39,12 @@ def test_tenant_activation_preconditions_enforced():
     svc.provision_tenant_idempotent(req)
 
     # 1. Probes fail (e.g. cross-tenant vector leak detected)
-    failing_probe_runner = lambda tid: {
-        "TEST-TEN-001_RLS_STORAGE": True,
-        "TEST-TEN-004_REDIS_NAMESPACING": True,
-        "TEST-TEN-007_VECTOR_CROSS_TENANT_LEAK": False,  # Failed!
-    }
+    def failing_probe_runner(tid):
+        return {
+            "TEST-TEN-001_RLS_STORAGE": True,
+            "TEST-TEN-004_REDIS_NAMESPACING": True,
+            "TEST-TEN-007_VECTOR_CROSS_TENANT_LEAK": False,  # Failed!
+        }
 
     with pytest.raises(IsolationVerificationFailedError) as exc_info:
         svc.activate_tenant_with_preconditions(target_tid, probe_runner=failing_probe_runner)
@@ -53,12 +54,13 @@ def test_tenant_activation_preconditions_enforced():
     assert persisted.status == TenantStatus.ACTIVATING  # Remained in activating, not active
 
     # 2. Probes pass 100%
-    passing_probe_runner = lambda tid: {
-        "TEST-TEN-001_RLS_STORAGE": True,
-        "TEST-TEN-004_REDIS_NAMESPACING": True,
-        "TEST-TEN-007_VECTOR_CROSS_TENANT_LEAK": True,
-        "TEST-TEN-011_AUDIT_PARTITION_ISOLATION": True,
-    }
+    def passing_probe_runner(tid):
+        return {
+            "TEST-TEN-001_RLS_STORAGE": True,
+            "TEST-TEN-004_REDIS_NAMESPACING": True,
+            "TEST-TEN-007_VECTOR_CROSS_TENANT_LEAK": True,
+            "TEST-TEN-011_AUDIT_PARTITION_ISOLATION": True,
+        }
 
     activated_tenant = svc.activate_tenant_with_preconditions(target_tid, probe_runner=passing_probe_runner)
     assert activated_tenant.status == TenantStatus.ACTIVE

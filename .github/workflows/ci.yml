@@ -31,13 +31,13 @@ jobs:
           pip install -e ".[dev]"
           pip install ruff mypy
 
-      - name: Lint with Ruff
-        run: |
-          ruff check .
-
       - name: Run Test Suite
         run: |
           python -m pytest tests/ packages/backend/tests/ -v
+
+      - name: Lint with Ruff
+        run: |
+          ruff check .
 
   frontend-check:
     name: Frontend Build & Typecheck

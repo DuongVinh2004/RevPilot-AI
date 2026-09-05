@@ -28,7 +28,7 @@ async def seed_data() -> int:
     if database_url.startswith("postgresql+asyncpg://"):
         database_url = database_url.replace("postgresql+asyncpg://", "postgresql://", 1)
 
-    print(f"Connecting to database to seed dev data...")
+    print("Connecting to database to seed dev data...")
     try:
         conn = await asyncpg.connect(database_url)
     except Exception as exc:

@@ -37,6 +37,14 @@ pythonpath = ["packages/backend/src", "."]
 line-length = 100
 target-version = "py312"
 
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E501", "E402", "E722", "F401", "F841", "E741", "F821"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F841"]
+"packages/backend/tests/*" = ["F401", "F841"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true

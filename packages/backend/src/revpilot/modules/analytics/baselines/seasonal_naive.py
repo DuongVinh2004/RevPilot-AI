@@ -6,7 +6,7 @@ Conforms to ANOMALY-BENCHMARK-PROTOCOL.md §2.1 and TASK-P02-002.
 
 from __future__ import annotations
 import math
-from typing import Sequence
+from typing import Any, Sequence
 
 # Normal distribution critical value approximation for two-tailed 1 - alpha/2
 _Z_CRITICAL_95 = 1.959963984540054  # alpha = 0.05 (95% confidence)
