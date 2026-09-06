@@ -26,9 +26,11 @@ export class AuthManager {
   static getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'X-Dev-Principal': this.getDevPrincipal(),
-      'X-Dev-Tenant': this.getDevTenant(),
     };
+    if ((import.meta as any).env?.DEV) {
+      headers['X-Dev-Principal'] = this.getDevPrincipal();
+      headers['X-Dev-Tenant'] = this.getDevTenant();
+    }
     const token = this.getToken();
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;

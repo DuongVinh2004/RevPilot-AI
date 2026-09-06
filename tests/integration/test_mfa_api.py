@@ -44,9 +44,10 @@ def test_mfa_api_endpoints(client: Any):
     recovery_codes = act_data["recovery_codes"]
     assert len(recovery_codes) == 8
 
-    # 4. Verify step-up with code in new step
-    time_future = time.time() + 35.0
-    code_future = TotpManager.generate_code(secret, for_time=time_future)
+    # 4. Verify step-up with code in new step (guarantee step + 1 offset to prevent window boundary flakiness)
+    cur_step = int(time.time()) // TotpManager.TIME_STEP
+    time_next_step = float((cur_step + 1) * TotpManager.TIME_STEP + 5)
+    code_future = TotpManager.generate_code(secret, for_time=time_next_step)
     verify_resp = client.post("/api/v1/auth/mfa/totp/verify", json={"code": code_future}, headers=headers)
     assert verify_resp.status_code == 200
     assert verify_resp.json()["verified"] is True

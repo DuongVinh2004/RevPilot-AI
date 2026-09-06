@@ -182,10 +182,11 @@ class WebAuthnManager:
 
 
 class MfaManager:
-    """In-memory coordinator for tenant/principal MFA lifecycle."""
+    """Coordinator for tenant/principal MFA lifecycle with distributed cache support."""
 
-    def __init__(self) -> None:
+    def __init__(self, cache: Any = None) -> None:
         self._states: dict[str, PrincipalMfaState] = {}
+        self._cache = cache
 
     def get_or_create_state(self, principal_id: str) -> PrincipalMfaState:
         if principal_id not in self._states:
@@ -228,6 +229,14 @@ class MfaManager:
         )
         if not valid:
             raise MfaError(code="INVALID_MFA_CODE", message="Invalid or replayed TOTP verification code", http_status=401)
+
+        # Distributed anti-replay check
+        if self._cache is not None and step is not None:
+            cache_key = f"revpilot:mfa:replay:{principal_id}:{step}"
+            if hasattr(self._cache, "get") and self._cache.get(cache_key):
+                raise MfaError(code="INVALID_MFA_CODE", message="Invalid or replayed TOTP verification code", http_status=401)
+            if hasattr(self._cache, "set"):
+                self._cache.set(cache_key, "1", ex=60)
 
         state.last_verified_step = step
         return True

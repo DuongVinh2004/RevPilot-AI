@@ -7,14 +7,12 @@ Conforms to RFC 7643, RFC 7644, and INV-IAM-001.
 from __future__ import annotations
 
 from typing import Any
-from fastapi import APIRouter, Header, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response, status
 from pydantic import BaseModel, Field
 
 from revpilot.modules.iam.scim.endpoints import ScimEndpoints
 from revpilot.modules.iam.scim.service import ScimProvisioningService
 from revpilot.shared.identifiers import TenantId
-
-router = APIRouter(prefix="/scim/v2/{tenant_id}", tags=["SCIM 2.0"])
 
 
 def get_scim_endpoints(request: Request) -> ScimEndpoints:
@@ -37,8 +35,12 @@ def get_scim_endpoints(request: Request) -> ScimEndpoints:
     return endpoints
 
 
-def verify_scim_bearer(authorization: str = Header(None)) -> str:
-    """Validate SCIM bearer authorization token."""
+def verify_scim_bearer(
+    request: Request,
+    tenant_id: str,
+    authorization: str | None = Header(None, alias="Authorization"),
+) -> str:
+    """Validate SCIM bearer authorization token and enforce strict tenant boundary."""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -48,7 +50,41 @@ def verify_scim_bearer(authorization: str = Header(None)) -> str:
                 "detail": "Missing or invalid SCIM Bearer token",
             },
         )
-    return authorization.split("Bearer ")[1].strip()
+    raw_token = authorization.split("Bearer ")[1].strip()
+    auth_adapter = getattr(request.app.state, "auth_adapter", None)
+    if auth_adapter is not None:
+        try:
+            verified = auth_adapter.verify_token(raw_token)
+            token_tenant = getattr(verified.claims, "tenant_id", None)
+            is_system = getattr(verified.claims, "is_system", False) or "SYSTEM_ADMIN" in verified.claims.roles
+            if not is_system and (not token_tenant or str(token_tenant) != tenant_id):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail={
+                        "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
+                        "status": "403",
+                        "detail": f"Tenant boundary violation: token tenant '{token_tenant}' cannot access '{tenant_id}'",
+                    },
+                )
+        except HTTPException:
+            raise
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
+                    "status": "401",
+                    "detail": "Invalid or expired SCIM token",
+                },
+            )
+    return raw_token
+
+
+router = APIRouter(
+    prefix="/scim/v2/{tenant_id}",
+    tags=["SCIM 2.0"],
+    dependencies=[Depends(verify_scim_bearer)],
+)
 
 
 class ScimUserCreatePayload(BaseModel):

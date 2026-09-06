@@ -96,3 +96,34 @@ def test_scim_api_groups_sync(client: Any):
     assert list_data["schemas"] == ["urn:ietf:params:scim:api:messages:2.0:ListResponse"]
     matching = [g for g in list_data["Resources"] if g["displayName"] == "SecurityOps"]
     assert len(matching) == 1
+
+
+def test_scim_api_unauthenticated_rejected(client: Any):
+    """INV-SEC-001: Unauthenticated SCIM requests must fail closed with 401."""
+    res = client.get("/scim/v2/tnt_dev_001/Users")
+    assert res.status_code == 401
+    assert "Missing or invalid SCIM Bearer token" in res.json()["detail"]["detail"]
+
+
+def test_scim_api_cross_tenant_rejected(client: Any):
+    """INV-TEN-001: Token for Tenant A cannot access Tenant B via SCIM."""
+    headers = {"Authorization": "Bearer token_usr_analyst_001_tnt_dev_001"}
+    res = client.get("/scim/v2/tnt_victim_999/Users", headers=headers)
+    assert res.status_code == 403
+    assert "Tenant boundary violation" in res.json()["detail"]["detail"]
+
+
+def test_scim_api_null_tenant_token_rejected(client: Any):
+    """INV-TEN-001: Token without tenant claim must fail closed with 403."""
+    from apps.api.main import app
+    app.state.auth_adapter.issue_test_token(
+        "token_usr_no_tenant",
+        sub="usr_no_tenant",
+        tenant_id=None,
+        roles=frozenset(["ANALYST"]),
+    )
+    headers = {"Authorization": "Bearer token_usr_no_tenant"}
+    res = client.get("/scim/v2/tnt_dev_001/Users", headers=headers)
+    assert res.status_code == 403
+    assert "Tenant boundary violation" in res.json()["detail"]["detail"]
+

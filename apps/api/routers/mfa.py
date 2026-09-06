@@ -19,7 +19,8 @@ router = APIRouter(prefix="/auth/mfa", tags=["MFA"])
 def get_mfa_manager(request: Request) -> MfaManager:
     manager = getattr(request.app.state, "mfa_manager", None)
     if manager is None:
-        manager = MfaManager()
+        cache = getattr(request.app.state, "redis_client", None)
+        manager = MfaManager(cache=cache)
         request.app.state.mfa_manager = manager
     return manager
 

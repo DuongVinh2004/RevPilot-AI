@@ -7,6 +7,7 @@ Enforces INV-ACT-001 (Zero Unauthorized Mutation), INV-ACT-003 (Zero Agent Self-
 from __future__ import annotations
 
 import hashlib
+import time
 import uuid
 from typing import Any
 from datetime import datetime, timezone, timedelta
@@ -74,7 +75,14 @@ async def create_approval_request(
         "status": "PENDING",
         "expiry_time": expiry,
         "correlation_id": corr_id,
+        "requester_principal_id": str(principal.principal_id),
     }
+
+    pending_cache = getattr(request.app.state, "_pending_approvals_cache", None)
+    if pending_cache is None:
+        pending_cache = {}
+        request.app.state._pending_approvals_cache = pending_cache
+    pending_cache[appr_id] = data
 
     repo = getattr(request.app.state, "approval_repo", None)
     if repo is not None:
@@ -111,6 +119,7 @@ async def list_pending_approvals(
                 "status": "PENDING",
                 "digest": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
                 "expires_in": "14m 32s",
+                "requester_principal_id": "usr_analyst_other",
             }
         ]
     return {"items": items, "count": len(items)}
@@ -124,7 +133,16 @@ async def grant_approval(
     tenant: TenantContext = Depends(get_current_tenant),
     principal: PrincipalContext = Depends(require_human_approval_authority("TIER_1")),
 ) -> dict[str, Any]:
-    """Human operator signs and approves action (INV-ACT-003)."""
+    """Human operator signs and approves action (INV-ACT-003 with Separation of Duties)."""
+    # Enforce Separation of Duties (SoD)
+    pending_cache = getattr(request.app.state, "_pending_approvals_cache", {})
+    cached_record = pending_cache.get(approval_id)
+    if cached_record and cached_record.get("requester_principal_id") == str(principal.principal_id):
+        raise AuthorizationError(
+            f"Separation of Duties violation: requester '{principal.principal_id}' cannot approve own action request.",
+            details={"approval_id": approval_id, "requester_id": str(principal.principal_id)},
+        )
+
     repo = getattr(request.app.state, "approval_repo", None)
     if repo is not None:
         res = await repo.record_approval(tenant, approval_id, str(principal.principal_id))
@@ -222,6 +240,7 @@ async def engage_kill_switch(
     principal: PrincipalContext = Depends(require_roles("OPERATOR", "SYSTEM_ADMIN")),
 ) -> dict[str, Any]:
     """Engage emergency halt kill switch across cluster in sub-500ms."""
+    t0 = time.perf_counter()
     ks_repo = getattr(request.app.state, "killswitch_repo", None)
     ks_id = f"ks_{payload.scope.lower()}_{uuid.uuid4().hex[:8]}"
     if ks_repo is not None:
@@ -231,6 +250,7 @@ async def engage_kill_switch(
             activated_by=str(principal.principal_id),
             target_id=payload.target_id,
         )
+    propagation_ms = round((time.perf_counter() - t0) * 1000, 2)
 
     return {
         "status": "KILL_SWITCH_ENGAGED",
@@ -238,5 +258,5 @@ async def engage_kill_switch(
         "scope": payload.scope.upper(),
         "activated_by": str(principal.principal_id),
         "reason": payload.reason,
-        "propagation_latency_ms": 18,
+        "propagation_latency_ms": max(propagation_ms, 0.1),
     }
