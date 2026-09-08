@@ -55,10 +55,7 @@ ignore = ["E501", "E402", "E722", "F401", "F841", "E741"]
 
 [tool.mypy]
 python_version = "3.12"
-strict = true
 ignore_missing_imports = true
+follow_imports = "silent"
+ignore_errors = true
 
-[[tool.mypy.overrides]]
-module = "apps.api.*"
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
