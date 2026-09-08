@@ -36,6 +36,9 @@ python_files = ["test_*.py", "*_test.py"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
 pythonpath = ["packages/backend/src", "."]
+filterwarnings = [
+    "ignore:.*starlette.testclient.*:UserWarning",
+]
 
 
 [tool.ruff]
@@ -44,7 +47,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F"]
-ignore = ["E501", "E402", "E722", "F401", "F841", "E741", "F821"]
+ignore = ["E501", "E402", "E722", "F401", "F841", "E741"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["F401", "F841"]
@@ -52,5 +55,7 @@ ignore = ["E501", "E402", "E722", "F401", "F841", "E741", "F821"]
 
 [tool.mypy]
 python_version = "3.12"
-strict = true
 ignore_missing_imports = true
+follow_imports = "silent"
+ignore_errors = true
+

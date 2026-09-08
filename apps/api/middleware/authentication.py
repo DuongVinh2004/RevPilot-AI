@@ -38,28 +38,6 @@ async def get_current_principal(
     """
     # 1. Reject missing credentials
     if not credentials or not credentials.credentials:
-        # Check if internal development bypass or dev mode
-        dev_auth = request.headers.get("X-Dev-Principal")
-        if dev_auth and getattr(request.app.state, "allow_dev_auth", False):
-            # Controlled dev context
-            p_id = PrincipalId(dev_auth)
-            t_id = TenantId(request.headers.get("X-Dev-Tenant", "tnt_dev_001"))
-            principal_ctx = PrincipalContext(
-                principal_id=p_id,
-                tenant_id=t_id,
-                roles=frozenset(["SYSTEM_ADMIN"]),
-                is_system=False,
-            )
-            tenant_ctx = TenantContext(
-                tenant_id=t_id,
-                organization_id=OrganizationId("org_dev_001"),
-                tier="enterprise",
-                is_active=True,
-            )
-            request.state.principal_context = principal_ctx
-            request.state.tenant_context = tenant_ctx
-            return principal_ctx
-
         raise AuthenticationError(
             "Authentication token missing or invalid",
             details={"error": "missing_bearer_token"},
@@ -68,26 +46,18 @@ async def get_current_principal(
     raw_token = credentials.credentials
     auth_adapter = get_auth_adapter(request)
 
-    # 2. Verify token via AuthenticationPort
-    if auth_adapter is not None:
-        if hasattr(auth_adapter, "async_verify_token"):
-            verified_token: VerifiedClaimsToken = await auth_adapter.async_verify_token(raw_token)
-        else:
-            verified_token = auth_adapter.verify_token(raw_token)
-        claims = verified_token.claims
+    # 2. Verify token via AuthenticationPort (Fail-Closed)
+    if auth_adapter is None:
+        raise AuthenticationError(
+            "Authentication service is unavailable",
+            details={"error": "auth_adapter_unavailable"},
+        )
+
+    if hasattr(auth_adapter, "async_verify_token"):
+        verified_token: VerifiedClaimsToken = await auth_adapter.async_verify_token(raw_token)
     else:
-        # Fallback in-memory token parser if adapter not wired in test harness
-        # Token format: 'token_{principal_id}_{tenant_id}'
-        parts = raw_token.split("_")
-        p_id_str = f"usr_{parts[1]}" if len(parts) > 1 else "usr_default"
-        t_id_str = f"tnt_{parts[2]}" if len(parts) > 2 else "tnt_dev_001"
-        claims = type("Claims", (), {
-            "sub": p_id_str,
-            "tenant_id": t_id_str,
-            "roles": frozenset(["OPERATOR", "ANALYST"]),
-            "permissions": frozenset(),
-            "is_system": False,
-        })()
+        verified_token = auth_adapter.verify_token(raw_token)
+    claims = verified_token.claims
 
     # 3. Discard untrusted client headers; detect spoofing attempts (INV-TEN-002)
     untrusted_tenant = request.headers.get("X-Tenant-ID")
@@ -101,12 +71,14 @@ async def get_current_principal(
     tenant_id = TenantId(claims.tenant_id) if claims.tenant_id else None
     principal_id = PrincipalId(claims.sub)
 
+    is_system = getattr(claims, "is_system", False) or "SYSTEM_ADMIN" in claims.roles
+
     principal_ctx = PrincipalContext(
         principal_id=principal_id,
         tenant_id=tenant_id,
         roles=claims.roles,
         permissions=claims.permissions,
-        is_system=claims.is_system,
+        is_system=is_system,
     )
 
     tenant_ctx = None

@@ -48,7 +48,7 @@ resource "aws_rds_cluster" "aurora" {
   # Security & Compliance Invariants
   storage_encrypted   = true
   kms_key_id          = aws_kms_key.main.arn
-  deletion_protection = false # Set true in production
+  deletion_protection = true
 
   # High Availability & Backup Retentions (DEC-011: RPO <= 5m)
   backup_retention_period = 7

@@ -53,6 +53,7 @@ class ApprovalRequestRecord(BaseModel):
     reserved_budget_usd: Decimal = Field(ge=Decimal("0.0"))
     risk_tier: Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
     required_approval_tier: int = Field(ge=1, le=3)
+    requester_principal_id: str | None = None
     approver_principal_id: str | None = None
     approval_timestamp: UtcDateTime | None = None
     rejection_reason: str | None = None

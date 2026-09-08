@@ -234,7 +234,7 @@ class ScimProvisioningService:
         group_id: str,
         member_ids: list[str],
         role_binding: str | None = None,
-    ) -> None:
+    ) -> ScimGroupRecord:
         """
         Sync SCIM group membership and synchronize assigned role to members.
         """
@@ -267,3 +267,4 @@ class ScimProvisioningService:
             "group_id": group_id,
             "member_count": len(member_ids),
         })
+        return group

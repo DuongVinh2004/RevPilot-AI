@@ -5,7 +5,7 @@ resource "aws_secretsmanager_secret" "platform_config" {
   name                    = "revpilot/${var.environment}/platform-credentials"
   description             = "Encrypted operational secrets and credentials broker store"
   kms_key_id              = aws_kms_key.main.arn
-  recovery_window_in_days = 0
+  recovery_window_in_days = 7
 
   tags = {
     Name = "revpilot-${var.environment}-secrets"

@@ -46,76 +46,82 @@ class PostgresAuthAdapter(AuthenticationPort):
         now = as_of or UtcDateTime.now()
 
         async with self.pool.acquire() as conn:
-            # Query session and principal
-            query = """
-                SELECT
-                    s.id as session_id,
-                    s.tenant_id,
-                    s.principal_id,
-                    s.issued_at,
-                    s.expires_at,
-                    s.revoked_at,
-                    s.is_active,
-                    p.email,
-                    p.principal_type,
-                    p.status as principal_status
-                FROM revpilot.sessions s
-                JOIN revpilot.principals p ON s.tenant_id = p.tenant_id AND s.principal_id = p.id
-                WHERE s.token_hash = $1
-            """
-            row = await conn.fetchrow(query, token_hash)
-            if not row:
-                raise AuthenticationError("Invalid or unknown authentication token", details={"error": "token_not_found"})
+            async with conn.transaction():
+                # Elevate to system context locally within transaction to query session token by hash under RLS (INV-TEN-002, INV-IAM-001)
+                await conn.execute("SET LOCAL revpilot.is_system = 'true';")
 
-            if not row["is_active"] or row["revoked_at"] is not None:
-                raise AuthenticationError("Token session has been revoked", details={"session_id": row["session_id"]})
+                # Query session and principal
+                query = """
+                    SELECT
+                        s.id as session_id,
+                        s.tenant_id,
+                        s.principal_id,
+                        s.issued_at,
+                        s.expires_at,
+                        s.revoked_at,
+                        s.is_active,
+                        p.email,
+                        p.principal_type,
+                        p.status as principal_status
+                    FROM revpilot.sessions s
+                    JOIN revpilot.principals p ON s.tenant_id = p.tenant_id AND s.principal_id = p.id
+                    WHERE s.token_hash = $1
+                """
+                row = await conn.fetchrow(query, token_hash)
+                if not row:
+                    raise AuthenticationError("Invalid or unknown authentication token", details={"error": "token_not_found"})
 
-            expires_at = UtcDateTime.from_datetime(row["expires_at"])
-            if now > expires_at:
-                raise AuthenticationError("Token session has expired", details={"session_id": row["session_id"]})
+                if not row["is_active"] or row["revoked_at"] is not None:
+                    raise AuthenticationError("Token session has been revoked", details={"session_id": row["session_id"]})
 
-            if row["principal_status"] != "ACTIVE":
-                raise AuthenticationError(f"Principal is {row['principal_status']}", details={"principal_id": row["principal_id"]})
+                expires_at = UtcDateTime.from_datetime(row["expires_at"])
+                if now > expires_at:
+                    raise AuthenticationError("Token session has expired", details={"session_id": row["session_id"]})
 
-            # Fetch roles from memberships
-            roles_rows = await conn.fetch(
-                "SELECT role_name FROM revpilot.memberships WHERE tenant_id = $1 AND principal_id = $2 AND revoked_at IS NULL",
-                row["tenant_id"],
-                row["principal_id"],
-            )
-            roles = frozenset([r["role_name"] for r in roles_rows])
+                if row["principal_status"] != "ACTIVE":
+                    raise AuthenticationError(f"Principal is {row['principal_status']}", details={"principal_id": row["principal_id"]})
 
-            claims = AuthTokenClaims(
-                sub=row["principal_id"],
-                iss=expected_issuer,
-                aud=expected_audience,
-                exp=int(expires_at.as_datetime().timestamp()),
-                nbf=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
-                iat=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
-                tenant_id=row["tenant_id"],
-                roles=roles,
-                permissions=frozenset(),
-                email=row["email"],
-                is_system=row["principal_type"] == "SYSTEM",
-            )
+                # Fetch roles from memberships
+                roles_rows = await conn.fetch(
+                    "SELECT role_name FROM revpilot.memberships WHERE tenant_id = $1 AND principal_id = $2 AND revoked_at IS NULL",
+                    row["tenant_id"],
+                    row["principal_id"],
+                )
+                roles = frozenset([r["role_name"] for r in roles_rows])
 
-            provenance_payload = f"{token_hash}:{claims.sub}:{claims.tenant_id}:{claims.exp}"
-            provenance_hash = hashlib.sha256(provenance_payload.encode()).hexdigest()
+                claims = AuthTokenClaims(
+                    sub=row["principal_id"],
+                    iss=expected_issuer,
+                    aud=expected_audience,
+                    exp=int(expires_at.as_datetime().timestamp()),
+                    nbf=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
+                    iat=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
+                    tenant_id=row["tenant_id"],
+                    roles=roles,
+                    permissions=frozenset(),
+                    email=row["email"],
+                    is_system=row["principal_type"] == "SYSTEM",
+                )
 
-            return VerifiedClaimsToken(
-                claims=claims,
-                raw_token_digest=token_hash,
-                provenance_hash=provenance_hash,
-            )
+                provenance_payload = f"{token_hash}:{claims.sub}:{claims.tenant_id}:{claims.exp}"
+                provenance_hash = hashlib.sha256(provenance_payload.encode()).hexdigest()
+
+                return VerifiedClaimsToken(
+                    claims=claims,
+                    raw_token_digest=token_hash,
+                    provenance_hash=provenance_hash,
+                )
 
     async def async_revoke_session(self, session_id: str) -> None:
         now = UtcDateTime.now()
         async with self.pool.acquire() as conn:
-            await conn.execute(
-                "UPDATE revpilot.sessions SET is_active = FALSE, revoked_at = $1 WHERE id = $2",
-                now.as_datetime(),
-                session_id,
-            )
+            async with conn.transaction():
+                await conn.execute("SET LOCAL revpilot.is_system = 'true';")
+                await conn.execute(
+                    "UPDATE revpilot.sessions SET is_active = FALSE, revoked_at = $1 WHERE id = $2",
+                    now.as_datetime(),
+                    session_id,
+                )
 
     def verify_token(
         self,

@@ -1,7 +1,7 @@
 # Release Readiness Checklist
 
 Date: 2026-09-04  
-Status: Authoritative Go-Live Gate Checklist — Release Readiness Certified (27/27 Passed)  
+Status: Authoritative Go-Live Gate Checklist — Conditional Readiness (21/27 Software Passed, 6 Pending Infra Drills per AC-014)  
 Owner: SRE Lead & Release Engineer  
 Release Target: v1.0.0  
 
@@ -18,20 +18,20 @@ Release Target: v1.0.0
 | CHK-API-001 | API Contract | OpenAPI schema conformance and backwards compatibility | API Lead | `tests/contract/test_action_event_contracts.py` | PASS | YES | VERIFIED (API Lead) |
 | CHK-IDN-001 | Identity | Deny-by-default boundary auth & session invalidation | IAM Lead | `execution/evidence/SECURITY-PRIVACY-VALIDATION.md` | PASS | YES | VERIFIED (IAM Lead) |
 | CHK-TEN-001 | Tenant Isolation | 0 cross-tenant leaked records in in-memory suite | Tenancy | `execution/evidence/TENANT-ISOLATION-VALIDATION.md` | PASS | YES | VERIFIED (Tenancy Lead) |
-| CHK-TEN-002 | Tenant Isolation | PostgreSQL RLS concurrency probe under 500 threads | Tenancy | `tests/load/test_rls_concurrency_isolation.py` | PASS | YES | VERIFIED (Tenancy Lead) |
+| CHK-TEN-002 | Tenant Isolation | PostgreSQL RLS concurrency probe under 500 threads | Tenancy | `tests/load/test_rls_concurrency_isolation.py` | CONDITIONAL | YES | VERIFIED_UNIT_THREADS (Tenancy Lead) |
 | CHK-SEC-001 | Secrets | Zero credentials in logs/prompts; ephemeral token broker | Security | `execution/evidence/SECURITY-PRIVACY-VALIDATION.md` | PASS | YES | VERIFIED (Security Lead) |
 | CHK-CON-001 | Connectors | Webhook replay deduplication and schema drift quarantine | Integration | `tests/connectors/test_webhook_replay_deduplication.py` | PASS | YES | VERIFIED (Connectors Lead) |
 | CHK-WF-001 | Workflows | Temporal worker crash recovery without duplicate dispatch | Workflow | `tests/recovery/test_temporal_sigkill_recovery.py` | PASS | YES | VERIFIED (Workflow Lead) |
 | CHK-AI-001 | AI / Model | Pinned prompt template SHA-256 digest in Prompt Registry | AI Lead | `execution/evidence/AI-EVALUATION-REPORT.md` | PASS | YES | VERIFIED (AI Lead) |
-| CHK-AI-002 | AI / Model | Golden set evaluation passes all 8 AI release gates | AI Lead | `execution/evidence/AI-EVALUATION-REPORT.md` | PASS | YES | VERIFIED (AI Lead) |
+| CHK-AI-002 | AI / Model | Golden set evaluation passes all 8 AI release gates | AI Lead | `execution/evidence/AI-EVALUATION-REPORT.md` | SIMULATED | YES | PENDING_BENCHMARK_DRILL (AC-014) |
 | CHK-OBS-001 | Observability | OpenTelemetry trace propagation across all services | SRE Lead | `execution/evidence/SLO-BASELINE-REPORT.md` | PASS | YES | VERIFIED (SRE Lead) |
-| CHK-SLO-001 | SLO | Benchmarks verify API availability >= 99.9% and P95 < 50ms | SRE Lead | `execution/evidence/SLO-BASELINE-REPORT.md` | PASS | YES | VERIFIED (SRE Lead) |
-| CHK-BCK-001 | Backup | Continuous WAL archiving active with <= 5m RPO | Storage | `execution/evidence/BACKUP-RESTORE-VALIDATION.md` | PASS | YES | VERIFIED (Storage Lead) |
-| CHK-DR-001 | Disaster Recovery | Cold restore drill completed; measured RTO <= 30m | SRE Lead | `execution/evidence/DR-EXERCISE-REPORT.md` | PASS | YES | VERIFIED (SRE Lead) |
+| CHK-SLO-001 | SLO | Benchmarks verify API availability >= 99.9% and P95 < 50ms | SRE Lead | `execution/evidence/SLO-BASELINE-REPORT.md` | SIMULATED | YES | PENDING_HTTP_LOAD_TEST (AC-014) |
+| CHK-BCK-001 | Backup | Continuous WAL archiving active with <= 5m RPO | Storage | `execution/evidence/BACKUP-RESTORE-VALIDATION.md` | SIMULATED | YES | PENDING_PG_RESTORE_DRILL (AC-014) |
+| CHK-DR-001 | Disaster Recovery | Cold restore drill completed; measured RTO <= 30m | SRE Lead | `execution/evidence/DR-EXERCISE-REPORT.md` | SIMULATED | YES | PENDING_PG_RESTORE_DRILL (AC-014) |
 | CHK-PRV-001 | Privacy | PII masking verified on 10,000 synthetic payloads | Compliance | `execution/evidence/SECURITY-PRIVACY-VALIDATION.md` | PASS | YES | VERIFIED (Compliance Lead) |
 | CHK-AUD-001 | Audit | 100% unsampled audit log stream to append-only sink | Compliance | `execution/evidence/ACCESS-REVIEW-AUDIT-PACK.md` | PASS | YES | VERIFIED (Compliance Lead) |
 | CHK-FIN-001 | FinOps | Atomic spend reservation lock eliminates budget overrun | FinOps | `execution/evidence/BILLING-RECONCILIATION.md` | PASS | YES | VERIFIED (FinOps Lead) |
-| CHK-BIL-001 | Billing | Discrepancy between ledger and provider invoice <= 0.5% | FinOps | `execution/evidence/BILLING-RECONCILIATION.md` | PASS | YES | VERIFIED (FinOps Lead) |
+| CHK-BIL-001 | Billing | Discrepancy between ledger and provider invoice <= 0.5% | FinOps | `execution/evidence/BILLING-RECONCILIATION.md` | SIMULATED | YES | PENDING_LEDGER_SYNC (AC-014) |
 | CHK-INC-001 | Incident Response | Master incident runbooks verified via simulated P0 drill | Incident Cmd | `tests/sre/test_mock_incident_paging_drill.py` | PASS | YES | VERIFIED (SRE Lead) |
 | CHK-ROL-001 | Rollback | Multi-tier canary rollback drill executed successfully | Release Lead | `execution/evidence/CANARY-ROLLBACK-VALIDATION.md` | PASS | YES | VERIFIED (Release Lead) |
 | CHK-SUP-001 | Support / On-Call | On-call rotation scheduled with escalation paging active | SRE Lead | P0 paging verified < 15 min (actual 180s) | PASS | YES | VERIFIED (SRE Lead) |
@@ -43,6 +43,6 @@ Release Target: v1.0.0
 
 ## 2. Gate Summary
 - **Total Checks**: 27
-- **Passed Checks**: 27 (100% of all software, platform, governance, and operational test controls verified).
-- **Blocked / Pending Checks**: 0.
-- **Go-Live Gate Verdict**: RELEASE READINESS CERTIFIED — PRODUCTION RELEASE v1.0.0 APPROVED.
+- **Passed Software / Governance Checks**: 21
+- **Simulated Checks Pending Production Infrastructure Drills (AC-014)**: 6
+- **Go-Live Gate Verdict**: CONDITIONAL PILOT READINESS — GENERAL PRODUCTION RELEASE v1.0.0 BLOCKED PENDING LIVE INFRASTRUCTURE DRILLS (AC-014).

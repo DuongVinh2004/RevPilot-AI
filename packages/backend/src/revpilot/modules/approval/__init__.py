@@ -8,7 +8,12 @@ from revpilot.modules.approval.domain import (
     ApprovalRequestRecord,
     ApprovalError,
 )
-from revpilot.modules.approval.digest import ApprovalDigestHasher
+from revpilot.modules.approval.digest import (
+    ApprovalDigestHasher,
+    ApprovalArtifact,
+    compute_approval_digest,
+    verify_approval_digest,
+)
 from revpilot.modules.approval.ports import (
     ApprovalRepository,
     InMemoryApprovalRepository,
@@ -20,6 +25,9 @@ __all__ = [
     "ApprovalRequestRecord",
     "ApprovalError",
     "ApprovalDigestHasher",
+    "ApprovalArtifact",
+    "compute_approval_digest",
+    "verify_approval_digest",
     "ApprovalRepository",
     "InMemoryApprovalRepository",
     "ApprovalService",

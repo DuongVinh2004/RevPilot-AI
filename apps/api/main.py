@@ -42,6 +42,7 @@ from apps.api.routers.approvals import router as approvals_router
 from apps.api.routers.admin import router as admin_router
 from apps.api.routers.connectors import router as connectors_router
 from apps.api.routers.scim import router as scim_router
+from apps.api.routers.mfa import router as mfa_router
 
 logger = logging.getLogger("revpilot.api")
 
@@ -51,16 +52,25 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan context for startup, database pooling, and graceful shutdown."""
     logger.info("RevPilot API Gateway starting up")
 
+    env = os.getenv("ENVIRONMENT", "production")
+    if env not in ("production", "staging", "test"):
+        raise SystemExit(f"Unknown ENVIRONMENT value: {env!r}")
+
     db_url = os.getenv("DATABASE_URL")
     pool = None
-    if db_url:
+
+    if env == "test":
+        logger.info("Test environment: skipping database pool initialization")
+    else:
+        if not db_url:
+            raise SystemExit("FATAL: DATABASE_URL is required for non-test environments")
         try:
             from revpilot.infrastructure.database import create_database_pool
             pool = await create_database_pool(db_url, min_size=2, max_size=10)
             app.state.db_pool = pool
             logger.info("Database pool initialized successfully")
         except Exception as exc:
-            logger.warning("Database pool initialization deferred or failed: %s", exc)
+            raise SystemExit(f"FATAL: Database initialization failed: {exc}") from exc
 
     # Initialize repository adapters
     if pool is not None:
@@ -93,6 +103,23 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         app.state.connector_repo = PostgresConnectorRepository(pool)
         app.state.connector_inbox = PostgresConnectorInbox(pool)
         app.state.audit_log = PostgresAuditLog(pool)
+    else:
+        # Hermetic local/test initialization using InMemoryAuthAdapter (INV-IAM-001)
+        from revpilot.modules.identity.adapters.in_memory_auth_adapter import InMemoryAuthAdapter
+        dev_auth = InMemoryAuthAdapter()
+        dev_auth.issue_test_token(
+            "token_usr_analyst_001_tnt_dev_001",
+            sub="usr_analyst_001",
+            tenant_id="tnt_dev_001",
+            roles=frozenset(["OPERATOR", "ANALYST", "INVESTIGATOR"]),
+        )
+        dev_auth.issue_test_token(
+            "token_usr_admin_001_tnt_dev_001",
+            sub="usr_admin_001",
+            tenant_id="tnt_dev_001",
+            roles=frozenset(["SYSTEM_ADMIN", "ADMIN"]),
+        )
+        app.state.auth_adapter = dev_auth
 
     yield
 
@@ -127,15 +154,37 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Initialize default fail-closed InMemoryAuthAdapter for tests/local initialization
+    from revpilot.modules.identity.adapters.in_memory_auth_adapter import InMemoryAuthAdapter
+    dev_auth = InMemoryAuthAdapter()
+    dev_auth.issue_test_token(
+        "token_usr_analyst_001_tnt_dev_001",
+        sub="usr_analyst_001",
+        tenant_id="tnt_dev_001",
+        roles=frozenset(["OPERATOR", "ANALYST", "INVESTIGATOR"]),
+    )
+    dev_auth.issue_test_token(
+        "token_usr_admin_001_tnt_dev_001",
+        sub="usr_admin_001",
+        tenant_id="tnt_dev_001",
+        roles=frozenset(["SYSTEM_ADMIN", "ADMIN"]),
+    )
+    api_app.state.auth_adapter = dev_auth
+    api_app.state.request_count_200 = 0
+    api_app.state.metrics_request_counts = {}
+
     # 1. Audit Middleware
     api_app.add_middleware(AuditMiddleware)
 
-    # 2. CORS
+    # 2. CORS (INV-SEC-002: Disallow wildcard with credentials)
+    raw_origins = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+    cors_origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
+    allow_wildcard = "*" in cors_origins
     api_app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
+        allow_origins=["*"] if allow_wildcard else cors_origins,
+        allow_credentials=not allow_wildcard,
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["*"],
     )
 
@@ -149,6 +198,12 @@ def create_app() -> FastAPI:
 
         response = await call_next(request)
         response.headers["X-Correlation-ID"] = correlation_id
+        if response.status_code == 200:
+            request.app.state.request_count_200 = getattr(request.app.state, "request_count_200", 0) + 1
+        counts = getattr(request.app.state, "metrics_request_counts", None)
+        if counts is not None:
+            c_str = str(response.status_code)
+            counts[c_str] = counts.get(c_str, 0) + 1
         return response
 
     # Standard Exception Handlers
@@ -221,44 +276,65 @@ def create_app() -> FastAPI:
 
     @api_app.get("/health/ready", tags=["Operations"])
     async def readiness_probe(request: Request) -> JSONResponse:
-        """Readiness check validating internal dependencies (PostgreSQL, Cache)."""
-        pool = getattr(request.app.state, "db_pool", None)
-        db_status = "ok"
+        """Readiness check validating internal dependencies (PostgreSQL, Auth, Temporal)."""
+        checks = {}
         is_ready = True
 
-        if pool is not None:
+        # Database check
+        pool = getattr(request.app.state, "db_pool", None)
+        if pool is None:
+            checks["database"] = "degraded"
+            is_ready = False
+        else:
             try:
                 async with pool.acquire() as conn:
-                    await conn.fetchval("SELECT 1")
+                    await conn.execute("SELECT 1")
+                checks["database"] = "ok"
             except Exception as exc:
-                db_status = f"unhealthy: {exc}"
+                logger.warning("Readiness: database check failed: %s", exc)
+                checks["database"] = "degraded"
                 is_ready = False
 
-        status_code = status.HTTP_200_OK if is_ready else status.HTTP_503_SERVICE_UNAVAILABLE
-        return JSONResponse(
-            status_code=status_code,
-            content={
-                "status": "ready" if is_ready else "degraded",
-                "checks": {
-                    "database": db_status,
-                    "cache": "ok",
-                    "temporal": "ok",
-                },
-            },
-        )
+        # Auth adapter check
+        auth_adapter = getattr(request.app.state, "auth_adapter", None)
+        if auth_adapter is None:
+            checks["auth"] = "degraded"
+            is_ready = False
+        else:
+            checks["auth"] = "ok"
+
+        # Temporal check (optional for MVP)
+        temporal = getattr(request.app.state, "temporal_client", None)
+        checks["temporal"] = "ok" if temporal else "not_configured"
+
+        status_code = 200 if is_ready else 503
+        payload = {"status": "ready" if is_ready else "not_ready", "checks": checks}
+        return JSONResponse(status_code=status_code, content=payload)
 
     @api_app.get("/metrics", tags=["Operations"])
-    async def prometheus_metrics() -> Response:
-        """Prometheus metrics endpoint without secrets or PII (INV-SEC-002)."""
-        metrics_payload = (
-            "# HELP revpilot_http_requests_total Total HTTP requests received\n"
-            "# TYPE revpilot_http_requests_total counter\n"
-            'revpilot_http_requests_total{status="200"} 0\n'
-            "# HELP revpilot_up System availability indicator\n"
-            "# TYPE revpilot_up gauge\n"
-            "revpilot_up 1\n"
-        )
-        return Response(content=metrics_payload, media_type="text/plain; version=0.0.4")
+    async def prometheus_metrics(request: Request) -> Response:
+        """Prometheus exposition metrics endpoint conforming to format 0.0.4."""
+        is_enabled = getattr(request.app.state, "metrics_enabled", None)
+        if is_enabled is None:
+            is_enabled = os.getenv("METRICS_ENABLED", "").lower() in ("true", "1", "yes")
+
+        if not is_enabled:
+            return JSONResponse(
+                status_code=501,
+                content={"error": "Metrics instrumentation not configured. Integrate prometheus_client for real metrics."},
+            )
+
+        count_200 = getattr(request.app.state, "request_count_200", 0)
+        lines = [
+            "# HELP revpilot_http_requests_total Total HTTP requests received",
+            "# TYPE revpilot_http_requests_total counter",
+            f'revpilot_http_requests_total{{status="200"}} {count_200}',
+            "# HELP revpilot_up System availability indicator",
+            "# TYPE revpilot_up gauge",
+            "revpilot_up 1",
+            "",
+        ]
+        return Response(content="\n".join(lines), media_type="text/plain; version=0.0.4")
 
     # API v1 Router Composition
     v1_router = APIRouter(prefix="/api/v1")
@@ -279,6 +355,7 @@ def create_app() -> FastAPI:
     v1_router.include_router(approvals_router)
     v1_router.include_router(admin_router)
     v1_router.include_router(connectors_router)
+    v1_router.include_router(mfa_router)
 
     api_app.include_router(v1_router)
     api_app.include_router(scim_router)

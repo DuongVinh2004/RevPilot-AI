@@ -91,6 +91,12 @@ resource "aws_ecs_task_definition" "api" {
         { name = "PORT", value = "8000" },
         { name = "LOG_LEVEL", value = "INFO" }
       ]
+      secrets = [
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.platform_config.arn}:DATABASE_URL::"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -142,6 +148,12 @@ resource "aws_ecs_task_definition" "workflow_worker" {
       essential = true
       environment = [
         { name = "LOG_LEVEL", value = "INFO" }
+      ]
+      secrets = [
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.platform_config.arn}:DATABASE_URL::"
+        }
       ]
       logConfiguration = {
         logDriver = "awslogs"

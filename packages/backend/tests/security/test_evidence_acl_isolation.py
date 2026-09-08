@@ -7,6 +7,7 @@ Enforces INV-TEN-001, INV-EVD-001, INV-EVD-002, and FR-EVD-003.
 
 from __future__ import annotations
 import sys
+from typing import Any
 import pytest
 from revpilot.shared.identifiers import TenantId, UUIDv7, OrganizationId
 from revpilot.shared.context import TenantContext

@@ -5,6 +5,7 @@ Verifies AC-P02-005-01, AC-P02-005-04, and ANOMALY-DOMAIN-SPEC.md §4.
 
 from __future__ import annotations
 import sys
+from typing import Any
 import pytest
 
 from revpilot.shared.identifiers import TenantId, PrincipalId

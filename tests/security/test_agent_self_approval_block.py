@@ -93,3 +93,37 @@ async def test_agent_calling_grant_approval_fails_closed(approval_module, sample
             is_human=False,
         )
     assert exc_info.value.code == "ERR_AGENT_SELF_APPROVAL"
+
+
+@pytest.mark.asyncio
+async def test_requester_cannot_approve_own_action_sod(approval_module, sample_tenant):
+    """
+    Separation of Duties (SoD): A human operator cannot approve their own action request.
+    """
+    repo = approval_module.InMemoryApprovalRepository()
+    service = approval_module.ApprovalService(repo)
+
+    rec = await service.create_request(
+        tenant_id=sample_tenant,
+        decision_id=UUIDv7.generate(),
+        action_type="REFUND_ISSUANCE",
+        target_customer_id="cust_002",
+        target_entity_refs=["invoice_99"],
+        action_payload={"amount": 250},
+        estimated_cost_usd=Decimal("250.00"),
+    )
+    rec_with_requester = rec.model_copy(update={"requester_principal_id": "usr_operator_001"})
+    await repo.save(rec_with_requester)
+
+    # Requester attempting to approve own request
+    with pytest.raises(approval_module.ApprovalError) as exc_info:
+        await service.grant_approval(
+            tenant_id=sample_tenant,
+            approval_id=rec.approval_id,
+            approver_principal_id="usr_operator_001",
+            approver_tier=2,
+            expected_digest=rec.payload_digest,
+            is_human=True,
+        )
+    assert exc_info.value.code == "ERR_SEPARATION_OF_DUTIES_VIOLATION"
+

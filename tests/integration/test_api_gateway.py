@@ -45,24 +45,34 @@ def test_liveness_probe_returns_200(client: Any):
 
 def test_readiness_probe_returns_200(client: Any):
     """
-    AC-DEP-01: /health/ready returns 200 OK validating internal dependencies.
+    AC-DEP-01: /health/ready returns 200 OK validating internal dependencies when healthy.
     """
-    response = client.get("/health/ready")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "ready"
-    assert "checks" in data
-    assert data["checks"]["database"] == "ok"
+    from unittest.mock import MagicMock, AsyncMock
+    mock_pool = MagicMock()
+    mock_conn = AsyncMock()
+    mock_conn.execute.return_value = None
+    mock_pool.acquire.return_value.__aenter__.return_value = mock_conn
+    mock_pool.acquire.return_value.__aexit__.return_value = None
+
+    client.app.state.db_pool = mock_pool
+    try:
+        response = client.get("/health/ready")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "ready"
+        assert "checks" in data
+        assert data["checks"]["database"] == "ok"
+    finally:
+        client.app.state.db_pool = None
 
 
 def test_metrics_endpoint_returns_prometheus_format(client: Any):
     """
-    SLO & Observability: /metrics returns Prometheus text format without secrets.
+    SLO & Observability: /metrics returns 501 when unconfigured per AR-006.
     """
     response = client.get("/metrics")
-    assert response.status_code == 200
-    assert "revpilot_up 1" in response.text
-    assert "revpilot_http_requests_total" in response.text
+    assert response.status_code == 501
+    assert "Metrics instrumentation not configured" in response.json()["error"]
 
 
 def test_correlation_id_generated_when_missing(client: Any):

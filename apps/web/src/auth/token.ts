@@ -8,7 +8,7 @@ export class AuthManager {
   private static devTenantKey = 'revpilot_dev_tenant';
 
   static getToken(): string | null {
-    return localStorage.getItem(this.tokenKey) || 'dev_token_usr_admin_001_tnt_dev_001';
+    return localStorage.getItem(this.tokenKey);
   }
 
   static setToken(token: string): void {
@@ -26,9 +26,11 @@ export class AuthManager {
   static getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'X-Dev-Principal': this.getDevPrincipal(),
-      'X-Dev-Tenant': this.getDevTenant(),
     };
+    if ((import.meta as any).env?.DEV && (import.meta as any).env?.VITE_ALLOW_DEV_AUTH === 'true') {
+      headers['X-Dev-Principal'] = this.getDevPrincipal();
+      headers['X-Dev-Tenant'] = this.getDevTenant();
+    }
     const token = this.getToken();
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;

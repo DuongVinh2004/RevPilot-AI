@@ -131,6 +131,13 @@ class ApprovalService:
                 message="AI agents, automated planners, and service accounts are strictly prohibited from approving actions",
             )
 
+        # 2b. Separation of Duties (SoD) Invariant
+        if record.requester_principal_id and approver_principal_id == record.requester_principal_id:
+            raise ApprovalError(
+                code="ERR_SEPARATION_OF_DUTIES_VIOLATION",
+                message="Separation of Duties violation: requester cannot approve their own action request",
+            )
+
         # 3. State machine transitions & Replay Protection
         if record.status == ApprovalStatus.APPROVED:
             raise ApprovalError(
