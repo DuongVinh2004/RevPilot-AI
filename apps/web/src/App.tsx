@@ -1,22 +1,39 @@
 import React, { useState } from "react";
 import { AnomalyDashboardView } from "./components/dashboard/AnomalyDashboardView";
 import { LiveInvestigationRoom } from "./components/investigation/LiveInvestigationRoom";
+import { EvidenceVaultView } from "./components/evidence/EvidenceVaultView";
 import { ApprovalCenterView } from "./components/approval/ApprovalCenterView";
+import { FinOpsBudgetView } from "./components/finops/FinOpsBudgetView";
+import { ConnectorsHealthView } from "./components/connectors/ConnectorsHealthView";
 import { KillSwitchPanel } from "./components/killswitch/KillSwitchPanel";
+import { MfaAuthModal } from "./components/auth/MfaAuthModal";
 import {
   TrendingDown,
   Radio,
+  FileText,
   ShieldCheck,
+  DollarSign,
+  Cable,
   AlertOctagon,
   Zap,
   Activity,
   CheckCircle2,
+  Lock,
 } from "lucide-react";
 
-export type ActiveTab = "anomalies" | "investigation" | "approvals" | "killswitch";
+export type ActiveTab =
+  | "anomalies"
+  | "investigation"
+  | "evidence"
+  | "approvals"
+  | "finops"
+  | "connectors"
+  | "killswitch";
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("anomalies");
+  const [isMfaModalOpen, setIsMfaModalOpen] = useState<boolean>(false);
+  const [currentTenant, setCurrentTenant] = useState<string>("tnt_dev_001");
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
@@ -45,100 +62,155 @@ export const App: React.FC = () => {
                 </span>
               </div>
               <p className="text-[10px] text-slate-400 font-mono">
-                Autonomous Revenue Intelligence & Governance
+                Autonomous Revenue Intelligence &amp; Governance
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-1.5">
+          {/* Navigation Tabs (Desktop) */}
+          <nav aria-label="Main Navigation" className="hidden xl:flex items-center gap-1">
             <button
               onClick={() => setActiveTab("anomalies")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === "anomalies"
                   ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
               }`}
             >
               <TrendingDown className="w-3.5 h-3.5" />
-              Anomalies & Analytics
+              Anomalies
             </button>
 
             <button
               onClick={() => setActiveTab("investigation")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === "investigation"
                   ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
               }`}
             >
-              <Radio className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
-              Live Investigation Room
+              <Radio className="w-3.5 h-3.5 text-emerald-400" />
+              Live Room
+            </button>
+
+            <button
+              onClick={() => setActiveTab("evidence")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === "evidence"
+                  ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5 text-indigo-400" />
+              Evidence Vault
             </button>
 
             <button
               onClick={() => setActiveTab("approvals")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === "approvals"
                   ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
               }`}
             >
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              Approval Center
+              Approvals
+            </button>
+
+            <button
+              onClick={() => setActiveTab("finops")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === "finops"
+                  ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
+              }`}
+            >
+              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+              FinOps Budget
+            </button>
+
+            <button
+              onClick={() => setActiveTab("connectors")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === "connectors"
+                  ? "bg-slate-800 text-indigo-400 border border-indigo-500/40 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
+              }`}
+            >
+              <Cable className="w-3.5 h-3.5 text-blue-400" />
+              Connectors
             </button>
 
             <button
               onClick={() => setActiveTab("killswitch")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === "killswitch"
                   ? "bg-rose-950/60 text-rose-300 border border-rose-500/50 shadow-sm"
                   : "text-rose-400/70 hover:text-rose-300 hover:bg-rose-950/30 border border-transparent"
               }`}
             >
               <AlertOctagon className="w-3.5 h-3.5 text-rose-400" />
-              Safety Controls
+              Kill Switch
             </button>
           </nav>
 
-          {/* Principal & Tenant Badges */}
-          <div className="flex items-center gap-2.5">
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-800/90 text-slate-300 border border-slate-700">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              tnt_dev_001
-            </span>
-            <span className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-              Human Operator (Tier 3)
+          {/* Controls: Tenant Switcher, MFA Modal Trigger, Role Badge */}
+          <div className="flex items-center gap-2">
+            <select
+              aria-label="Select Tenant Context"
+              value={currentTenant}
+              onChange={(e) => setCurrentTenant(e.target.value)}
+              className="hidden sm:inline-block px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-800 text-slate-300 border border-slate-700 focus:outline-none focus:border-indigo-500"
+            >
+              <option value="tnt_dev_001">tnt_dev_001</option>
+              <option value="tnt_enterprise_alpha">tnt_alpha</option>
+              <option value="tnt_pilot_beta">tnt_beta</option>
+            </select>
+
+            <button
+              type="button"
+              onClick={() => setIsMfaModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 hover:bg-indigo-600/30 transition shadow-sm"
+            >
+              <Lock className="w-3 h-3 text-indigo-400" />
+              <span className="hidden sm:inline">MFA Security</span>
+            </button>
+
+            <span className="hidden md:inline-flex px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              Tier 3 Operator
             </span>
           </div>
         </div>
 
-        {/* Mobile Navigation bar */}
-        <div className="md:hidden flex items-center justify-around border-t border-slate-800 px-2 py-1.5 overflow-x-auto text-[11px]">
-          <button
-            onClick={() => setActiveTab("anomalies")}
-            className={`px-2.5 py-1 rounded ${activeTab === "anomalies" ? "text-indigo-400 font-bold" : "text-slate-400"}`}
-          >
-            Anomalies
-          </button>
-          <button
-            onClick={() => setActiveTab("investigation")}
-            className={`px-2.5 py-1 rounded ${activeTab === "investigation" ? "text-indigo-400 font-bold" : "text-slate-400"}`}
-          >
-            Live Room
-          </button>
-          <button
-            onClick={() => setActiveTab("approvals")}
-            className={`px-2.5 py-1 rounded ${activeTab === "approvals" ? "text-indigo-400 font-bold" : "text-slate-400"}`}
-          >
-            Approvals
-          </button>
-          <button
-            onClick={() => setActiveTab("killswitch")}
-            className={`px-2.5 py-1 rounded ${activeTab === "killswitch" ? "text-rose-400 font-bold" : "text-slate-400"}`}
-          >
-            Kill Switch
-          </button>
+        {/* Responsive Mobile / Tablet Navigation bar */}
+        <div className="xl:hidden flex items-center gap-1 border-t border-slate-800 px-3 py-1.5 overflow-x-auto text-[11px] no-scrollbar">
+          {[
+            { id: "anomalies", label: "Anomalies", icon: TrendingDown },
+            { id: "investigation", label: "Live Room", icon: Radio },
+            { id: "evidence", label: "Evidence", icon: FileText },
+            { id: "approvals", label: "Approvals", icon: ShieldCheck },
+            { id: "finops", label: "FinOps", icon: DollarSign },
+            { id: "connectors", label: "Connectors", icon: Cable },
+            { id: "killswitch", label: "Kill Switch", icon: AlertOctagon },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id as ActiveTab)}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md whitespace-nowrap transition ${
+                  activeTab === item.id
+                    ? item.id === "killswitch"
+                      ? "bg-rose-950/60 text-rose-300 font-bold border border-rose-500/50"
+                      : "bg-slate-800 text-indigo-400 font-bold border border-indigo-500/40"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                <Icon className="w-3 h-3" />
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </header>
 
@@ -148,7 +220,10 @@ export const App: React.FC = () => {
         <main id="main-content" className="lg:col-span-3 space-y-6" tabIndex={-1}>
           {activeTab === "anomalies" && <AnomalyDashboardView />}
           {activeTab === "investigation" && <LiveInvestigationRoom />}
+          {activeTab === "evidence" && <EvidenceVaultView />}
           {activeTab === "approvals" && <ApprovalCenterView />}
+          {activeTab === "finops" && <FinOpsBudgetView />}
+          {activeTab === "connectors" && <ConnectorsHealthView />}
           {activeTab === "killswitch" && <KillSwitchPanel />}
         </main>
 
@@ -170,8 +245,15 @@ export const App: React.FC = () => {
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-slate-200 font-mono">DEC-009:</strong>
-                  <p className="text-slate-400">SHA-256 Digest Binding (Verified)</p>
+                  <strong className="text-slate-200 font-mono">INV-COST-001:</strong>
+                  <p className="text-slate-400">Hard Cap Spend Limit ($1000)</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-200 font-mono">INV-EVD-001:</strong>
+                  <p className="text-slate-400">pgvector Cosine Provenance</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
@@ -200,11 +282,18 @@ export const App: React.FC = () => {
               Frontend Contract: <span className="text-slate-300 font-mono">FRONTEND-SPEC.md</span>
             </p>
             <p className="text-slate-400">
-              Target Conformance: <span className="text-emerald-400 font-medium">WCAG 2.2 AA</span>
+              Accessibility: <span className="text-emerald-400 font-medium">WCAG 2.2 AA Conforming</span>
             </p>
           </div>
         </aside>
       </div>
+
+      {/* MFA Security Modal */}
+      <MfaAuthModal
+        isOpen={isMfaModalOpen}
+        onClose={() => setIsMfaModalOpen(false)}
+        onSuccess={() => console.log("MFA step-up verified")}
+      />
 
       {/* Footer */}
       <footer className="border-t border-slate-800 bg-slate-900/60 py-4 text-center text-xs text-slate-500">

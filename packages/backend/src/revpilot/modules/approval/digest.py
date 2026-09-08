@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+from dataclasses import dataclass, asdict
 from decimal import Decimal
 from typing import Any
 
@@ -70,3 +71,56 @@ class ApprovalDigestHasher:
         else:
             canonical_json = json.dumps({"policy": str(policy_rules)}, sort_keys=True)
         return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+
+
+@dataclass(frozen=True)
+class ApprovalArtifact:
+    tenant_id: str
+    action_type: str
+    target_entities: list[str]
+    payload: dict
+    policy_version: str
+    required_tier: str
+    expires_at: str  # ISO 8601
+    created_by: str
+
+    def __post_init__(self) -> None:
+        for field in (
+            "tenant_id",
+            "action_type",
+            "target_entities",
+            "payload",
+            "policy_version",
+            "required_tier",
+            "expires_at",
+            "created_by",
+        ):
+            val = getattr(self, field, None)
+            if val is None:
+                raise ValueError(f"ApprovalArtifact missing required field: {field}")
+
+
+def compute_approval_digest(artifact: ApprovalArtifact) -> str:
+    """Canonical JSON: keys sorted recursively, no whitespace, UTF-8, SHA-256 hex."""
+    for field in (
+        "tenant_id",
+        "action_type",
+        "target_entities",
+        "payload",
+        "policy_version",
+        "required_tier",
+        "expires_at",
+        "created_by",
+    ):
+        if not hasattr(artifact, field) or getattr(artifact, field) is None:
+            raise ValueError(f"Missing required field in artifact: {field}")
+    data = asdict(artifact)
+    serialized = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def verify_approval_digest(artifact: ApprovalArtifact, expected_digest: str) -> bool:
+    """Constant-time comparison using hmac.compare_digest."""
+    computed = compute_approval_digest(artifact)
+    return hmac.compare_digest(computed, expected_digest)
+

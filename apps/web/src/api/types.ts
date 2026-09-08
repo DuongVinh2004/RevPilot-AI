@@ -72,3 +72,84 @@ export interface KillSwitchResponse {
   activated_by: string;
   propagation_latency_ms: number;
 }
+
+export interface CitationSpan {
+  start_char: number;
+  end_char: number;
+  snippet_text: string;
+}
+
+export interface EvidenceRecord {
+  id: string;
+  document_id: string;
+  chunk_index: number;
+  content: string;
+  classification: 'PUBLIC' | 'INTERNAL' | 'RESTRICTED' | 'HIGHLY_CONFIDENTIAL';
+  content_digest: string;
+  citation_span?: CitationSpan;
+  effective_from: string;
+  effective_to?: string | null;
+  similarity_score?: number;
+  metadata?: Record<string, any>;
+}
+
+export interface HypothesisRecord {
+  hypothesis_id: string;
+  statement: string;
+  ranking_method: string;
+  ate_point_estimate: number;
+  p_value: number;
+  e_value: number;
+  evidence_coverage_ratio: number;
+  status: 'SUPPORTED' | 'REFUTED' | 'INCONCLUSIVE';
+}
+
+export interface ClaimVerificationResponse {
+  claim_id: string;
+  statement: string;
+  verifier_status: 'VERIFIED' | 'UNSUPPORTED' | 'CONTRADICTED' | 'NEED_MORE_EVIDENCE';
+  rejection_reason?: string | null;
+  evidence_cited_count: number;
+  verified_at: string;
+}
+
+export interface MfaStatusResponse {
+  principal_id: string;
+  mfa_enabled: boolean;
+}
+
+export interface TotpSetupResponse {
+  principal_id: string;
+  secret: string;
+  provisioning_uri: string;
+}
+
+export interface TotpActivateResponse {
+  principal_id: string;
+  status: string;
+  recovery_codes: string[];
+}
+
+export interface FinOpsBudgetSummary {
+  hard_spend_limit_usd: number;
+  committed_spend_usd: number;
+  reserved_spend_usd: number;
+  remaining_spend_usd: number;
+  monthly_quota_pct: number;
+  tokens_prompt: number;
+  tokens_completion: number;
+  estimated_cost_usd: number;
+  active_reservations_count: number;
+}
+
+export interface ConnectorStatusRecord {
+  connector_id: string;
+  name: string;
+  provider: 'STRIPE' | 'SALESFORCE' | 'ZENDESK';
+  status: 'HEALTHY' | 'DEGRADED' | 'DISCONNECTED';
+  last_sync_timestamp: string;
+  events_processed_24h: number;
+  duplicates_filtered_count: number;
+  webhook_signing_verified: boolean;
+}
+

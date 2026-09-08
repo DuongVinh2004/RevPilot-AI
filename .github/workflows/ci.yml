@@ -30,11 +30,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.lock --no-deps
           pip install -e . --no-deps
-          pip install ruff mypy pytest
+          pip install ruff mypy pytest pip-audit
+
+      - name: Audit Python Dependencies
+        run: |
+          pip-audit -r requirements.lock
 
       - name: Lint with Ruff
         run: |
           ruff check .
+
+      - name: Typecheck with Mypy
+        run: |
+          mypy packages/backend/src apps/api
+
+      - name: Verify Pytest Collection
+        run: |
+          python -m pytest --collect-only -q
 
       - name: Run Test Suite
         run: |
@@ -62,3 +74,23 @@ jobs:
       - name: Typecheck and Build
         working-directory: apps/web
         run: npm run build
+
+  infra-check:
+    name: Infrastructure Lint & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        run: |
+          terraform fmt -check -recursive infra/
+
+      - name: Terraform Validate
+        run: |
+          terraform -chdir=infra/environments/staging init -backend=false
+          terraform -chdir=infra/environments/staging validate

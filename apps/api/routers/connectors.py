@@ -93,15 +93,10 @@ async def receive_webhook(
     ts_str = x_timestamp or str(int(time.time()))
     secret = os.getenv("WEBHOOK_SIGNING_SECRET")
     if not secret:
-        env_mode = os.getenv("ENVIRONMENT", "").lower()
-        is_test_env = env_mode in ("test", "testing", "dev", "development") or "PYTEST_CURRENT_TEST" in os.environ
-        if is_test_env:
-            secret = "whsec_default_secret_2026"
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"code": "CONFIG_ERROR", "message": "WEBHOOK_SIGNING_SECRET is not configured"},
-            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "CONFIG_ERROR", "message": "WEBHOOK_SIGNING_SECRET is not configured"},
+        )
 
     verifier = getattr(request.app.state, "webhook_verifier", None)
     if verifier is None:
@@ -122,7 +117,7 @@ async def receive_webhook(
         )
     except TimestampSkewError as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail={"code": err.code, "message": str(err)},
         )
 
@@ -145,9 +140,25 @@ async def receive_webhook(
         inbox_id, is_duplicate = await inbox.ingest_webhook_event(
             tenant, connector_id, event_id, payload, digest
         )
+    else:
+        seen_events = getattr(request.app.state, "_seen_webhook_events", None)
+        if seen_events is None:
+            seen_events = set()
+            request.app.state._seen_webhook_events = seen_events
+        key = f"{tenant.tenant_id}:{connector_id}:{event_id}"
+        if key in seen_events:
+            is_duplicate = True
+        else:
+            seen_events.add(key)
+
+    if is_duplicate:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={"code": "DUPLICATE_WEBHOOK_EVENT", "message": "Webhook event has already been processed"},
+        )
 
     return {
         "status": "ACCEPTED",
         "inbox_id": inbox_id,
-        "is_duplicate": is_duplicate,
+        "is_duplicate": False,
     }

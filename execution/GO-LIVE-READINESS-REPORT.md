@@ -6,6 +6,9 @@ Owner: Principal Platform Architect, SRE Lead, Security Architect, Compliance Le
 Target Release Candidate: v1.0.0-rc1  
 Approver: Dương Vinh  
 
+> [!CAUTION]
+> This report was generated from unit/contract test evidence only. Production empirical validation pending per AC-014.
+
 ---
 
 ## 1. Release Scope and Intended Cohort

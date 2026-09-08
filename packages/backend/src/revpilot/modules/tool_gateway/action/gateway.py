@@ -9,17 +9,23 @@ import contextlib
 import hashlib
 import json
 import re
+import os
 import socket
 from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 from revpilot.modules.action.domain import ActionLedgerRecord
+from revpilot.modules.approval.digest import ApprovalArtifact, verify_approval_digest
 from revpilot.modules.tool_gateway.action.credential_broker import (
     CredentialBroker,
     EphemeralCredential,
     GatewayError,
 )
 from revpilot.modules.tool_gateway.action.mock_adapter import MockProviderAdapter
+from revpilot.modules.tool_gateway.ports.provider_adapter import (
+    ProviderAdapterPort,
+    ProviderResponse,
+)
 from revpilot.shared.context import TenantContext
 from revpilot.shared.identifiers import TenantId, UUIDv7
 from revpilot.shared.results import Result, Success, Failure
@@ -126,6 +132,7 @@ class ActionCapabilityRequest(BaseModel):
     payload: dict[str, Any] = Field(default_factory=dict)
     is_dry_run: bool = False
     as_of_time: UtcDateTime
+    approval_artifact: ApprovalArtifact | None = None
 
 
 class ActionCapabilityGateway:
@@ -137,21 +144,76 @@ class ActionCapabilityGateway:
     def __init__(
         self,
         credential_broker: CredentialBroker | None = None,
-        mock_adapter: MockProviderAdapter | None = None,
+        provider_adapter: ProviderAdapterPort | None = None,
         default_provider: str = "mock_logistics_v1",
+        environment: str | None = None,
+        **kwargs: Any,
     ) -> None:
+        if provider_adapter is None and "mock_adapter" in kwargs:
+            provider_adapter = kwargs["mock_adapter"]
+
+        env = (environment or os.getenv("ENVIRONMENT", "test")).strip().lower()
+        self.environment = env
         self.credential_broker = credential_broker or CredentialBroker()
-        self.mock_adapter = mock_adapter or MockProviderAdapter()
         self.default_provider = default_provider
+
+        if env != "test":
+            if (
+                provider_adapter is None
+                or isinstance(provider_adapter, MockProviderAdapter)
+                or "Mock" in provider_adapter.__class__.__name__
+            ):
+                raise GatewayError(
+                    code="ERR_MOCK_PROVIDER_FORBIDDEN",
+                    message="MockProviderAdapter is strictly forbidden in non-test environment (INV-ACT-001)",
+                    details={"environment": env},
+                )
+            if not isinstance(provider_adapter, ProviderAdapterPort):
+                raise GatewayError(
+                    code="ERR_INVALID_PROVIDER_ADAPTER",
+                    message="provider_adapter must implement ProviderAdapterPort",
+                    details={"environment": env},
+                )
+            self.provider_adapter: ProviderAdapterPort = provider_adapter
+        else:
+            if provider_adapter is None:
+                self.provider_adapter = MockProviderAdapter()
+            else:
+                if not isinstance(provider_adapter, ProviderAdapterPort):
+                    raise GatewayError(
+                        code="ERR_INVALID_PROVIDER_ADAPTER",
+                        message="provider_adapter must implement ProviderAdapterPort",
+                        details={"environment": env},
+                    )
+                self.provider_adapter = provider_adapter
+
+    @property
+    def mock_adapter(self) -> Any:
+        return self.provider_adapter
 
     async def dispatch_action(
         self,
         ctx: TenantContext,
         req: ActionCapabilityRequest,
+        approval_artifact: ApprovalArtifact | None = None,
     ) -> Result[ActionLedgerRecord, GatewayError]:
         """
         Execute audited action dispatch pipeline across 7 safety gates.
         """
+        current_env = (self.environment or os.getenv("ENVIRONMENT", "test")).strip().lower()
+        if current_env != "test" and (
+            self.provider_adapter is None
+            or isinstance(self.provider_adapter, MockProviderAdapter)
+            or "Mock" in self.provider_adapter.__class__.__name__
+        ):
+            return Failure(
+                GatewayError(
+                    code="ERR_MOCK_PROVIDER_FORBIDDEN",
+                    message="MockProviderAdapter is strictly forbidden in non-test environment (INV-ACT-001)",
+                    details={"environment": current_env},
+                )
+            )
+
         # Gate 1: Tenant Validation Gate (INV-TEN-002)
         if ctx.tenant_id != req.tenant_id:
             return Failure(
@@ -171,6 +233,17 @@ class ActionCapabilityGateway:
                     details={"approval_digest": req.approval_digest},
                 )
             )
+
+        artifact = approval_artifact or getattr(req, "approval_artifact", None)
+        if artifact is not None:
+            if not verify_approval_digest(artifact, req.approval_digest):
+                return Failure(
+                    GatewayError(
+                        code="ERR_APPROVAL_DIGEST_MISMATCH",
+                        message="Action dispatch approval digest verification failed",
+                        details={"approval_digest": req.approval_digest},
+                    )
+                )
 
         # Gate 3: Dry-Run Simulation Protocol (AC-009)
         if req.is_dry_run:
@@ -233,8 +306,8 @@ class ActionCapabilityGateway:
         scrubbed_payload = scrub_secrets(req.payload, known_secrets)
         request_digest = compute_canonical_digest(scrubbed_payload)
 
-        # Gate 7: Sandboxed Mock Provider Execution
-        adapter_res = self.mock_adapter.execute(
+        # Gate 7: External / Sandboxed Provider Execution (INV-ACT-001)
+        adapter_res = self.provider_adapter.execute(
             intent_id=str(req.intent_id),
             action_type=req.action_type,
             target_entities=req.target_entities,
@@ -263,8 +336,8 @@ class ActionCapabilityGateway:
             )
             return Success(error_record)
 
-        mock_resp = adapter_res.value
-        scrubbed_resp_payload = scrub_secrets(mock_resp.response_payload, known_secrets)
+        provider_resp = adapter_res.value
+        scrubbed_resp_payload = scrub_secrets(provider_resp.response_payload, known_secrets)
         response_digest = compute_canonical_digest(scrubbed_resp_payload)
 
         ledger_record = ActionLedgerRecord(
@@ -276,9 +349,9 @@ class ActionCapabilityGateway:
             provider_name=self.default_provider,
             request_digest=request_digest,
             response_digest=response_digest,
-            http_status_code=mock_resp.http_status_code,
-            provider_tx_id=mock_resp.provider_tx_id,
-            execution_status="SUCCESS" if mock_resp.http_status_code == 200 else "PROVIDER_ERROR",
+            http_status_code=provider_resp.http_status_code,
+            provider_tx_id=provider_resp.provider_tx_id,
+            execution_status="SUCCESS" if provider_resp.http_status_code == 200 else "PROVIDER_ERROR",
             started_at=req.as_of_time,
             completed_at=now,
         )

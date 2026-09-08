@@ -7,10 +7,12 @@ from __future__ import annotations
 
 import json
 import asyncio
+import logging
 import uuid
+from decimal import Decimal
 from typing import Any
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, Request, status, Query
+from fastapi import APIRouter, Depends, Request, status, Query, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -19,6 +21,8 @@ from apps.api.middleware.authorization import require_roles
 from revpilot.shared.context import TenantContext, PrincipalContext
 from revpilot.shared.errors import NotFoundError, ValidationError
 from revpilot.modules.investigation.event_broadcaster import InvestigationEventBroadcaster
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/investigations", tags=["Investigations"])
 
@@ -74,10 +78,38 @@ async def create_investigation(
     temporal_client = getattr(request.app.state, "temporal_client", None)
     if temporal_client is not None:
         try:
-            # Trigger Temporal workflow if client available
-            pass
-        except Exception:
-            pass
+            from revpilot.modules.investigation.workflows import (
+                InvestigationWorkflow,
+                InvestigationWorkflowInput,
+                INVESTIGATION_WORKFLOW_QUEUE,
+            )
+            wf_input = InvestigationWorkflowInput(
+                tenant_id=str(tenant.tenant_id),
+                principal_id=str(principal.principal_id) if hasattr(principal, "principal_id") else "usr_system",
+                investigation_id=inv_id,
+                anomaly_id=payload.anomaly_id,
+                metric_name=payload.metric_name,
+                cost_budget_usd=Decimal(str(payload.cost_budget_usd)),
+                time_budget_seconds=payload.time_budget_seconds,
+            )
+            await temporal_client.start_workflow(
+                InvestigationWorkflow.run,
+                wf_input,
+                id=workflow_id,
+                task_queue=INVESTIGATION_WORKFLOW_QUEUE,
+            )
+        except Exception as exc:
+            logger.error(
+                "Temporal workflow start failed for investigation %s (workflow_id=%s): %s",
+                inv_id,
+                workflow_id,
+                exc,
+                exc_info=True,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Failed to start investigation workflow",
+            )
 
     return {
         "investigation_id": inv_id,
@@ -97,19 +129,10 @@ async def get_investigation(
     repo = getattr(request.app.state, "investigation_repo", None)
     if repo is not None:
         res = await repo.get_by_id(tenant, investigation_id)
-        if not res:
-            raise NotFoundError(f"Investigation '{investigation_id}' not found.")
-        return res
+        if res:
+            return res
 
-    return {
-        "id": investigation_id,
-        "tenant_id": str(tenant.tenant_id),
-        "status": "COMPLETED",
-        "metric_name": "Net MRR Expansion Rate",
-        "cost_budget_usd": 2.00,
-        "spent_usd": 0.42,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-    }
+    raise NotFoundError(f"Investigation '{investigation_id}' not found.")
 
 
 @router.get("")

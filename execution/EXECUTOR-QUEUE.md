@@ -1,6 +1,6 @@
 # Antigravity Executor Queue
 
-Status: IDLE — 0 TASKS QUEUED (PHASES 01–08 COMPLETED: 1031/1031 TESTS PASS)
+Status: IDLE — 0 TASKS QUEUED (PHASES 01–08 AND AUDIT-REMEDIATION AR-001..AR-030 COMPLETED: See execution/evidence/TEST-COLLECTION-MANIFEST.txt for authoritative test count)
 
 Only implementation-ready MICRO-TASKS may appear below. Absence or BLOCKED status means no task is authorized for execution.
 
@@ -25,4 +25,4 @@ Only implementation-ready MICRO-TASKS may appear below. Absence or BLOCKED statu
 | `TASK-R05-003` | Define Persistence Adapter and Migration Safety Contract | PASS | `TASK-R05-002` | S | LOW | NO | 20/20 | `docs/27-database/DATABASE-SCHEMA.md` | `tasks/RAIL-05/TASK-R05-003.md` |
 | `TASK-R05-004` | Implement Cross-Tenant Persistence Negative Matrix and Rail 5 Exit Gate | PASS | `TASK-R05-003` | S | LOW | NO | 20/20 | `docs/27-database/DATABASE-SCHEMA.md` | `tasks/RAIL-05/TASK-R05-004.md` |
 
-Queue mutations are planner-owned. An executor may report status but may not add, reorder, unlock, or mark its own task PASS. All phases (Phases 01–08) and Rails (Rails 00–16) have completed execution with 100% tests passing (1031/1031 tests pass). No active task admitted in executor queue (queue empty, status IDLE, no additional task authorized).
+Queue mutations are planner-owned. An executor may report status but may not add, reorder, unlock, or mark its own task PASS. All phases (Phases 01–08) and Rails (Rails 00–16) have completed execution with 100% tests passing (see execution/evidence/TEST-COLLECTION-MANIFEST.txt for authoritative test count). No active task admitted in executor queue (queue empty, status IDLE, no additional task authorized).
