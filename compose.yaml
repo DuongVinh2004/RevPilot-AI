@@ -34,6 +34,7 @@ services:
     networks:
       - dmz_net
       - compute_net
+      - persistence_net
     depends_on:
       postgres:
         condition: service_healthy

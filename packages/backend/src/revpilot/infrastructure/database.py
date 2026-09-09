@@ -107,7 +107,7 @@ class TenantDatabaseSession:
                     details={"error": "tenant_id_missing"},
                 )
             await self.conn.execute("SET LOCAL revpilot.is_system = 'false';")
-            await self.conn.execute("SET LOCAL revpilot.current_tenant_id = $1;", str(tenant_id))
+            await self.conn.execute("SELECT set_config('revpilot.current_tenant_id', $1, true);", str(tenant_id))
 
         return self.conn
 

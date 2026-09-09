@@ -38,7 +38,7 @@ async def seed_data() -> int:
     try:
         now = datetime.now(timezone.utc)
         as_of = now - timedelta(hours=1)
-        tenant_id = "ten_dev_001"
+        tenant_id = "tnt_dev_001"
 
         # 1. Seed Tenant (Platform-scoped, bypasses RLS)
         await conn.execute("""
@@ -49,8 +49,8 @@ async def seed_data() -> int:
         print(f"Seeded Tenant: {tenant_id}")
 
         # Set tenant session context for RLS-protected tables
-        await conn.execute("SET LOCAL revpilot.is_system = 'true';")
-        await conn.execute("SET LOCAL revpilot.current_tenant_id = $1;", tenant_id)
+        await conn.execute("SET revpilot.is_system = 'true';")
+        await conn.execute("SELECT set_config('revpilot.current_tenant_id', $1, false);", tenant_id)
 
         # 2. Seed Organization
         await conn.execute("""
@@ -85,6 +85,7 @@ async def seed_data() -> int:
 
         # 6. Seed Customers
         cust_1 = "cust_alpha"
+        dedup_key = f"{tenant_id}:salesforce:sf_alpha_01:{now}"
         await conn.execute("""
             INSERT INTO revpilot.canonical_customers (
                 tenant_id, id, schema_version, source_system, source_id, name, email,
@@ -93,13 +94,15 @@ async def seed_data() -> int:
             ) VALUES (
                 $1, $2, '1.0.0', 'salesforce', 'sf_alpha_01', 'Alpha Global Tech', 'contact@alpha.com',
                 'ENTERPRISE', 'TIER_1', 'US', 4500000, 'USD', 'ACTIVE',
-                $3, $3, 'trace_seed_01', $1 || ':salesforce:sf_alpha_01:' || $3::text
+                $3, $3, 'trace_seed_01', $4
             ) ON CONFLICT (tenant_id, id) DO NOTHING;
-        """, tenant_id, cust_1, now)
+        """, tenant_id, cust_1, now, dedup_key)
+        print(f"Seeded Customer: {cust_1}")
 
         # 7. Seed Anomalies
         anom_1 = "anom_01h8x8a7b3c1"
         hash_val = hashlib.sha256(f"{tenant_id}:{anom_1}:{now}".encode()).hexdigest()
+        window_start = now - timedelta(days=7)
         await conn.execute("""
             INSERT INTO revpilot.anomaly_records (
                 tenant_id, id, anomaly_type, metric_id, metric_version, detector_id, detector_version,
@@ -108,11 +111,11 @@ async def seed_data() -> int:
                 created_at, updated_at
             ) VALUES (
                 $1, $2, 'REVENUE_AT_RISK', 'METRIC_NET_MRR_EXPANSION', '1.0.0', 'DET-STL-RESIDUAL-001', '1.0.0',
-                $3 - interval '7 days', $3, $3, $3, $4,
-                -24.6000, 5.2000, 0.7820, 'HIGH', $5, 'DETECTED', $6,
-                $3, $3
+                $3, $4, $4, $4, $5,
+                -24.6000, 5.2000, 0.7820, 'CRITICAL', $6, 'DETECTED', $7,
+                $4, $4
             ) ON CONFLICT (tenant_id, id) DO NOTHING;
-        """, tenant_id, anom_1, now, as_of, json.dumps({"region": "US-EAST", "product": "Seats"}), hash_val)
+        """, tenant_id, anom_1, window_start, now, as_of, json.dumps({"region": "US-EAST", "product": "Seats"}), hash_val)
         print(f"Seeded Anomaly: {anom_1}")
 
         # 8. Seed Pending Approvals
@@ -121,6 +124,8 @@ async def seed_data() -> int:
         p_digest_1 = hashlib.sha256(b"credit_voucher_alpha_2500").hexdigest()
         p_digest_2 = hashlib.sha256(b"carrier_sla_penalty_15400").hexdigest()
         pol_digest = hashlib.sha256(b"revpilot_action_policy_2026_09").hexdigest()
+        expiry_1 = now + timedelta(hours=24)
+        expiry_2 = now + timedelta(hours=4)
 
         await conn.execute("""
             INSERT INTO revpilot.approval_requests (
@@ -128,9 +133,9 @@ async def seed_data() -> int:
                 estimated_cost_usd, required_approval_tier, status, expiry_time, correlation_id, created_at
             ) VALUES (
                 $1, $2, 'ISSUE_SERVICE_CREDIT_VOUCHER', $3, $4, $5, 2500.00, 'TIER_2', 'PENDING',
-                $6 + interval '24 hours', 'corr_seed_appr_01', $6
+                $6, 'corr_seed_appr_01', $7
             ) ON CONFLICT (tenant_id, id) DO NOTHING;
-        """, tenant_id, appr_1, json.dumps(["cust_alpha", "sub_arr_450k"]), p_digest_1, pol_digest, now)
+        """, tenant_id, appr_1, json.dumps(["cust_alpha", "sub_arr_450k"]), p_digest_1, pol_digest, expiry_1, now)
 
         await conn.execute("""
             INSERT INTO revpilot.approval_requests (
@@ -138,10 +143,22 @@ async def seed_data() -> int:
                 estimated_cost_usd, required_approval_tier, status, expiry_time, correlation_id, created_at
             ) VALUES (
                 $1, $2, 'OVERRIDE_CARRIER_SLA_PENALTY', $3, $4, $5, 15400.00, 'TIER_3', 'PENDING',
-                $6 + interval '4 hours', 'corr_seed_appr_02', $6
+                $6, 'corr_seed_appr_02', $7
             ) ON CONFLICT (tenant_id, id) DO NOTHING;
-        """, tenant_id, appr_2, json.dumps(["carrier_global", "contract_2025"]), p_digest_2, pol_digest, now)
+        """, tenant_id, appr_2, json.dumps(["carrier_global", "contract_2025"]), p_digest_2, pol_digest, expiry_2, now)
         print("Seeded 2 Pending Approval Requests (Tier 2 & Tier 3)")
+
+        # 9. Seed Default Dev Session
+        dev_token_hash = hashlib.sha256(b"revpilot_dev_token_secret_2026").hexdigest()
+        expiry_session = now + timedelta(days=365)
+        await conn.execute("""
+            INSERT INTO revpilot.sessions (
+                tenant_id, id, principal_id, token_hash, issued_at, expires_at, is_active
+            ) VALUES (
+                $1, 'sess_dev_001', $2, $3, $4, $5, true
+            ) ON CONFLICT (tenant_id, id) DO UPDATE SET token_hash = EXCLUDED.token_hash, expires_at = EXCLUDED.expires_at;
+        """, tenant_id, admin_id, dev_token_hash, now, expiry_session)
+        print("Seeded Default Dev Session: sess_dev_001")
 
         print("Dev data seeding completed successfully.")
         return 0
