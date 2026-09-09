@@ -99,6 +99,29 @@ class PostgresApprovalRepository:
                 raise NotFoundError(f"Pending approval '{approval_id}' not found, expired, or already resolved.")
             return dict(row)
 
+    async def get_request(self, context: TenantContext, approval_id: str) -> dict[str, Any] | None:
+        """Fetch single approval request by ID within caller's tenant."""
+        query = """
+            SELECT
+                id, tenant_id, decision_id, action_type, target_entity_refs,
+                payload_digest, policy_digest, estimated_cost_usd, required_approval_tier,
+                status, expiry_time, correlation_id, created_at, approver_principal_id
+            FROM revpilot.approval_requests
+            WHERE id = $1;
+        """
+        async with TenantDatabaseSession(self.pool, context) as conn:
+            row = await conn.fetchrow(query, approval_id)
+            if not row:
+                return None
+            item = dict(row)
+            item["estimated_cost_usd"] = float(item["estimated_cost_usd"])
+            item["target_entity_refs"] = (
+                json.loads(item["target_entity_refs"])
+                if isinstance(item["target_entity_refs"], str)
+                else item["target_entity_refs"]
+            )
+            return item
+
     async def record_rejection(
         self, context: TenantContext, approval_id: str, approver_principal_id: str, reason: str
     ) -> dict[str, Any]:
@@ -115,3 +138,4 @@ class PostgresApprovalRepository:
             if not row:
                 raise NotFoundError(f"Pending approval '{approval_id}' not found or already resolved.")
             return dict(row)
+

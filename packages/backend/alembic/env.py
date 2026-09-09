@@ -15,8 +15,33 @@ from logging.config import fileConfig
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy.dialects.postgresql.asyncpg import AsyncAdapt_asyncpg_cursor
 
 from alembic import context
+
+_orig_prepare_and_execute = AsyncAdapt_asyncpg_cursor._prepare_and_execute
+
+
+def _is_multi_statement(sql: str) -> bool:
+    cleaned = sql.strip().rstrip(";")
+    return ";" in cleaned
+
+
+async def _patched_prepare_and_execute(self, operation, parameters):
+    if (parameters is None or len(parameters) == 0) and _is_multi_statement(operation):
+        adapt_connection = self._adapt_connection
+        async with adapt_connection._execute_mutex:
+            if not adapt_connection._started:
+                await adapt_connection._start_transaction()
+            await self._connection.execute(operation)
+            self.description = None
+            self.rowcount = -1
+            return
+    return await _orig_prepare_and_execute(self, operation, parameters)
+
+
+AsyncAdapt_asyncpg_cursor._prepare_and_execute = _patched_prepare_and_execute
+
 
 config = context.config
 

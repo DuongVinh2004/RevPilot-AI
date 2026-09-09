@@ -93,23 +93,22 @@ class PostgresAuthAdapter(AuthenticationPort):
                     sub=row["principal_id"],
                     iss=expected_issuer,
                     aud=expected_audience,
-                    exp=int(expires_at.as_datetime().timestamp()),
-                    nbf=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
-                    iat=int(UtcDateTime.from_datetime(row["issued_at"]).as_datetime().timestamp()),
+                    exp=expires_at,
+                    nbf=UtcDateTime.from_datetime(row["issued_at"]),
+                    iat=UtcDateTime.from_datetime(row["issued_at"]),
                     tenant_id=row["tenant_id"],
                     roles=roles,
                     permissions=frozenset(),
                     email=row["email"],
-                    is_system=row["principal_type"] == "SYSTEM",
                 )
 
-                provenance_payload = f"{token_hash}:{claims.sub}:{claims.tenant_id}:{claims.exp}"
-                provenance_hash = hashlib.sha256(provenance_payload.encode()).hexdigest()
-
-                return VerifiedClaimsToken(
+                return VerifiedClaimsToken.issue(
                     claims=claims,
-                    raw_token_digest=token_hash,
-                    provenance_hash=provenance_hash,
+                    verified_issuer=expected_issuer,
+                    verified_audience=expected_audience,
+                    session_id=row["session_id"],
+                    signature_fingerprint=token_hash[:16],
+                    verified_at=now,
                 )
 
     async def async_revoke_session(self, session_id: str) -> None:
