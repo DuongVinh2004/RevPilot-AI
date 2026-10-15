@@ -1,6 +1,6 @@
 {
   "name": "@revpilot/web",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0",
   "description": "RevPilot AI — Human Approval Portal & Revenue Intelligence Dashboard",
   "private": true,
   "type": "module",

@@ -1,0 +1,24 @@
+changelog:
+  categories:
+    - title: "🚀 New Features & Capabilities"
+      labels:
+        - "feature"
+        - "enhancement"
+    - title: "🐛 Bug Fixes & Mitigations"
+      labels:
+        - "fix"
+        - "bug"
+    - title: "🛡️ Invariants & Security"
+      labels:
+        - "security"
+        - "invariants"
+    - title: "📚 Documentation & Specifications"
+      labels:
+        - "documentation"
+        - "docs"
+    - title: "🏗️ Infrastructure & Tooling"
+      labels:
+        - "infra"
+        - "ci"
+        - "dependencies"
+        - "chore"

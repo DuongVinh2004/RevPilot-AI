@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use RevPilot AI in research, enterprise architectures, or benchmarks, please cite it using the metadata below."
+authors:
+  - family-names: "Duong"
+    given-names: "Vinh"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "RevPilot AI: Autonomous Revenue Intelligence & Action Platform for Enterprise RevOps"
+version: 1.0.0
+date-released: 2026-09-09
+url: "https://github.com/DuongVinh2004/RevPilot-AI"
+repository-code: "https://github.com/DuongVinh2004/RevPilot-AI"
+license: "Apache-2.0"
+keywords:
+  - revops
+  - revenue-operations
+  - causal-ai
+  - multi-agent-systems
+  - autonomous-agents
+  - human-in-the-loop
+  - anomaly-detection

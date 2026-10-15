@@ -1,0 +1,20 @@
+# RevPilot AI — Code Ownership & Governance Specification
+# Defines required reviewers for pull requests touching critical architectural boundaries.
+
+# Global fallback maintainer
+* @DuongVinh2004
+
+# Core Architectural Invariants & Executive Specifications
+/docs/00-executive/ @DuongVinh2004
+/docs/15-security/ @DuongVinh2004
+/AGENTS.md @DuongVinh2004
+
+# Security, Approvals & Safety Engines
+/packages/backend/src/revpilot/modules/safety/ @DuongVinh2004
+/packages/backend/src/revpilot/modules/approval/ @DuongVinh2004
+/packages/backend/src/revpilot/modules/verifier/ @DuongVinh2004
+
+# Infrastructure & CI/CD Pipelines
+/.github/ @DuongVinh2004
+/infra/ @DuongVinh2004
+/compose.yaml @DuongVinh2004
